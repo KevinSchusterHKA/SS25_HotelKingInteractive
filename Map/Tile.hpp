@@ -18,6 +18,7 @@ public:
 
     int getId() const { return id; }
     std::string getName() const { return name; }
+    virtual std::string getTypeString() const; 
 };
 
 #endif

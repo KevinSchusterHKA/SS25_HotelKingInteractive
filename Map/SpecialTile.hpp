@@ -14,6 +14,8 @@ public:
         : Tile(id, name), specialType(type) {}
 
     void displayInfo() const override;
+    SpecialType getSpecialType() const { return specialType; }
+    std::string SpecialTile::getTypeString() const override;
 };
 
 #endif

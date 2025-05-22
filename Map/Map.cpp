@@ -3,47 +3,107 @@
 #include <PropertyTile.hpp>
 #include <SpecialTile.hpp>
 
+
+//HKI-8 Map: Erstellung einer Spielfeld-Klasse
 GameMap::GameMap() {
     // 初始化地图顺序（图结构用于补充连接）
     initTile();
+    initAdjacency();
+
+}
+//HKI-5 Map: Nutzung Graphenalgorithmus
+//HKI-7 Map: Anpassung Adjazenzmatrix
+void GameMap::initAdjacency() {
+    const int N = tiles.size();
+    adjacencyMatrix.clear();
+    adjacencyMatrix.resize(N, std::vector<bool>(N, false));
+
+    // 构建一个单向环结构（格 i 连到 i+1）
+    for (int i = 0; i < N; ++i) {
+        int next = (i + 1) % N;
+        adjacencyMatrix[i][next] = true;
+    }
+}
+//HKI-7 Map: Anpassung Adjazenzmatrix
+int GameMap::getTileAfterSteps(int currentTileId, int steps) const {
+    int pos = currentTileId;
+    for (int i = 0; i < steps; ++i) {
+
+        for (int next = 0; next < 40; ++next) {
+            if (adjacencyMatrix[pos][next]) {
+                pos = next;
+                break;
+            }
+        }
 
 
-    // 初始化邻接矩阵
-    int n = tiles.size();
-    adjacencyMatrix = std::vector<std::vector<int>>(n, std::vector<int>(n, 0));
-
-    // 举例：连通三个车站
-    connectTiles(5, 15); // Westbahnhof <-> Hauptbahnhof
-    connectTiles(5, 25); // Westbahnhof <-> Durlacher Bahnhof
-    connectTiles(15, 25);
+    }
+    return pos;
+}
+//HKI-11 Map: Implementierung der Bahnhofsfelder
+int GameMap::movebahn() const {
+    int pos=0;
+    std::cout<<"which Bahnhof do you want to move? 5(Hbf), 15(West-Bahnhof), 25(Ost-Bahnhof)?"<<std::endl;
+    std::cin>>pos;
+    if (pos!=5||pos!=15||pos!=25){
+        std::cout<<"input error, try again"<<std::endl;
+        return 0;
+    }
+    
+    else
+    return pos;
+}
+//HKI-12 Map: Implementierung des Hubschrauberlandeplatzes
+int GameMap::moveHub() const {
+    int pos=0;
+    std::cout<<"which pos do you want to move?"<<std::endl;
+    std::cin>>pos;
+    if (pos<0||pos>tiles.size()){
+        std::cout<<"input error, try again"<<std::endl;
+        return 0;
+    }
+    
+    else
+    return pos;
 }
 
-void GameMap::addTile(const Tile& tile) {
-    tiles.push_back(tile);
-}
+// void GameMap::addTile((std::shared_ptr<Tile> tile)) {
+//     tiles.push_back(tile);
+// }
 
-void GameMap::connectTiles(int fromID, int toID) {
-    adjacencyMatrix[fromID][toID] = 1;
-    adjacencyMatrix[toID][fromID] = 1;
-}
+// void GameMap::connectTiles(int fromID, int toID) {
+//     adjacencyMatrix[fromID][toID] = 1;
+//     adjacencyMatrix[toID][fromID] = 1;
+// }
 
-const Tile& GameMap::getTile(int id) const {
+std::shared_ptr<Tile> GameMap::getTile(int id) const {
     return tiles.at(id);
 }
 
-int GameMap::getNextTile(int currentID, int steps) const {
-    int total = tiles.size();
-    return (currentID + steps) % total;
-}
+// int GameMap::getNextTile(int currentID, int steps) const {
+//     int total = tiles.size();
+//     return (currentID + steps) % total;
+// }
 
 void GameMap::displayMap() const {
     std::cout << "--- Spielfeld Übersicht ---\n";
-    for (const auto& tile : tiles) {
-        std::cout << tile.id << " | " << tile.name << " | Typ: " << static_cast<int>(tile.type)
-                  << " | Preis: " << tile.price << " | Miete: " << tile.rent << "\n";
+    for (const auto& tilePtr : tiles) {
+        auto street = dynamic_cast<PropertyTile*>(tilePtr.get());
+        if (street){
+        std::cout << street->getId() << " | " << street->getName() << " | Typ: " << street->getTypeString()<<
+        " | Group: "<<street->getGroupId()<<" | OwnID: "<<street->getOwnerId()<<" | rent: "<<street->getRent()<<std::endl;
+        continue;
+        }
+        else{
+            auto sp = dynamic_cast<SpecialTile*>(tilePtr.get());
+            std::cout<<" | Typ: "<<sp->getTypeString()<<std::endl;
+        }
     }
 }
 
+
+//HKI-9 Map: Implementierung der Straßenfelder
+//HKI-10 Map: Entwicklung der Sraßen-Eigenschaften
 bool GameMap::canUpgradeStreet(PropertyTile* targetStreet, int playerId) const {
     if (!targetStreet) return false;
     if (targetStreet->getPropertyType() != PropertyType::Street) return false;
@@ -72,7 +132,11 @@ bool GameMap::canUpgradeStreet(PropertyTile* targetStreet, int playerId) const {
 
     return true;
 }
-
+//HKI-4 Map: Konzepterstellung für Spielfeld
+//HKI-6 Map: Anpassung auf Karlsruhe Straßen
+//HKI-13 Map: Implementierung der Steuerfelder
+//HKI-14 Map: Implementierung der Ereignisfelder für Aktionskarten
+//HKI-15 Map: Implementierung der sonstigen Felder
 void GameMap::initTile(){
     tiles.clear();
     tiles.push_back(std::make_shared<SpecialTile>(
@@ -90,7 +154,7 @@ std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({2, 10, 30,
 tiles.push_back(std::make_shared<SpecialTile>(
     4, "Einkommensteuer", SpecialType::Tax));
 tiles.push_back(std::make_shared<PropertyTile>(
-    5, "HauptBahnhof", PropertyType::Station, 200, 1, -1, 0));
+    5, "Hauptbahnhof", PropertyType::Station, 200, 1, -1, 0));
 // 地块 3: Rüppurrer Straße
 tiles.push_back(std::make_shared<PropertyTile>(
     6, "Ebertstraße", PropertyType::Street, 100, 6, 1, 50));
@@ -193,7 +257,7 @@ std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({28, 150, 4
 tiles.push_back(std::make_shared<PropertyTile>(
     35, "Hubschrauberlandeplatz", SpecialType::Hubschrauberlandeplatz));
 
-    tiles.push_back(std::make_shared<SpecialTile>(
+tiles.push_back(std::make_shared<SpecialTile>(
     36, "Ereignisfeld", SpecialType::Event));
 
 // 地块 4: Ebertstraße
@@ -203,7 +267,7 @@ tiles.push_back(std::make_shared<PropertyTile>(
 std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({40, 180, 500, 1200, 1500, 1750});
 
 tiles.push_back(std::make_shared<SpecialTile>(
-    38, "Zusatzsteuer", SpecialType::Tax));
+    38, "Zusatzsteuer", SpecialType::LuxuryTax));
 
 tiles.push_back(std::make_shared<PropertyTile>(
     39, "Schlossplatz", PropertyType::Street, 400, 50, 7, 250));

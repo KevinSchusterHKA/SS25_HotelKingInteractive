@@ -10,17 +10,22 @@
 class GameMap {
 private:
     std::vector<std::shared_ptr<Tile>> tiles;
+    std::vector<std::vector<bool>> adjacencyMatrix;
 
 public:
     GameMap();
-    void addTile(std::shared_ptr<Tile> tile);
+    //void addTile(std::shared_ptr<Tile> tile);
     std::shared_ptr<Tile> getTile(int id) const;
-    int getNextTileId(int currentId, int steps) const;
+    //int getNextTileId(int currentId, int steps) const;
     void displayMap() const;
     int size() const { return tiles.size(); }
     //
     bool canUpgradeStreet(PropertyTile* targetStreet, int playerID) const;
     void initTile();
+    void initAdjacency();
+    int getTileAfterSteps(int currentTileId, int steps) const;
+    int movebahn() const;
+    int moveHub() const;
 };
 
 #endif

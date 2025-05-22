@@ -5,7 +5,7 @@
 #include "vector"
 
 enum class PropertyType { Street, Station, Utility };
-
+////HKI-9 Map: Implementierung der Straßenfelder
 class PropertyTile : public Tile {
 private:
     PropertyType propertyType;
@@ -37,6 +37,7 @@ buildingLevel(0),groudID(-1) {}
     void setOwner(int playerId) { ownerId = playerId; }
     void setRentLevels(const std::vector<int>& rents);
     void displayInfo() const override;
+    std::string PropertyTile::getTypeString() const override;
      int calculateRent(int diceRoll, int stationOwnedCount, bool ownsBothUtilities) const;
 };
 

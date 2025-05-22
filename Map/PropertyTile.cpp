@@ -2,6 +2,7 @@
 #include <iostream>
 
 // 显示地块基本信息
+//HKI-9 Map: Implementierung der Straßenfelder
 void PropertyTile::displayInfo() const {
     std::cout << "[Property] ID: " << id << " | " << name;
 
@@ -71,4 +72,13 @@ void PropertyTile::setRentLevels(const std::vector<int>& rents) {
         throw std::invalid_argument("RentLevels must have exactly 6 entries: [no house, 1H, 2H, 3H, 4H, hotel]");
     }
     this->rentLevels = rents;
+}
+
+std::string PropertyTile::getTypeString() const {
+    switch (propertyType) {
+        case PropertyType::Street:  return "Street";
+        case PropertyType::Station: return "Station";
+        case PropertyType::Utility: return "Utility";
+        default: return "Property";
+    }
 }
