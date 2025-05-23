@@ -6,6 +6,8 @@
 int main()
 {
     std::cout << "Hotel King Interactive T0.1\n";
+
+    std::cout << "Test Engine Player!\n";
 }
 
 // Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"
