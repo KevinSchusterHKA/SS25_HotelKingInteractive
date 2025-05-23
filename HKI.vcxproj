@@ -152,6 +152,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="HKI.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="PropertyTile.cpp" />
+    <ClCompile Include="SpecialTile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Map.hpp" />
+    <ClInclude Include="PropertyTile.hpp" />
+    <ClInclude Include="SpecialTile.hpp" />
+    <ClInclude Include="Tile.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
