@@ -1,0 +1,7 @@
+<map id="GameMap::GameMap" name="GameMap::GameMap">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,155,57"/>
+<area shape="rect" id="Node000002" href="$class_game_map.html#a7bb60ca0fb3b21b86968ea4968ba6c08" title=" " alt="" coords="203,5,370,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,32,187,28,187,33,155,38"/>
+<area shape="rect" id="Node000003" href="$class_game_map.html#a823ca8880af3d26236357fef64d7b306" title=" " alt="" coords="223,56,350,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="155,50,208,57,207,62,155,56"/>
+</map>
