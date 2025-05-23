@@ -4,7 +4,7 @@
 #include "tile.hpp"
 #include "vector"
 
-enum class PropertyType { Street, Station, Utility };
+enum class PropertyType { Street, Utility };
 ////HKI-9 Map: Implementierung der Straßenfelder
 class PropertyTile : public Tile {
 private:

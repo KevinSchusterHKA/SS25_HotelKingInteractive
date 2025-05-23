@@ -10,9 +10,9 @@ void PropertyTile::displayInfo() const {
         case PropertyType::Street:
             std::cout << " (Straße)";
             break;
-        case PropertyType::Station:
-            std::cout << " (Bahnhof)";
-            break;
+        // case PropertyType::Station:
+        //     std::cout << " (Bahnhof)";
+        //     break;
         case PropertyType::Utility:
             std::cout << " (Versorgung)";
             break;
@@ -23,9 +23,11 @@ void PropertyTile::displayInfo() const {
 
     if (propertyType == PropertyType::Utility) {
         std::cout << "(x4 oder x10 Würfelzahl)";
-    } else if (propertyType == PropertyType::Station) {
-        std::cout << "(25/50/100/200 je nach Besitz)";
-    } else {
+    } 
+    // else if (propertyType == PropertyType::Station) {
+    //     std::cout << "(25/50/100/200 je nach Besitz)";
+    // } 
+    else {
         std::cout << rent;
     }
 
@@ -50,15 +52,15 @@ int PropertyTile::calculateRent(int diceRoll, int stationOwned, bool ownsBothUti
                 return rent; // 兜底：无租金表时使用默认
             }
 
-        case PropertyType::Station:
-            // 按照拥有车站数返回标准租金
-            switch (stationOwned) {
-                case 1: return 25;
-                case 2: return 50;
-                case 3: return 100;
-                case 4: return 200;
-                default: return 0;
-            }
+        // case PropertyType::Station:
+        //     // 按照拥有车站数返回标准租金
+        //     switch (stationOwned) {
+        //         case 1: return 25;
+        //         case 2: return 50;
+        //         case 3: return 100;
+        //         case 4: return 200;
+        //         default: return 0;
+        //     }
 
         case PropertyType::Utility:
             // 水厂/电厂 → 骰子点数 × 系数（1个 ×4，两个 ×10）
@@ -77,7 +79,7 @@ void PropertyTile::setRentLevels(const std::vector<int>& rents) {
 std::string PropertyTile::getTypeString() const {
     switch (propertyType) {
         case PropertyType::Street:  return "Street";
-        case PropertyType::Station: return "Station";
+        // case PropertyType::Station: return "Station";
         case PropertyType::Utility: return "Utility";
         default: return "Property";
     }

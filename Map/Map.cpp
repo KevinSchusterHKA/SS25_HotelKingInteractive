@@ -154,7 +154,8 @@ std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({2, 10, 30,
 tiles.push_back(std::make_shared<SpecialTile>(
     4, "Einkommensteuer", SpecialType::Tax));
 tiles.push_back(std::make_shared<PropertyTile>(
-    5, "Hauptbahnhof", PropertyType::Station, 200, 1, -1, 0));
+    //5, "Hauptbahnhof", PropertyType::Station, 200, 1, -1, 0));
+    5, "Hauptbahnhof", SpecialType::Bahnhof));
 // 地块 3: Rüppurrer Straße
 tiles.push_back(std::make_shared<PropertyTile>(
     6, "Ebertstraße", PropertyType::Street, 100, 6, 1, 50));
@@ -185,8 +186,8 @@ tiles.push_back(std::make_shared<PropertyTile>(
 std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({12, 60, 180, 500, 700, 900});
 
 tiles.push_back(std::make_shared<PropertyTile>(
-    15, "West-Bahnhof", PropertyType::Station, 200, 1, -1, 0));
-
+    //15, "West-Bahnhof", PropertyType::Station, 200, 1, -1, 0));
+    15, "West-Bahnhof", SpecialType::Bahnhof));
 tiles.push_back(std::make_shared<PropertyTile>(
     16, "Fastplatz", PropertyType::Street, 180, 14, 3, 150));
 std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({14, 70, 200, 550, 750, 950});
@@ -219,8 +220,8 @@ tiles.push_back(std::make_shared<PropertyTile>(
 std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({20, 100, 275, 750, 900, 1100});
 
 tiles.push_back(std::make_shared<PropertyTile>(
-    25, "OstBahnhof", PropertyType::Station, 200, 1, -1, 0));
-
+    //25, "OstBahnhof", PropertyType::Station, 200, 1, -1, 0));
+    25, "OstBahnhof", SpecialType::Bahnhof));
 tiles.push_back(std::make_shared<PropertyTile>(
     26, "Hildapromenade", PropertyType::Street, 260, 22, 5, 150));
 std::dynamic_pointer_cast<PropertyTile>(tiles.back())->setRentLevels({22, 110, 330, 800, 975, 1150});
