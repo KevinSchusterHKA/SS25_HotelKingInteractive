@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-int main() {
+int test_map_main() {
     GameMap gameMap;
     gameMap.displayMap();
 
