@@ -1,0 +1,9 @@
+<map id="PropertyTile" name="PropertyTile">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,428,242,908"/>
+<area shape="rect" id="Node000002" href="$class_tile.html" title=" " alt="" coords="47,139,201,379"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,393,126,428,121,428,121,393"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="84,5,108,75"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,74,105,114,106,121,101,122,100,115,96,75"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="132,5,174,75"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="151,75,145,122,140,122,146,74"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="PropertyTile::PropertyTile" name="PropertyTile::PropertyTile">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,175,32"/>
+<area shape="rect" id="Node000002" href="$class_tile.html#a49cd5dc5215809255a4b6e05fa3e08b4" title=" " alt="" coords="223,5,294,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,16,207,16,207,21,175,21"/>
+</map>

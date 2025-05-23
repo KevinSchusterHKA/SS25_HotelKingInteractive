@@ -1,0 +1,12 @@
+<map id="SpecialTile.hpp" name="SpecialTile.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="59,5,170,32"/>
+<area shape="rect" id="Node000002" href="$_map_8cpp.html" title=" " alt="" coords="5,155,77,181"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,45,69,81,54,121,46,155,40,154,49,119,64,79,90,42"/>
+<area shape="rect" id="Node000003" href="$_map_8hpp.html" title=" " alt="" coords="79,80,150,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,48,117,80,112,80,112,48"/>
+<area shape="rect" id="Node000005" href="$_special_tile_8cpp.html" title=" " alt="" coords="174,80,284,107"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="149,38,210,77,207,82,146,43"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="93,120,55,156,52,152,89,116"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html" title=" " alt="" coords="101,155,176,181"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="126,121,137,153,132,155,121,123"/>
+</map>
