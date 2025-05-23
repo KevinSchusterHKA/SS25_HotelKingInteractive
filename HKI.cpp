@@ -2,10 +2,14 @@
 //
 
 #include <iostream>
+using namespace std;
 
 int main()
 {
-    std::cout << "Hotel King Interactive T0.1\n";
+    cout << "Hotel King Interactive T0.1\n";
+
+    cout << "Testing Engine Controls!\n";
+
 }
 
 // Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"
