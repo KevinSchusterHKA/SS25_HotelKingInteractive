@@ -1,0 +1,7 @@
+<map id="Tile::Tile" name="Tile::Tile">
+<area shape="rect" id="Node000001" title=" " alt="" coords="223,31,294,57"/>
+<area shape="rect" id="Node000002" href="$class_property_tile.html#acfebcb3b5aee00fd414aebd29458d483" title=" " alt="" coords="5,5,175,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,39,175,34,176,29,208,34"/>
+<area shape="rect" id="Node000003" href="$class_special_tile.html#a9bd763fe1a75d4da99dfa58ee485c810" title=" " alt="" coords="11,56,169,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,54,169,60,169,55,207,49"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="SpecialTile.cpp" name="SpecialTile.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="77,5,187,32"/>
+<area shape="rect" id="Node000002" href="$_special_tile_8hpp.html" title=" " alt="" coords="20,80,130,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,34,96,69,92,66,120,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="154,80,225,107"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="144,31,172,66,168,69,140,34"/>
+<area shape="rect" id="Node000003" href="$_tile_8hpp.html" title=" " alt="" coords="43,155,106,181"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="77,107,77,139,72,139,72,107"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,229,59,256"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="70,183,49,217,45,215,65,181"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="83,229,152,256"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="84,181,105,215,100,217,80,183"/>
+</map>
