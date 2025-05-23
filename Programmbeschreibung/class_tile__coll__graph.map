@@ -1,7 +1,0 @@
-<map id="Tile" name="Tile">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,139,159,379"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="42,5,67,75"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,74,64,114,65,121,60,122,59,115,54,75"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="90,5,133,75"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,75,103,122,98,122,105,74"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="SpecialTile" name="SpecialTile">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,315,193,528"/>
-<area shape="rect" id="Node000002" href="$class_tile.html" title=" " alt="" coords="22,5,176,267"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,282,102,315,97,315,97,282"/>
-</map>
