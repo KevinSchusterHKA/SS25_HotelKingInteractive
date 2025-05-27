@@ -28,6 +28,7 @@ public:
     int getMoney() const;
     int getPosition() const;
     bool inPrison() const;
+    int getPrisonCount() const;
     int getID() const;
     std::vector<std::string> getKarten() const;
 
