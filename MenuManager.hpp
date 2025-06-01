@@ -1,9 +1,24 @@
+/*
+File : MenuManager.hpp 
+Description :  Header file for MenuManager class
+
+Author : Sami El Aidi 
+Date : 2025-05-26
+
+Version : 1.0
+
+Notes: 
+ - 
+*/
+
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
 #include "Menu.hpp"
 #include "GameFunctionManager.hpp"
+
 
 using namespace std;
 
@@ -13,22 +28,36 @@ class MenuManager {
         int current_Layer;
         vector<Menu> menus;
         Menu* current_menu;
-        GameFunctionManager gameFunctionManager;
+        GameFunctionManager* gameFunctionManager;
+        ofstream MenuLog;
+        bool inGame; 
 
+        //Menu System and Logic Functions
         void clear_screen();
+        void initMenus();
+        bool escapeCheck();
+        void addMenu(Menu& menu);
+
+        //Menu Functions
+        void showHighScores();
 
     public:
-        MenuManager(int current_Layer, const vector<Menu>& menus);
-        void addMenu(const Menu& menu);
-        void state_logic(int& current_menu_loc, int dir);
-        void displayMenu();
+        MenuManager();
+        
+        void handleMenus();
+
         
         //Setter
         void setCurrentLayer(int layer);
+        void setCurrentMenu(Menu& menu);
+        void setInGame(bool inGame);
         
         //Getter
         int getCurrentLayer();
-        Menu* getCurrentMenu();
-
+        Menu& getCurrentMenu();
+        ofstream& getMenulog();
+        bool isInGame();
+        GameFunctionManager& getGameFunctionManager();
+        vector<Menu>& getMenus();
 
 };

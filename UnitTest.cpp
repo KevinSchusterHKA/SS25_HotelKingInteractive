@@ -1,3 +1,20 @@
+/*
+File : UnitTest.cpp 
+Description : Test for parts of the Controll-Engine
+
+Author : Sami El Aidi 
+Date : 2025-05-26
+
+Version : 1.0
+
+Notes: 
+ - This file contains test functions for the menu system and game functionality.
+ - To run the tests, uncomment the desired test function calls in the main() function.
+ - The tests include:
+   1. Ingame menu test
+   2. Main menu test
+   3. Dice rolling test
+*/
 #include <conio.h>
 #include <iostream>
 #include <fstream>
@@ -7,12 +24,82 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <string>
 
 #include "GameFunctionManager.cpp"
+#include "MenuManager.cpp"
 #include "Menu.cpp"
+#include "Player.cpp"
 
 
 using namespace std;
+
+
+void IngameMenu_test() {
+    MenuManager menumanager = MenuManager();
+
+    menumanager.setInGame(true);
+    menumanager.getGameFunctionManager().addPlayer(Player("Tim", 1500, 0));
+    menumanager.getGameFunctionManager().addPlayer(Player("Tom", 1500, 1));
+    menumanager.getGameFunctionManager().addPlayer(Player("Timmy", 1500, 2));
+    menumanager.getGameFunctionManager().addPlayer(Player("Tommy", 1500, 3));
+    menumanager.getGameFunctionManager().setCurrentPlayer(0);
+    menumanager.getGameFunctionManager().setCurrentRound(6);
+
+    menumanager.setCurrentMenu(menumanager.getMenus()[1]); 
+
+    menumanager.handleMenus();
+}
+
+/* Test function for the dice rolling functionality
+Demonstrates rolling two dice and checking for a pasch (both dice showing the same number). */
+void diceroll_test() {
+    GameFunctionManager gameFunctionManager = GameFunctionManager();
+
+    vector<int> dice = gameFunctionManager.rollDice();
+    cout << "Dice rolled: " << dice[0] << ", " << dice[1] << endl;
+    bool pasch = gameFunctionManager.checkPasch(dice);
+    cout << "Pasch? " << pasch << endl;
+
+    dice.clear();
+    this_thread::sleep_for(chrono::milliseconds(3000));
+
+    dice = gameFunctionManager.rollDice();
+    cout << "2) Dice rolled: " << dice[0] << ", " << dice[1] << endl;
+    pasch = gameFunctionManager.checkPasch(dice);
+    cout << "Pasch? " << pasch << endl;
+
+}
+
+/* Test function for the working main menu
+Demonstrates the main menu functionality, allowing navigation through the menu options.
+Submenu functionality needs to be implemented */ 
+void Menu_test() {
+    MenuManager menumanager = MenuManager();
+    menumanager.handleMenus();
+
+}
+
+int main() {
+
+    // Menu tests
+
+    //IngameMenu_test();
+    //Menu_test();
+    
+    //Functionality tests
+
+    //diceroll_test();
+
+    
+    return 0;
+}
+
+
+/* First test of the menu system (out of date, but works) 
+   Demonstrates the basic functionality of a menu system with navigation.
+   Uncomment the code below if you want to test the old menu system.
+   Note: Call the menu_test() function in main() to run it.
 
 void state_logic(int& current_menu_loc, int dir) {
     switch(current_menu_loc) {
@@ -37,11 +124,7 @@ void state_logic(int& current_menu_loc, int dir) {
     }
 
 }
-
-void clear_screen() {
-    cout << "\x1B[2J\x1B[H";
-}
-
+void clear_screen() {cout << "\x1B[2J\x1B[H";}
 void print_menu(const vector<string>& menu, int& current_menu_loc) {
     (void)clear_screen();
     for (int i = 0; i < menu.size(); ++i) {
@@ -54,7 +137,6 @@ void print_menu(const vector<string>& menu, int& current_menu_loc) {
     cout << " " << endl;
 
 }
-
 int menu_test() {
     ofstream log("log.txt", ios::trunc);
 
@@ -145,33 +227,4 @@ int menu_test() {
     }
     return 0;
 }
-
-void diceroll_test() {
-    GameFunctionManager gameFunctionManager(0);
-
-    vector<int> dice = gameFunctionManager.rollDice();
-    cout << "Dice rolled: " << dice[0] << ", " << dice[1] << endl;
-    bool pasch = gameFunctionManager.checkPasch(dice);
-    cout << "Pasch? " << pasch << endl;
-
-    dice.clear();
-    this_thread::sleep_for(chrono::milliseconds(3000));
-
-    dice = gameFunctionManager.rollDice();
-    cout << "2) Dice rolled: " << dice[0] << ", " << dice[1] << endl;
-    pasch = gameFunctionManager.checkPasch(dice);
-    cout << "Pasch? " << pasch << endl;
-
-}
-
-void menu_test_2() {
-    Menu testmenu(0, {"Start", "Settings", "Exit"}, false);
-    testmenu.displayMenu();
-}
-int main() {
-
-    //diceroll_test();
-    menu_test_2();
-    
-    return 0;
-}
+*/

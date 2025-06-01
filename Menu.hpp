@@ -1,33 +1,53 @@
+/*
+File : Menu.hpp 
+Description :  Header file for Menu class
+
+Author : Sami El Aidi 
+Date : 2025-05-26
+
+Version : 1.0
+
+Notes: 
+ - 
+*/
+
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <string>
+
+#include "GameFunctionManager.hpp"
 
 using namespace std;
 
 class Menu {
     private:
-        int layer;              // Gibt die Ebene an, in der sich das Menü befindet
-        int current_position;  // Momentan ausgewählter Menüpunkt
-        vector<string> menuitems; // Vektor für die Menüeinträge
-        bool has_submenu; // Gibt an, ob ein Untermenü vorhanden ist
-        Menu* submenu; // Zeiger auf das Untermenü, falls vorhanden 
+        int layer;              // Layer of the menu, used for navigation
+        int current_position;  // Current selected position in the menu
+        vector<string> menuitems; // Menuentrys
+        bool has_submenu; // Show if the menu has a submenu
+        string header;
+        vector<Menu> submenus; // Submenus for this menu
 
         void clear_screen();
+        void addMenuItem(string item);
+        void state_logic(int& current_menu_loc, int dir);
 
     public:
-        Menu(int layer, const vector<string>& items, bool has_submenu);
-        void displayMenu();
-        void addMenuItem(string item);
+        Menu();
+        Menu(int layer, string header, const vector<string>& items, bool has_submenu);
+        void displayMainMenu();
+        void displayIngameMenu(GameFunctionManager gameFunctionManager);
 
         //Getter
         int getCurrentPosition();
         int getLayer();
         bool hasSubmenu();
-        Menu* getSubmenu();
+        vector<Menu>& getSubmenus();
+        void addSubmenu(Menu submenu);
         vector<string>& getMenuItems();
-
-        //Setter
         void setCurrentPosition(int position);
-        void setSubmenu(Menu* submenu);
-        void setHasSubmenu(bool has_submenu);
+        string getHeader();
+
 };  

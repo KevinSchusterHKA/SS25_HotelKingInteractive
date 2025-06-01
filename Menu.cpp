@@ -1,4 +1,16 @@
-#include "Menu.hpp"
+/*
+File : Menu.cpp 
+Description : Header file for Menu class
+
+Author : Sami El Aidi 
+Date : 2025-05-26
+
+Version : 1.0
+
+Notes: 
+ -  This file contains the implementation of the Menu class, which is managed by Menumanager.
+ -  The class includes methods for displaying the main menu or ingame menu and managing submenus.
+*/
 
 #include <conio.h>
 #include <iostream>
@@ -10,6 +22,8 @@
 #include <thread>
 #include <chrono>
 
+#include "Menu.hpp"
+
 using namespace std;;
 
 
@@ -18,6 +32,7 @@ Clears the console screen.
 */ 
 void Menu::clear_screen() { cout << "\x1B[2J\x1B[H";}
 
+Menu::Menu() = default;
 
 /*
 Generator funktion to create a new Menu object.
@@ -25,51 +40,44 @@ Generator funktion to create a new Menu object.
 @param items, the menu items to be displayed;
 @param has_submenu, indicates if the menu has a submenu;
 */
-Menu::Menu(int layer, const vector<string>& items, bool has_submenu) {
+Menu::Menu(int layer, string header, const vector<string>& items, bool has_submenu) {
+    this -> header = header;
     this -> layer = layer;
     this -> menuitems = items;
     this -> has_submenu = has_submenu;
+    vector<Menu> submenus;
 }
 
 /*
 Display the menu in the console.
 This function handles the user input for navigating through the menu.
 */
-void Menu::displayMenu() {
+void Menu::displayMainMenu() {
     clear_screen();
-    cout << "Menu Layer: " << layer << endl;
-    cout << "Use arrow keys to navigate, Enter to select, and Esc to exit." << endl;
+    cout << getHeader() << endl; // Display the header of the menu
 
     for (int i = 0; i < menuitems.size(); i++) {
         if (i == current_position) {
-            cout << "> " << menuitems[i] << " <" << endl; // Highlight current position
+        cout << "> " << getMenuItems()[i] << " <" << endl; // Highlight current position
         } else {
-            cout << "  " << menuitems[i] << endl;
+            cout << "  " << getMenuItems()[i] << endl;
+        }
+    }	 
+}
+
+void Menu::displayIngameMenu(GameFunctionManager gameFunctionManager) {
+    clear_screen();
+    cout << "--------- Runde " << gameFunctionManager.getCurrentRound() << " ----------" << endl;
+    cout << "       Player " << (gameFunctionManager.getCurrentPlayer() + 1) << ": " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getName() << endl; 
+    cout << "Position: " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getPosition() << "  -  Budget: " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getMoney() << endl;
+    cout << "----------------------------" << endl;
+    for (int i = 0; i < menuitems.size(); i++) {
+        if (i == current_position) {
+            cout << "> " << getMenuItems()[i] << " <" << endl; // Highlight current position
+        } else {
+            cout << "  " << getMenuItems()[i] << endl;
         }
     }
-
-    while (true) {
-        char input = _getch(); // Get user input
-
-        if (input == 27) { // Escape key
-            break; // Exit the menu
-        } else if (input == 13) { // Enter key
-            if (has_submenu && submenu != nullptr) {
-                submenu->displayMenu(); // Display submenu if it exists
-            } else {
-                cout << "> " << menuitems[current_position] << endl;
-                this_thread::sleep_for(chrono::seconds(1)); // Pause for a moment
-            }
-        } else if (input == 72 && current_position > 0) { // Up arrow key
-            current_position--;
-        } else if (input == 80 && current_position < menuitems.size() - 1) { // Down arrow key
-            current_position++;
-        }
-
-        clear_screen();
-        displayMenu(); // Redisplay the menu after each input
-    }	
-  
 }
 
 /*
@@ -100,7 +108,7 @@ bool Menu::hasSubmenu() {return has_submenu;}
 Getter function for submenu.
 @return pointer of the submenu.
 */
-Menu* Menu::getSubmenu() {return submenu;}
+vector<Menu>& Menu::getSubmenus() {return submenus;}
 
 /*
 Setter for the current position.
@@ -112,12 +120,11 @@ void Menu::setCurrentPosition(int position) { this->current_position = position;
 Setter for the submenu.
 @param submenu, the new submenu to be set.
 */
-void Menu::setSubmenu(Menu* submenu) { this->submenu = submenu; }
+void Menu::addSubmenu(Menu submenu) {
+    this->submenus.push_back(submenu);
+}
 
-/*
-setter for has_submenu.
-@param has_submenu, the new value to be set.
-*/
-void Menu::setHasSubmenu(bool has_submenu) { this->has_submenu = has_submenu; };
+string Menu::getHeader() {return header;}
+
 
 

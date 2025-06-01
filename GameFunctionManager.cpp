@@ -1,4 +1,17 @@
-#include "GameFunctionManager.hpp"
+/*
+File : GameFunctionManager.cpp 
+Description : Manager for game functions including dice rolling, buying and managing players.
+
+Author : Sami El Aidi 
+Date : 2025-05-26
+
+Version : 1.0
+
+Notes: 
+ -  The class handles game-related functions such as rolling dice, checking for a pasch, and managing players.
+ -  Doesnt need to be called directly, but is used by the MenuManager to handle game logic.
+*/
+
 #include <conio.h>
 #include <iostream>
 #include <fstream>
@@ -10,6 +23,8 @@
 #include <chrono>
 #include <random>
 #include <ctime>
+
+#include "GameFunctionManager.hpp"
 
 using namespace std;;
 
@@ -32,9 +47,10 @@ int GameFunctionManager::randomNumber() {
 Generator funktion to create a new GameFunctionManager object.
 @param current_player The index of the current player. (Normal is 0 at start)
 */
-GameFunctionManager::GameFunctionManager(int current_player) {
+GameFunctionManager::GameFunctionManager() {
     this->current_player = current_player;
     this->pasch_counter = 0; 
+    this->current_player = 0; 
     vector<Player> players; 
 }
 
@@ -108,7 +124,7 @@ Getter function for the players vector.abort
 @return A pointer to the vector of Player objects.
 Note: This function returns a pointer to the vector, allowing direct access to the vector.
 */
-vector<Player>* GameFunctionManager::getPlayers() {return &players;}
+vector<Player>& GameFunctionManager::getPlayers() {return players;}
 
 /*
 Getter function for the pasch counter.
@@ -127,3 +143,9 @@ void GameFunctionManager::setCurrentPlayer(int player) {current_player = player;
  @param counter The new value for the pasch counter. 
  */
 void GameFunctionManager::setPaschCounter(int counter) {pasch_counter = counter;}
+
+int  GameFunctionManager::getCurrentRound() {return current_round;}
+
+void GameFunctionManager::setCurrentRound(int round) {
+    current_round = round;
+}
