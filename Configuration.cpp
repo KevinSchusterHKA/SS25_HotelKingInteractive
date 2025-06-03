@@ -12,14 +12,14 @@ bool Configuration::loadConfig(string path) {
 	ifstream file(path);	//offen
 
 	if (!file.is_open()) {		//Ob nicht offen
-		cout << "Datei konnte nicht geöffnet werden" << endl; 
+		cout << "Datei konnte nicht geÃ¶ffnet werden" << endl; 
 		return false;
 	}	
 
 
 	string zeile;
 	while (getline(file, zeile)) {
-		// Leere Zeilen oder Kommentare überspringen
+		// Leere Zeilen oder Kommentare Ã¼berspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
 
 		//Such '='
@@ -70,3 +70,20 @@ void Configuration::printSettings() {
 	cout << "gameMode: " << mode << endl;
 }
 
+void Configuration::writeLog(int round, int playerID, int sup_budget, string sup_ownship, int position) {
+	ofstream logFile("game.log", ios::app);		//append
+
+	if (!logFile.is_open()) {
+		cout << "Fehler beim Ã–ffnen der Log-Datei." << endl;
+		return;
+	}
+
+	//write
+	logFile << "Round = " << round
+			<< ", playerID  =" << playerID
+			<< ", Budget = " << sup_budget
+			<< ", ownship = +" << sup_ownship
+			<< ", position = " << position << endl;
+
+	logFile.close();
+}
