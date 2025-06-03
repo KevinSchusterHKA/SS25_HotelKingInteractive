@@ -5,7 +5,13 @@ Description : Implementation file for MenuManager class
 Author : Sami El Aidi 
 Date : 2025-05-26
 
-Version : 1.0
+Version : 1.1
+
+Changes:
+ - Added doOperation()-Method in which the functionality of the menu will be implemented. 
+ - Currently Implemented:
+    - Roll Dice in the InGame-Menu 
+    - Show Highscores in the Main menu
 
 Notes: 
  -  This file contains the implementation of the MenuManager class, which manages the menu system for the Hotel King Interactive game.
@@ -55,7 +61,6 @@ void MenuManager::initMenus() {
     Menu startMenu(0, "Hotel King Interactiv", {"Neues Spiel", "Spiel laden", "Highscores", "Exit"}, true);
     Menu newGameMenu(1, "Neues Spiel starten", {"Anzahl Spieler", "Regeln einstellen", "Spiel starten", "Zurück"}, true);
     Menu loadGameMenu(1, "Spiel laden",  {"Spiel laden", "Zurück"}, true);
-    Menu highScoresMenu(1, "Highscores - Top 5", {"Zurück"}, false);
     
     //Ingame Overlay Menu
     Menu inGameMenu(0, "Ingame", {"Würfeln", "Handeln und Tauschen", "Inventar anzeigen", "Feld anzeigen", "Spielbrett anzeigen", "Spielstand speichern", "Exit"}, true);
@@ -67,7 +72,6 @@ void MenuManager::initMenus() {
 
     getCurrentMenu().addSubmenu(newGameMenu);
     getCurrentMenu().addSubmenu(loadGameMenu);
-    getCurrentMenu().addSubmenu(highScoresMenu);
 
     getMenulog() << "Menu: " << menus[0].getHeader() << " initialized with " << menus[0].getMenuItems().size() << " items." << endl;
     getMenulog() << "Menu: " << menus[1].getHeader() << " initialized with " << menus[1].getMenuItems().size() << " items." << endl;
@@ -98,6 +102,82 @@ Adds a menu to the MenuManager's list of menus.
 */
 void MenuManager::addMenu(Menu& menu) {menus.push_back(menu);}
 
+void MenuManager::doOperation(char input) {
+    if (input == 13 && isInGame()) {
+        switch (getCurrentMenu().getCurrentPosition()) {
+            case 0: {
+                //Würfeln
+                vector<int> roll = getGameFunctionManager().rollDice();
+                getGameFunctionManager().checkPasch(roll) ? gameFunctionManager->setPaschCounter(getGameFunctionManager().getPaschCounter() +1) : getGameFunctionManager().setPaschCounter(0);
+                break;
+            }
+            case 1: {
+                //Handeln und Tauschen
+                break;
+            }
+            case 2: {
+                //Inventar anzeigen
+                break;
+            }
+            case 3: {
+                //Momentanes Feld anzeigen
+                break;
+            }
+            case 4: {
+                //Spielbrett anzeigen
+                break;
+            }
+            case 5: {
+                //Spielstand speicher
+                break;
+            }
+            default: {
+                break;                        
+            }
+        }     
+    } else if (input == 13 && !isInGame() && getCurrentLayer() == 0) {
+        switch (getCurrentMenu().getCurrentPosition()) {
+            case 0: {
+                //Spiel starten
+                break;
+            }    
+            case 1: {
+                //Spiel laden
+                break;
+            }    
+            case 2: {
+                //Highscores anzeigen
+                //Will be implemented when Config implementation is uploaded to Github
+                //Asuming the Higscorelist in the txt-Document is allready sorted
+                
+                /*
+                vector<Score> highscores = Configuration.getHighscores(); 
+                int counter = 1;
+                for (auto score : highscores) {
+                    cout << counter << ") " << score.getPlayerName() << " - " << score.getFinalBudget() << endl;
+                    counter++;
+                }
+                */
+
+                //For test purposes (will be deleated later):
+                clear_screen();
+                ifstream highscores("HighscoresTest.txt");
+                if (highscores.is_open()) {
+                    string line;
+                    while (getline(highscores, line)) {
+                        cout << line << endl;
+                    }
+                }    
+                this_thread::sleep_for(chrono::milliseconds(10000));
+                highscores.close(); 
+                break;
+            }    
+            default:
+                break;    
+        }
+    }
+}
+
 /**
  * Controls the input and navigation through the before game (Startmenu, Settings, etc.) menu system. 
  * Simple use of arrow keys for navigation and enter key to select options. 
@@ -112,7 +192,8 @@ void MenuManager::handleMenus() {
             getCurrentMenu().displayMainMenu();
         }
         char input = _getch(); // Get user input
-        if (input == 13) { // Entered key
+        if (input == 13) { 
+            // Enter key
             switch (getCurrentMenu().getCurrentPosition()) {
                 /**
                  * Opens the submenu based on the current position, if there is a submenu available.
@@ -125,6 +206,7 @@ void MenuManager::handleMenus() {
                         setCurrentMenu(getCurrentMenu().getSubmenus()[0]); 
                         getCurrentMenu().setCurrentPosition(0); 
                         setCurrentLayer(getCurrentMenu().getLayer() + 1); 
+
                         getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer() << endl;
                     }
                     break;
@@ -134,16 +216,14 @@ void MenuManager::handleMenus() {
                         setCurrentMenu(getCurrentMenu().getSubmenus()[1]); 
                         getCurrentMenu().setCurrentPosition(0); 
                         setCurrentLayer(getCurrentMenu().getLayer() + 1); 
-                        getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer() << endl;
 
+                        getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer() << endl;
                     }
                     break;
                 case 2: 
                     if (escapeCheck()) break;
                     if (getCurrentMenu().hasSubmenu() && getCurrentMenu().getSubmenus().size() > 2) {
-                        setCurrentMenu(getCurrentMenu().getSubmenus()[2]);
-                        getCurrentMenu().setCurrentPosition(0); 
-                        setCurrentLayer(getCurrentMenu().getLayer() + 1); 
+
                         getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer()<< endl;
                     }
                     break;
@@ -153,6 +233,7 @@ void MenuManager::handleMenus() {
                         setCurrentMenu(getCurrentMenu().getSubmenus()[3]); 
                         getCurrentMenu().setCurrentPosition(0); 
                         setCurrentLayer(getCurrentMenu().getLayer() + 1); 
+
                         getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer() << endl;
                     } 
                     break; 
@@ -162,6 +243,7 @@ void MenuManager::handleMenus() {
                         setCurrentMenu(getCurrentMenu().getSubmenus()[4]); 
                         getCurrentMenu().setCurrentPosition(0); 
                         setCurrentLayer(getCurrentMenu().getLayer() + 1); 
+
                         getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer() << endl;
                     } 
                     break; 
@@ -171,6 +253,7 @@ void MenuManager::handleMenus() {
                         setCurrentMenu(getCurrentMenu().getSubmenus()[5]); 
                         getCurrentMenu().setCurrentPosition(0); 
                         setCurrentLayer(getCurrentMenu().getLayer() + 1); 
+
                         getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer() << endl;
                     } 
                     break; 
@@ -180,16 +263,18 @@ void MenuManager::handleMenus() {
                         setCurrentMenu(getCurrentMenu().getSubmenus()[6]); 
                         getCurrentMenu().setCurrentPosition(0); 
                         setCurrentLayer(getCurrentMenu().getLayer() + 1); 
+
                         getMenulog() << "Enter: " << "Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << ", Current Layer: " << getCurrentLayer() << endl;
                     } 
                     break;         
                 default:
                     if (escapeCheck()) break;
-                    getMenulog() << "Invalid selection: " << input << ", Current Menu: " << getCurrentMenu().getHeader() << endl;
+                    getMenulog() << "Invalid: " << input << ", Current Menu: " << getCurrentMenu().getHeader() << endl;
                     break;
             }
            
-        } else if (input == 72 && getCurrentMenu().getCurrentPosition() > 0) { // Up arrow key
+        } else if (input == 72 && getCurrentMenu().getCurrentPosition() > 0) {
+            // Up arrow key
             getMenulog() << "Up: " << input << ", Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << endl;
 
             getCurrentMenu().setCurrentPosition(getCurrentMenu().getCurrentPosition() - 1);
@@ -200,7 +285,8 @@ void MenuManager::handleMenus() {
                 getCurrentMenu().displayMainMenu();
             }
             
-        } else if (input == 80 && getCurrentMenu().getCurrentPosition() < (getCurrentMenu().getMenuItems().size() - 1)) { // Down arrow key
+        } else if (input == 80 && getCurrentMenu().getCurrentPosition() < (getCurrentMenu().getMenuItems().size() - 1)) { 
+            // Down arrow key
             getMenulog() << "Down: " << input << ", Current Menu: " << getCurrentMenu().getHeader() << ", Current Position: " << getCurrentMenu().getCurrentPosition() << endl;
 
             getCurrentMenu().setCurrentPosition(getCurrentMenu().getCurrentPosition() + 1);
@@ -211,6 +297,7 @@ void MenuManager::handleMenus() {
                 getCurrentMenu().displayMainMenu();
             }
         }
+        doOperation(input);
     }	
 } 
 

@@ -55,6 +55,8 @@ This function handles the user input for navigating through the menu.
 void Menu::displayMainMenu() {
     clear_screen();
     cout << getHeader() << endl; // Display the header of the menu
+    cout << "Zum navigieren im Menü die Pfeiltasten und Enter verwenden." << endl;
+    cout << "------------------" << endl;
 
     for (int i = 0; i < menuitems.size(); i++) {
         if (i == current_position) {

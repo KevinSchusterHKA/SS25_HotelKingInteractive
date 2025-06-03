@@ -5,9 +5,12 @@ Description : Test for parts of the Controll-Engine
 Author : Sami El Aidi 
 Date : 2025-05-26
 
-Version : 1.0
+Version : 1.0a
 
 Notes: 
+ - Caution: You need to download files form other branches to run:
+    1. feature/player: Player.hpp
+    2. feature/player: Player.cpp
  - This file contains test functions for the menu system and game functionality.
  - To run the tests, uncomment the desired test function calls in the main() function.
  - The tests include:

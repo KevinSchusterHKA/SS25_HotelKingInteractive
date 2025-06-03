@@ -5,7 +5,11 @@ Description : Manager for game functions including dice rolling, buying and mana
 Author : Sami El Aidi 
 Date : 2025-05-26
 
-Version : 1.0
+Version : 1.1
+
+Changes: 
+ - Slight changes to the rollDice()-Method:
+    - Now Prints the Result in the Terminal
 
 Notes: 
  -  The class handles game-related functions such as rolling dice, checking for a pasch, and managing players.
@@ -25,6 +29,7 @@ Notes:
 #include <ctime>
 
 #include "GameFunctionManager.hpp"
+#include "Player.hpp"
 
 using namespace std;;
 
@@ -70,7 +75,7 @@ The function simulates a dice roll by generating random numbers between 1 and 6.
 */
 vector<int> GameFunctionManager::rollDice() {
     vector<int> dice(2);
-    for (int i = 0; i < (randomNumber() + randomNumber()); i++) {
+    for (int i = 0; i < (randomNumber() * 3); i++) {
         clear_screen();
         int random1 = randomNumber();
         int random2 = randomNumber();
@@ -86,7 +91,15 @@ vector<int> GameFunctionManager::rollDice() {
     
         this_thread::sleep_for(chrono::milliseconds(500));
     }
-
+    cout << "Du hast eine " << dice[0] << " und eine " << dice[1] << " gewürfelt!" << endl;
+    if (checkPasch(dice)) {
+        cout << "Du hast einen Pasch gewürfelt! Päsche geworfen: " << pasch_counter << endl;
+    } else {
+        cout << " " << endl;
+    }
+    this_thread::sleep_for(chrono::milliseconds(3000));
+    getPlayers()[getCurrentPlayer()].move(dice[0] + dice[1]);
+    
     return dice;
 }
 

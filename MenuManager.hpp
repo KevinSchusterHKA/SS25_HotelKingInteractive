@@ -39,6 +39,7 @@ class MenuManager {
         void addMenu(Menu& menu);
 
         //Menu Functions
+        void doOperation(char input);
         void showHighScores();
 
     public:
