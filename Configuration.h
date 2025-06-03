@@ -13,7 +13,7 @@ private:
 public:
 	bool loadConfig(string path);
 	void printSettings();
-	void writeLog(string entry);
+	void writeLog(int round, int playerID, int sup_budget, string sup_ownship, int position);
 
 	//naechste Sprint 
 	//bool saveGame(string path);
