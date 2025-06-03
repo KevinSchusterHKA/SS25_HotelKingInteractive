@@ -1,7 +1,0 @@
-<map id="Tile" name="Tile">
-<area shape="rect" id="Node000001" title=" " alt="" coords="164,5,318,267"/>
-<area shape="rect" id="Node000002" href="$class_property_tile.html" title=" " alt="" coords="5,315,242,795"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,281,194,315,189,314,198,280"/>
-<area shape="rect" id="Node000003" href="$class_special_tile.html" title=" " alt="" coords="266,448,454,661"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="285,280,332,447,327,449,279,281"/>
-</map>
