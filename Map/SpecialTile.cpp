@@ -1,3 +1,4 @@
+
 #include "SpecialTile.hpp"
 #include <iostream>
 
@@ -17,4 +18,12 @@ std::string SpecialTile::getTypeString() const {
         case SpecialType::Bahnhof:      return "Bahnhof";
         default: return "Special";
     }
+}
+
+void SpecialTile::displayInfo() const {
+    std::cout << "[SpecialTile] ID: " << id << " | " << name << " | Type"<< this->getTypeString();
+
+    
+
+    std::cout << std::endl;
 }

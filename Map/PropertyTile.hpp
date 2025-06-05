@@ -1,3 +1,6 @@
+/**
+ * This is the implementation of the PropertyTile class. Contains street information display, rent setting and calculation
+ */
 #ifndef PROPERTY_TILE_HPP
 #define PROPERTY_TILE_HPP
 
@@ -5,25 +8,21 @@
 #include "vector"
 
 enum class PropertyType { Street, Utility };
-////HKI-9 Map: Implementierung der Straßenfelder
+
 class PropertyTile : public Tile {
 private:
     PropertyType propertyType;
     int price;
     int rent;
-    int ownerId; // -1 表示无人拥有
+    int ownerId;
 
     int groudID;
-    int buildingLevel; // 0 = 无，1–4 = 房，5 = 酒店
+    int buildingLevel; 
     int houseCost;
-    std::vector<int> rentLevels; // 长度6: [0房, 1房, ..., 酒店]
-    // 仅对 Street 有效
-    void upgrade(); // 增加一栋房子或升级到酒店
-    bool canUpgrade() const; // 判断是否达到最大建筑数
-    int getRentByLevel() const;
+    std::vector<int> rentLevels; 
 public:
     //PropertyTile(int id, const std::string& name, PropertyType type, int price): Tile(id, name), propertyType(type), price(price){}
-    PropertyTile(int id, const std::string& name, PropertyType type, int price, int rent, int houseCost)
+    PropertyTile(int id, const std::string& name, PropertyType type, int price, int rent,int groundID, int houseCost)
         : Tile(id, name), propertyType(type), price(price), rent(rent), ownerId(-1),rentLevels({10, 50, 150, 450, 625, 750}),houseCost(100),
 buildingLevel(0),groudID(-1) {}
 // Getter
@@ -33,12 +32,30 @@ buildingLevel(0),groudID(-1) {}
     int getOwnerId() const { return ownerId; }
     int getBuildingLevel() const { return buildingLevel; }
     int getGroupId() const { return groudID; }
+    std::vector<int> getRentLevels() const {return rentLevels;}
     // Setter
     void setOwner(int playerId) { ownerId = playerId; }
+    /// <summary>
+    /// Function: Set up the street rent table
+    /// </summary>
+    /// <param name="rents"></param>
     void setRentLevels(const std::vector<int>& rents);
+    /// <summary>
+    /// HKI-9 Map: Implementierung der Straßenfelder
+    /// </summary>
     void displayInfo() const override;
-    std::string PropertyTile::getTypeString() const override;
-     int calculateRent(int diceRoll, int stationOwnedCount, bool ownsBothUtilities) const;
+    /// <summary>
+    /// Function: Get street name
+    /// </summary>
+    /// <returns></returns>
+    std::string getTypeString() const override;
+     /// <summary>
+     /// Function: Calculate the current rent to be paid (context requires additional information). Input parameters: dice random number, whether all public facilities are owned
+     /// </summary>
+     /// <param name="diceRoll"></param>
+     /// <param name="ownsBothUtilities"></param>
+     /// <returns></returns>
+     int calculateRent(int diceRoll, bool ownsBothUtilities) const;
 };
 
 #endif

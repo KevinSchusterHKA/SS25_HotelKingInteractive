@@ -1,3 +1,6 @@
+/**
+ * This is the implementation of the SpecialTile class.Provide special tile types
+ */
 #ifndef SPECIAL_TILE_HPP
 #define SPECIAL_TILE_HPP
 
@@ -14,8 +17,12 @@ public:
         : Tile(id, name), specialType(type) {}
 
     void displayInfo() const override;
+    /// <summary>
+    /// //HKI-13 Map: Implementierung der Steuerfelder HKI-14 Map: Implementierung der Ereignisfelder f¨¹r Aktionskarten
+    /// </summary>
+    /// <returns></returns>
     SpecialType getSpecialType() const { return specialType; }
-    std::string SpecialTile::getTypeString() const override;
+    std::string getTypeString() const override;
 };
 
 #endif

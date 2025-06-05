@@ -1,10 +1,10 @@
+//Abstract class, pure virtual function definition Tile
 #ifndef TILE_HPP
 #define TILE_HPP
 
 #include <string>
 #include <memory>
 
-// 基类 Tile
 class Tile {
 protected:
     int id;
@@ -18,7 +18,7 @@ public:
 
     int getId() const { return id; }
     std::string getName() const { return name; }
-    virtual std::string getTypeString() const; 
+    virtual std::string getTypeString() const=0; 
 };
 
 #endif
