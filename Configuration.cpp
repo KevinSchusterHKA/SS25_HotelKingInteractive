@@ -151,3 +151,47 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	saveFile.close();
 }
 
+bool Configuration::loadGame(string path, vector<InfoGame>& playersInfo) {
+	ifstream saveFile(path);	//offen
+
+	if (!saveFile.is_open()) {		//Ob nicht offen
+		cout << "Datei konnte nicht geöffnet werden" << endl;
+		return false;
+	}
+
+
+	string zeile;
+	InfoGame info;
+	while (getline(saveFile, zeile)) {
+		// Leere Zeilen oder Kommentare überspringen
+		if (zeile.empty() || zeile[0] == '#') { continue; }
+
+		//Such '='
+		size_t pos = zeile.find('=');	//size_t = unsigned integer
+		if (pos == string::npos) { continue; }	//wobei npos = nicht gefunden
+
+		string key = zeile.substr(0, pos);
+		string value = zeile.substr(pos + 1);
+
+		// Entferne Leerzeichen
+		key.erase(remove(key.begin(), key.end(), ' '), key.end());
+		value.erase(remove(value.begin(), value.end(), ' '), value.end());
+
+		// Zuordnen
+		if (key == "playerID") info.playerID = stoi(value);
+		else if (key == "budget") info.budget = stoi(value);
+		else if (key == "position") info.position = stoi(value);
+		else if (key == "besitz") {
+			info.ownship = value;
+
+			//Spielerinfo fertig -> speichern
+			playersInfo.push_back(info);
+
+			// Reset für den nächsten Spieler
+			info = InfoGame();
+		}
+	}
+	saveFile.close();
+	return true;
+}
+
