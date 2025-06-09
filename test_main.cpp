@@ -25,5 +25,15 @@ int main() {
 /***************************************   test saveGame  **********************************************/
     config.saveGame("game.log", "save.txt", 3);
 
+/***************************************   test loadGame  **********************************************/
+
+    vector<InfoGame> savedPlayers;
+    config.loadGame("save.txt", savedPlayers);
+
+    for (const auto& info : savedPlayers) {
+        cout << "ID: " << info.playerID << ", Budget: " << info.budget
+            << ", Feld: " << info.position << ", Besitz: " << info.ownship << endl;
+    }
+
     return 0;
 }
