@@ -1,7 +1,7 @@
 #include "Configuration.h"
 #include <iostream>
 using namespace std;
-#define ROUND		10
+#define ROUND		20
 
 int main() {
     Configuration config;
@@ -17,10 +17,14 @@ int main() {
 
 /***************************************   test writeLog  **********************************************/
     for (int i = 0; i < ROUND; i++) {
-        config.writeLog(i+1, 1, 200 + i, "egal", i + 5);  //spieler1
-        config.writeLog(i+1, 2, 800 + i, "egal", i + 2);  //spieler2
-        config.writeLog(i+1, 3, 2000 + i, "egal", i + 4);  //spieler3
+        config.writeLog({ i + 1, 1, 500 + i, "egal + asdf", i + 5 });  //spieler1
+        config.writeLog({ i + 1, 2, 1000 + i, "egal", i + 2 });  //spieler2
+        config.writeLog({ i + 1, 3, 2000 + i, "egal", i + 4 });  //spieler3
+        config.writeLog({ i + 1, 4, 2000 + i, "egal", i + 4 });  //spieler4
     }
+
+/***************************************   test saveGame  **********************************************/
+    config.saveGame("game.log", "save.txt", 4);
 
     return 0;
 }
