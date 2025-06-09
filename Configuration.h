@@ -9,15 +9,14 @@ class Configuration {
 private:
 	GameSettings settings;
 	vector<Score> highscores;
-	string logFile;
+	//string logFile;
 public:
 	bool loadConfig(string path);
 	void printSettings();
 	void writeLog(InfoGame info);
 
-	//naechste Sprint 
-	//bool saveGame(string path);
-	//bool loadGame(string path);
+	void  saveGame(string logPath, string savePath, int wieVieleSpieler);
+	//void loadGame(string path);
 	GameSettings getSettings();
 	
 };
