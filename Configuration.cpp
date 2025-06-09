@@ -81,9 +81,73 @@ void Configuration::writeLog(InfoGame info) {
 	//write
 	logFile << "Round = " << info.round
 			<< ", playerID  =" << info.playerID
-			<< ", Budget = " << info.sup_budget
-			<< ", ownship = +" << info.sup_ownship
+			<< ", Budget = " << info.budget
+			<< ", ownship = " << info.ownship
 			<< ", position = " << info.position << endl;
 
 	logFile.close();
 }
+
+void Configuration::saveGame(string logPath, string savePath, int wieVieleSpieler) {
+/***************************   lexicalische analyse für log-Dateil  **********************************************************/
+	vector<InfoGame> parsedLog;
+	int maxRound = 0;
+	int budget = settings.startBudget;
+	vector<string> ownship;
+	
+	ifstream logFile(logPath);
+	if (!logFile.is_open()) {
+		cout << "Fehler beim Öffnen der Log-Datei." << endl;
+		return;
+	}
+
+	string zeile;
+	while (getline(logFile, zeile)) {
+		if (zeile.empty()) { continue; }
+
+		InfoGame info;
+		// Aufteilen der Zeile in Schlüssel-Wert-Paare
+		stringstream ss(zeile);
+		string segment;
+		while (getline(ss, segment, ',')) {
+			size_t pos = segment.find('=');	//size_t = unsigned integer
+			if (pos == string::npos) { continue; }	//wobei npos = nicht gefunden
+
+			string key = segment.substr(0, pos);
+			string value = segment.substr(pos + 1);
+
+			// Entferne Leerzeichen
+			key.erase(remove(key.begin(), key.end(), ' '), key.end());
+			value.erase(remove(value.begin(), value.end(), ' '), value.end());
+
+			if (key == "Round") info.round = stoi(value);
+			else if (key == "playerID") info.playerID = stoi(value);
+			else if (key == "Budget") info.budget = stoi(value);
+			else if (key == "ownship") info.ownship = value;
+			else if (key == "position") info.position = stoi(value);
+		}
+		parsedLog.push_back(info);
+		if (info.round > maxRound) { maxRound = info.round; }	//update round
+		
+	}
+	logFile.close();
+
+/****************************************** Neue Dateil save  ************************************************************************/
+	ofstream saveFile(savePath);
+	if (!saveFile.is_open()) {
+		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
+		return;
+	}
+	int ind = wieVieleSpieler;
+	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
+	saveFile << "round = " << maxRound << endl << endl;
+	for (int i = parsedLog.size()-1; i >= parsedLog.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
+		saveFile << "# Spieler " << ind-- << endl;
+		saveFile << "playerID = " << parsedLog[i].playerID << endl;
+		saveFile << "budget = " << parsedLog[i].budget << endl;
+		saveFile << "position = " << parsedLog[i].position << endl;
+		saveFile << "besitz = " << parsedLog[i].ownship << endl << endl;
+	}
+	saveFile.close();
+}
+
