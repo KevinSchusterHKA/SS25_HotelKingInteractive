@@ -70,7 +70,7 @@ void Configuration::printSettings() {
 	cout << "gameMode: " << mode << endl;
 }
 
-void Configuration::writeLog(int round, int playerID, int sup_budget, string sup_ownship, int position) {
+void Configuration::writeLog(InfoGame info) {
 	ofstream logFile("game.log", ios::app);		//append
 
 	if (!logFile.is_open()) {
@@ -79,11 +79,11 @@ void Configuration::writeLog(int round, int playerID, int sup_budget, string sup
 	}
 
 	//write
-	logFile << "Round = " << round
-			<< ", playerID  =" << playerID
-			<< ", Budget = " << sup_budget
-			<< ", ownship = +" << sup_ownship
-			<< ", position = " << position << endl;
+	logFile << "Round = " << info.round
+			<< ", playerID  =" << info.playerID
+			<< ", Budget = " << info.sup_budget
+			<< ", ownship = +" << info.sup_ownship
+			<< ", position = " << info.position << endl;
 
 	logFile.close();
 }
