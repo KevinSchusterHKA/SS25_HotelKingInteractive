@@ -3,6 +3,8 @@
 #include <vector>
 #include "GameSettings.h"
 #include "Score.h"
+#include "GameFunctionManager.hpp"
+
 using namespace std;
 
 class Configuration {
@@ -13,9 +15,9 @@ private:
 public:
 	bool loadConfig(string path);
 	void printSettings();
-	void writeLog(InfoGame info);
+	void writeLog(GameFunctionManager info);
 
-	void  saveGame(string logPath, string savePath, int wieVieleSpieler);
+	void saveGame(string logPath, string savePath, int wieVieleSpieler);
 	bool loadGame(string path, vector<InfoGame>& playersInfo);
 
 	GameSettings getSettings();
