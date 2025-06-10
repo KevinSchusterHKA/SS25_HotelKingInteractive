@@ -8,9 +8,9 @@ using namespace std;
 int main() {
     Configuration config;
 /***************************************   game test  **********************************************/
-    Player p1("Emilie", 1500, 0);
+    Player p1("Emilie", 500, 0);
     Player p2("bob", 500, 1);
-    Player p3("Alice", 100, 2);
+    Player p3("Alice", 500, 2);
 
     p1.setPosition(5);
     p1.addMoney(789456);
@@ -37,7 +37,7 @@ int main() {
     }
 
 /***************************************   test writeLog  **********************************************/
-    vector<Player>& players = info.getPlayers();
+    vector<Player>& players = info.getPlayers();    //lesen Spielers
     for (int i = 1; i < ROUND; i++) {
         info.setCurrentRound(i);
         info.setCurrentPlayer(0); players[0].addMoney(100); players[0].setPosition(6*i);     //spieler1
@@ -47,21 +47,31 @@ int main() {
         info.setCurrentPlayer(2); players[2].addMoney(500); players[2].setPosition(1 * i); players[2].addKarte("TEST"); //spieler3
         config.writeLog(info);
     }
-    cout << "test log fertig" << endl;
+    cout << "test log fertig" << endl << endl;
     
 
 /***************************************   test saveGame  **********************************************/
-//    config.saveGame("game.log", "save.txt", 3);
+    config.saveGame("game.log", "save.txt", 3);
+    cout << "test save fertig" << endl << endl;
 
 /***************************************   test loadGame  **********************************************/
 
-/*    vector<InfoGame> savedPlayers;
-    config.loadGame("save.txt", savedPlayers);
+    GameFunctionManager manager = config.loadGame("save.txt");
 
-    for (const auto& info : savedPlayers) {
-        cout << "ID: " << info.playerID << ", Budget: " << info.budget
-            << ", Feld: " << info.position << ", Besitz: " << info.ownship << endl;
-    }*/
+    cout << "Aktuelle Runde: " << manager.getCurrentRound() << endl;
+    for (const Player& p : manager.getPlayers()) {
+        cout << "Spieler " << p.getID() << ": "
+            << p.getName() << ", Geld: " << p.getMoney()
+            << ", Position: " << p.getPosition()
+        << ", karten: ";
+        vector<string> karten = p.getKarten();
+        for (size_t i = 0; i < karten.size(); ++i) {
+            cout << karten[i];
+            if (i != karten.size() - 1) cout << " | ";
+        }
+
+        cout << endl;
+    }
 
     return 0;
 }
