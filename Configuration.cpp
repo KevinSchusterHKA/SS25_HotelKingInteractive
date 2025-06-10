@@ -87,7 +87,7 @@ void Configuration::writeLog(GameFunctionManager info) {
 	logFile << "Round = " << info.getCurrentRound()
 			<< ", playerID  =" << p.getID()
 			<< ", Budget = " << p.getMoney()
-			<< ", ownship = ";
+			<< ", karten = ";
 	vector<string> karten = p.getKarten();
 	for (size_t i = 0; i < karten.size(); ++i) {
 		logFile << karten[i];
@@ -179,17 +179,17 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	saveFile.close();
 }
 
-bool Configuration::loadGame(string path, vector<InfoGame>& playersInfo) {
+GameFunctionManager Configuration::loadGame(string path) {
+	GameFunctionManager manager;
 	ifstream saveFile(path);	//offen
 
 	if (!saveFile.is_open()) {		//Ob nicht offen
 		cout << "Datei konnte nicht geöffnet werden" << endl;
-		return false;
+		return manager;	//leer
 	}
 
-
 	string zeile;
-	InfoGame info;
+	Player tempPlayer("", 0, 0); int round = 0; string name = "";
 	while (getline(saveFile, zeile)) {
 		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
@@ -206,20 +206,21 @@ bool Configuration::loadGame(string path, vector<InfoGame>& playersInfo) {
 		value.erase(remove(value.begin(), value.end(), ' '), value.end());
 
 		// Zuordnen
-		if (key == "playerID") info.playerID = stoi(value);
-		else if (key == "budget") info.budget = stoi(value);
-		else if (key == "position") info.position = stoi(value);
-		else if (key == "besitz") {
-			info.ownship = value;
-
-			//Spielerinfo fertig -> speichern
-			playersInfo.push_back(info);
-
-			// Reset für den nächsten Spieler
-			info = InfoGame();
+		if (key == "round") round = stoi(value);
+		else if (key == "playerID") tempPlayer = Player(name, 0, stoi(value));
+		else if (key == "budget") tempPlayer.addMoney(stoi(value));
+		else if (key == "position") tempPlayer.setPosition(stoi(value));
+		else if (key == "karten") {
+			stringstream ss(value);
+			string karte;
+			while (getline(ss, karte, '|')) {
+				tempPlayer.addKarte(karte);
+			}
+			manager.addPlayer(tempPlayer); 
 		}
 	}
+	manager.setCurrentRound(round);
 	saveFile.close();
-	return true;
+	return manager;
 }
 
