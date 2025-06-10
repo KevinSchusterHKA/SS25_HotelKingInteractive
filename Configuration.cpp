@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include "Configuration.h"
+#include "Player.hpp"
+
 using namespace std;
 
 GameSettings Configuration::getSettings() {
@@ -67,23 +69,31 @@ void Configuration::printSettings() {
 	cout << "timeLimit: " << settings.timeLimit << endl;
 	cout << "budgetLimit: " << settings.budgetLimit << endl;
 	cout << "cpuDifficulty: " << settings.cpuDifficulty << endl;
-	cout << "gameMode: " << mode << endl;
+	cout << "gameMode: " << mode << endl << endl;
 }
 
-void Configuration::writeLog(InfoGame info) {
+void Configuration::writeLog(GameFunctionManager info) {
 	ofstream logFile("game.log", ios::app);		//append
 
 	if (!logFile.is_open()) {
 		cout << "Fehler beim Öffnen der Log-Datei." << endl;
 		return;
 	}
+	//Welche Spieler hat etwas gemacht
+	vector<Player> welchePlayers = info.getPlayers();
+	Player p = welchePlayers[info.getCurrentPlayer()];
 
 	//write
-	logFile << "Round = " << info.round
-			<< ", playerID  =" << info.playerID
-			<< ", Budget = " << info.budget
-			<< ", ownship = " << info.ownship
-			<< ", position = " << info.position << endl;
+	logFile << "Round = " << info.getCurrentRound()
+			<< ", playerID  =" << p.getID()
+			<< ", Budget = " << p.getMoney()
+			<< ", ownship = ";
+	vector<string> karten = p.getKarten();
+	for (size_t i = 0; i < karten.size(); ++i) {
+		logFile << karten[i];
+		if (i != karten.size() - 1) logFile << "|";
+	}
+			logFile << ", position = " << p.getPosition() << endl;
 
 	logFile.close();
 }
