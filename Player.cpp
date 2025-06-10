@@ -55,6 +55,10 @@ void Player::setPrison() {
     prisonCount = 3;
 }
 
+void Player::setPrisonCount(int neuPrisonCount) {
+    prisonCount = neuPrisonCount;
+}
+
 void Player::deductPrisonTime() {
     if (prisonCount > 0){
         --prisonCount;
