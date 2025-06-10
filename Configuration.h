@@ -18,7 +18,7 @@ public:
 	void writeLog(GameFunctionManager info);
 
 	void saveGame(string logPath, string savePath, int wieVieleSpieler);
-	bool loadGame(string path, vector<InfoGame>& playersInfo);
+	GameFunctionManager loadGame(string path);
 
 	GameSettings getSettings();
 	
