@@ -39,6 +39,7 @@ public:
     void pay(Player* recipient, int amount);//für mich nicht klar, ob in dem Ojekt Player einzuornen ist
     void setPrison();
     void deductPrisonTime();
+    void setPrisonCount(int neuPrisonCount);
     void addKarte(const std::string& karte);
     void removeKarte(const std::string& karte);
 
