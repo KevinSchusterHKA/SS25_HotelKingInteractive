@@ -100,10 +100,8 @@ void Configuration::writeLog(GameFunctionManager info) {
 
 void Configuration::saveGame(string logPath, string savePath, int wieVieleSpieler) {
 /***************************   lexicalische analyse für log-Dateil  **********************************************************/
-	vector<InfoGame> parsedLog;
-	int maxRound = 0;
-	int budget = settings.startBudget;
-	vector<string> ownship;
+	vector<Player> parsedPlayers;
+	int maxRound = 0; 
 	
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
@@ -112,10 +110,11 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	}
 
 	string zeile;
+
 	while (getline(logFile, zeile)) {
 		if (zeile.empty()) { continue; }
+		int round = 0, playerID = 0, budget = 0, position = 0; string karten = "";
 
-		InfoGame info;
 		// Aufteilen der Zeile in Schlüssel-Wert-Paare
 		stringstream ss(zeile);
 		string segment;
@@ -130,15 +129,27 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 			key.erase(remove(key.begin(), key.end(), ' '), key.end());
 			value.erase(remove(value.begin(), value.end(), ' '), value.end());
 
-			if (key == "Round") info.round = stoi(value);
-			else if (key == "playerID") info.playerID = stoi(value);
-			else if (key == "Budget") info.budget = stoi(value);
-			else if (key == "ownship") info.ownship = value;
-			else if (key == "position") info.position = stoi(value);
+			if (key == "Round") round = stoi(value);
+			else if (key == "playerID") playerID = stoi(value);
+			else if (key == "Budget") budget = stoi(value);
+			else if (key == "karten") karten = value;
+			else if (key == "position") position = stoi(value);
 		}
-		parsedLog.push_back(info);
-		if (info.round > maxRound) { maxRound = info.round; }	//update round
-		
+
+		if (round > maxRound) { maxRound = round; }	//update round
+
+		// Rekonstruiere den Spieler
+		Player p("Spieler" + to_string(playerID), budget, playerID);
+		p.setPosition(position);
+
+		// Karten parsen
+		stringstream kss(karten);
+		string karte;
+		while (getline(kss, karte, '|')) {
+			if (!karte.empty())
+				p.addKarte(karte);
+		}
+		parsedPlayers.push_back(p);
 	}
 	logFile.close();
 
@@ -148,15 +159,22 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
 	}
+
 	int ind = wieVieleSpieler;
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
-	for (int i = parsedLog.size()-1; i >= parsedLog.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
+	for (int i = parsedPlayers.size()-1; i >= parsedPlayers.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
 		saveFile << "# Spieler " << ind-- << endl;
-		saveFile << "playerID = " << parsedLog[i].playerID << endl;
-		saveFile << "budget = " << parsedLog[i].budget << endl;
-		saveFile << "position = " << parsedLog[i].position << endl;
-		saveFile << "besitz = " << parsedLog[i].ownship << endl << endl;
+		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
+		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
+		saveFile << "position = " << parsedPlayers[i].getPosition() << endl;
+		saveFile << "karten = ";
+		vector<string> karten = parsedPlayers[i].getKarten();
+		for (size_t i = 0; i < karten.size(); ++i) {
+			saveFile << karten[i];
+			if (i != karten.size() - 1) saveFile << "|";
+		}
+		saveFile << endl << endl;
 	}
 	saveFile.close();
 }
