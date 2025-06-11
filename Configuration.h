@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CONFIGURATION_HPP
+#define CONFIGURATION_HPP
+
 #include <string>
 #include <vector>
 #include "GameSettings.h"
@@ -23,3 +25,4 @@ public:
 	GameSettings getSettings();
 	
 };
+#endif

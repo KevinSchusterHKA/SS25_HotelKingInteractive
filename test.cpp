@@ -127,7 +127,7 @@ void testMovementMethods() {
 
 
 
-int main() {
+int map_main() {
 
     TestRunner::runTest("Graph Initialization", testGraphInitialization);
     TestRunner::runTest("Display Map", testDisplayMap);

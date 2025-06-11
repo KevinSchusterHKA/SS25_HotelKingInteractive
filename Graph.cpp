@@ -13,11 +13,11 @@ const std::string Graph::nodeNames[TOTAL_NODES] = {
     "Hauptbahnhof",
     "Ebertstraße",
     "Ereignisfeld",
-    "Rüppurrerstraße",
+    "Rueppurrerstraße",
     "Ettlingerstraße",
-    "Nur zu Besuch / Gefängnis",
+    "Nur zu Besuch / Gefaengnis",
     "Amalienstraße",
-    "Elektrizitätwerk",
+    "Elektrizitaetwerk",
     "Hirschstraße",
     "Kriegsstraße",
     "West-Bahnhof",
@@ -35,7 +35,7 @@ const std::string Graph::nodeNames[TOTAL_NODES] = {
     "Moltkestraße",
     "Wasserwerk",
     "Karl-friedrichstraße",
-    "Gehe ins Gefängnis",
+    "Gehe ins Gefaengnis",
     "Herrenstraße",
     "Waldstraße",
     "Gemeinschaftsfeld",
@@ -129,11 +129,11 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
     tiles[Ereignisfeld] = std::make_shared<SpecialTile>(
         Ereignisfeld, "Ereignisfeld", SpecialType::Event);
 
-    tiles[Gefängnis] = std::make_shared<SpecialTile>(
-        Gefängnis, "Nur zu Besuch / Gefängnis", SpecialType::GoToJail);
+    tiles[Gefaengnis] = std::make_shared<SpecialTile>(
+        Gefaengnis, "Nur zu Besuch / Gefaengnis", SpecialType::GoToJail);
 
-    tiles[Elektrizitätwerk] = std::make_shared<PropertyTile>(
-        Elektrizitätwerk, nodeNames[Elektrizitätwerk], PropertyType::Utility, 150, 0, -1, 0);
+    tiles[Elektrizitaetwerk] = std::make_shared<PropertyTile>(
+        Elektrizitaetwerk, nodeNames[Elektrizitaetwerk], PropertyType::Utility, 150, 0, -1, 0);
 
     tiles[Wasserwerk] = std::make_shared<PropertyTile>(
         Wasserwerk, nodeNames[Wasserwerk], PropertyType::Utility, 150, 0, -1, 0);
@@ -150,8 +150,8 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
     tiles[OstBahnhof] = std::make_shared<SpecialTile>(
         OstBahnhof, "Ostbahnhof", SpecialType::Bahnhof);
 
-    tiles[GeheinsGefängnis] = std::make_shared<SpecialTile>(
-        GeheinsGefängnis, "Gehe ins Gefängnis", SpecialType::GoToJail);
+    tiles[GeheinsGefaengnis] = std::make_shared<SpecialTile>(
+        GeheinsGefaengnis, "Gehe ins Gefaengnis", SpecialType::GoToJail);
 
     tiles[Gemeinschaftsfeld4] = std::make_shared<SpecialTile>(
         Gemeinschaftsfeld4, "Gemeinschaftsfeld", SpecialType::Community);

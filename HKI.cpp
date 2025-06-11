@@ -2,23 +2,40 @@
 //
 
 #include <iostream>
-
-//#include "player.h"
-//#include "map.h"
-//#include "controls.h"
-//#include "config.hpp"
+#include "Unittests.hpp"
 
 using namespace std;
 
-#define GAMEVERSION "00.01"
+#define GAMEVERSION "00.02"
+
+//#define ACTIVATE_UNIT_TEST_CONTROL
+//#define ACTIVATE_UNIT_TEST_CONFIG
+//#define ACTIVATE_UNIT_TEST_MAP
+//#define ACTIVATE_UNIT_TEST_PLAYER
+
 
 int main()
 {
+    cout << "Hotel King Interactive T" << GAMEVERSION << endl;
+#ifdef ACTIVATE_UNIT_TEST_CONTROL
+    cout << "Testing Engine Control!\n";
+    control_main();
+#endif
 
-    std::cout << "Hotel King Interactive T0.1\n";
+#ifdef ACTIVATE_UNIT_TEST_CONFIG
+    cout << "Testing Engine Config!\n";
+    config_main();
+#endif
 
-    std::cout << "Testing Engine Config!\n";
+#ifdef ACTIVATE_UNIT_TEST_MAP
+    cout << "Testing Engine Map!\n";
+    map_main();
+#endif
 
+#ifdef ACTIVATE_UNIT_TEST_PLAYER
+    cout << "Testing Engine Player!\n";
+    player_main();
+#endif
 
 
     //initial game

@@ -10,6 +10,8 @@ Version : 1.0
 Notes: 
  - 
 */
+#ifndef MENUMANAGER_HPP
+#define MENUMANAGER_HPP
 
 #include <iostream>
 #include <vector>
@@ -62,3 +64,4 @@ class MenuManager {
         vector<Menu>& getMenus();
 
 };
+#endif

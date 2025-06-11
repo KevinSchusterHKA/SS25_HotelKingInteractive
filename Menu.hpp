@@ -11,7 +11,8 @@ Notes:
  - 
 */
 
-#pragma once
+#ifndef MENU_HPP
+#define MENU_HPP
 
 #include <iostream>
 #include <vector>
@@ -51,3 +52,4 @@ class Menu {
         string getHeader();
 
 };  
+#endif
