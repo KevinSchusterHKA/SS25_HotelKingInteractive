@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GAMESETTINGS_HPP
+#define GAMESETTINGS_HPP
+
 #include <string>
 using namespace std;
 
@@ -14,3 +16,4 @@ struct GameSettings {
     string cpuDifficulty;
     GameMode gameMode;
 };
+#endif

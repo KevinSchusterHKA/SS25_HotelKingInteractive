@@ -11,7 +11,9 @@ Notes:
  -  This file contains the declaration of the GameFunctionManager class, which manages game functions such as player management, dice rolling, and game state.
  -  The class includes methods for adding players, showing the game map, rolling dice, and managing game rounds.
 */
-#pragma once
+#ifndef GAMEFUNCTIONMANAGER_HPP
+#define GAMEFUNCTIONMANAGER_HPP
+
 
 #include <iostream>
 #include <vector>
@@ -53,3 +55,4 @@ class GameFunctionManager {
         void setPaschCounter(int counter);
         void setCurrentRound(int round); 
 };
+#endif

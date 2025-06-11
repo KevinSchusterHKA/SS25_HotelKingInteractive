@@ -8,7 +8,7 @@ using namespace std;
 int config_main() {
     Configuration config;
 /***************************************   test loadConfig  **********************************************/
-    if (config.loadConfig("config.txt")) {
+    if (config.loadConfig("Config\config.txt")) {
         cout << "Konfiguration erfolgreich geladen:\n";
         config.printSettings();
     }

@@ -29,10 +29,11 @@ Notes:
 #include <chrono>
 #include <string>
 
-#include "GameFunctionManager.cpp"
-#include "MenuManager.cpp"
-#include "Menu.cpp"
-#include "Player.cpp"
+#include "Unittests.hpp"
+#include "GameFunctionManager.hpp"
+#include "MenuManager.hpp"
+#include "Menu.hpp"
+#include "Player.hpp"
 
 
 using namespace std;
@@ -53,7 +54,7 @@ void IngameMenu_test() {
 
     menumanager.handleMenus();
 }
-
+#
 /* Test function for the dice rolling functionality
 Demonstrates rolling two dice and checking for a pasch (both dice showing the same number). */
 void diceroll_test() {
@@ -87,12 +88,12 @@ int control_main() {
 
     // Menu tests
 
-    //IngameMenu_test();
-    //Menu_test();
+    IngameMenu_test();
+    Menu_test();
     
     //Functionality tests
 
-    //diceroll_test();
+    diceroll_test();
 
     
     return 0;

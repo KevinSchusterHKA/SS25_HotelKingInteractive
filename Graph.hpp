@@ -6,53 +6,56 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <tuple>
 #include "tile.hpp"
+
+ ///
+ /// Define node ID using macro
+ /// 
+#define TOTAL_NODES 40
+#define LOS 0
+#define Kronenstrasse 1
+#define Gemeinschaftsfeld 2
+#define Adlerstrasse 3
+#define Einkommensteuer 4
+#define Hauptbahnhof 5
+#define Ebertstrasse 6
+#define Ereignisfeld 7
+#define Rueppurrerstrasse 8
+#define Ettlingerstrasse 9
+#define Gefaengnis 10
+#define Amalienstrasse 11
+#define Elektrizitaetwerk 12
+#define Hirschstrasse 13
+#define Kriegsstrasse 14
+#define WestBahnhof 15
+#define Fastplatz 16
+#define Gemeinschaftsfeld2 17
+#define KaiserAllee 18
+#define DurlacherAllee 19
+#define FreiParken 20
+#define Zirkel 21
+#define Gemeinschaftsfeld3 22
+#define Karlstrasse 23
+#define Brauerstrasse 24
+#define OstBahnhof 25
+#define Hildapromenade 26
+#define Moltkestrasse 27
+#define Wasserwerk 28
+#define Karlfriedrichstrasse 29
+#define GeheinsGefaengnis 30
+#define Herrenstrasse 31
+#define Waldstrasse 32
+#define Gemeinschaftsfeld4 33
+#define Erbprinzenstrasse 34
+#define Hubschrauberlandeplatze 35  
+#define Ereignisfeld2 36
+#define Kaiserstrasse 37
+#define Zusatzsteuer 38
+#define Schlossplatz 39
+
 class Graph {
 public:
-    ///
-    /// Define node ID using macro
-    /// 
-    #define TOTAL_NODES 40
-    #define LOS 0
-    #define Kronenstraße 1
-    #define Gemeinschaftsfeld 2
-    #define Adlerstraße 3
-    #define Einkommensteuer 4
-    #define Hauptbahnhof 5
-    #define Ebertstraße 6
-    #define Ereignisfeld 7
-    #define Rüppurrerstraße 8
-    #define Ettlingerstraße 9
-    #define Gefängnis 10
-    #define Amalienstraße 11
-    #define Elektrizitätwerk 12
-    #define Hirschstraße 13
-    #define Kriegsstraße 14
-    #define WestBahnhof 15
-    #define Fastplatz 16
-    #define Gemeinschaftsfeld2 17
-    #define KaiserAllee 18
-    #define DurlacherAllee 19
-    #define FreiParken 20
-    #define Zirkel 21
-    #define Gemeinschaftsfeld3 22
-    #define Karlstraße 23
-    #define Brauerstraße 24
-    #define OstBahnhof 25
-    #define Hildapromenade 26
-    #define Moltkestraße 27
-    #define Wasserwerk 28
-    #define Karlfriedrichstraße 29
-    #define GeheinsGefängnis 30
-    #define Herrenstraße 31
-    #define Waldstraße 32
-    #define Gemeinschaftsfeld4 33
-    #define Erbprinzenstraße 34
-    #define Hubschrauberlandeplatze 35  
-    #define Ereignisfeld2 36
-    #define Kaiserstraße 37
-    #define Zusatzsteuer 38
-    #define Schlossplatz 39
 
   
     static const std::string nodeNames[TOTAL_NODES];
@@ -71,27 +74,27 @@ public:
     /// street
     /// 
     const std::vector<int> PropertyTiles = {
-    Kronenstraße,
-    Adlerstraße,
-    Ebertstraße,
-    Rüppurrerstraße,
-    Ettlingerstraße,
-    Amalienstraße,
-    Hirschstraße,
-    Kriegsstraße,
+    Kronenstrasse,
+    Adlerstrasse,
+    Ebertstrasse,
+    Rueppurrerstrasse,
+    Ettlingerstrasse,
+    Amalienstrasse,
+    Hirschstrasse,
+    Kriegsstrasse,
     Fastplatz,
     KaiserAllee,
     DurlacherAllee,
     Zirkel,
-    Karlstraße,
-    Brauerstraße,
+    Karlstrasse,
+    Brauerstrasse,
     Hildapromenade,
-    Moltkestraße,
-    Karlfriedrichstraße,
-    Herrenstraße,
-    Waldstraße,
-    Erbprinzenstraße,
-    Kaiserstraße,
+    Moltkestrasse,
+    Karlfriedrichstrasse,
+    Herrenstrasse,
+    Waldstrasse,
+    Erbprinzenstrasse,
+    Kaiserstrasse,
     Schlossplatz
     };
 
