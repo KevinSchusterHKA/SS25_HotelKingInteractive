@@ -14,7 +14,12 @@ using namespace std;
 
 int main()
 {
-    cout << "Hotel King Interactive T0.1\n";
+
+    std::cout << "Hotel King Interactive T0.1\n";
+
+    std::cout << "Testing Engine Config!\n";
+
+
 
     //initial game
     //start game
