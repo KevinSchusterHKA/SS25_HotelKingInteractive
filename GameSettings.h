@@ -14,11 +14,3 @@ struct GameSettings {
     string cpuDifficulty;
     GameMode gameMode;
 };
-
-struct InfoGame {
-    int round;
-    int playerID;
-    int budget;
-    string ownship;
-    int position;
-};
