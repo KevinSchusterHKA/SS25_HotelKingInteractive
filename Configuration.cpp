@@ -79,13 +79,15 @@ void Configuration::writeLog(GameFunctionManager info) {
 		cout << "Fehler beim Öffnen der Log-Datei." << endl;
 		return;
 	}
+
 	//Welche Spieler hat etwas gemacht
 	vector<Player> welchePlayers = info.getPlayers();
 	Player p = welchePlayers[info.getCurrentPlayer()];
 
 	//write
 	logFile << "Round = " << info.getCurrentRound()
-			<< ", playerID  =" << p.getID()
+			<< ", playerID  = " << p.getID()
+			<< ", name = " << p.getName()
 			<< ", Budget = " << p.getMoney()
 			<< ", karten = ";
 	vector<string> karten = p.getKarten();
@@ -93,7 +95,9 @@ void Configuration::writeLog(GameFunctionManager info) {
 		logFile << karten[i];
 		if (i != karten.size() - 1) logFile << "|";
 	}
-			logFile << ", position = " << p.getPosition() << endl;
+	logFile << ", position = " << p.getPosition()
+			<< ", prison  = " << (p.inPrison() ? "true" : "false")
+			<< ", prisonCount  = " << p.getPrisonCount() << endl;
 
 	logFile.close();
 }
@@ -113,7 +117,7 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 
 	while (getline(logFile, zeile)) {
 		if (zeile.empty()) { continue; }
-		int round = 0, playerID = 0, budget = 0, position = 0; string karten = "";
+		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "";
 
 		// Aufteilen der Zeile in Schlüssel-Wert-Paare
 		stringstream ss(zeile);
@@ -131,16 +135,21 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 
 			if (key == "Round") round = stoi(value);
 			else if (key == "playerID") playerID = stoi(value);
+			else if (key == "name") name = value;
 			else if (key == "Budget") budget = stoi(value);
 			else if (key == "karten") karten = value;
 			else if (key == "position") position = stoi(value);
+			else if (key == "prison") prison = value;
+			else if (key == "prisonCount") prisonCount = stoi(value);
 		}
 
 		if (round > maxRound) { maxRound = round; }	//update round
 
 		// Rekonstruiere den Spieler
-		Player p("Spieler" + to_string(playerID), budget, playerID);
+		Player p(name, budget, playerID);
 		p.setPosition(position);
+		p.setPrisonCount(prisonCount);
+		if (prison == "true") { p.setPrison(); }
 
 		// Karten parsen
 		stringstream kss(karten);
@@ -165,9 +174,12 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	saveFile << "round = " << maxRound << endl << endl;
 	for (int i = parsedPlayers.size()-1; i >= parsedPlayers.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
 		saveFile << "# Spieler " << ind-- << endl;
+		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
 		saveFile << "position = " << parsedPlayers[i].getPosition() << endl;
+		saveFile << "prison = " << (parsedPlayers[i].inPrison() ? "true" : "false") << endl;
+		saveFile << "prisonCount = " << parsedPlayers[i].getPrisonCount() << endl;
 		saveFile << "karten = ";
 		vector<string> karten = parsedPlayers[i].getKarten();
 		for (size_t i = 0; i < karten.size(); ++i) {
@@ -175,6 +187,11 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 			if (i != karten.size() - 1) saveFile << "|";
 		}
 		saveFile << endl << endl;
+
+		//current spieler
+		if (i == parsedPlayers.size() - wieVieleSpieler) {
+			saveFile << "naechsteSpieler = " << parsedPlayers[i].getID() << endl;
+		}
 	}
 	saveFile.close();
 }
@@ -189,7 +206,7 @@ GameFunctionManager Configuration::loadGame(string path) {
 	}
 
 	string zeile;
-	Player tempPlayer("", 0, 0); int round = 0; string name = "";
+	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "", prison = "";
 	while (getline(saveFile, zeile)) {
 		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
@@ -207,19 +224,24 @@ GameFunctionManager Configuration::loadGame(string path) {
 
 		// Zuordnen
 		if (key == "round") round = stoi(value);
+		else if (key == "name") name = value;
 		else if (key == "playerID") tempPlayer = Player(name, 0, stoi(value));
 		else if (key == "budget") tempPlayer.addMoney(stoi(value));
 		else if (key == "position") tempPlayer.setPosition(stoi(value));
+		else if (key == "prison") name = value; if (value == "true") { tempPlayer.setPrison(); }
+		else if (key == "prisonCount") tempPlayer.setPrisonCount(stoi(value));
 		else if (key == "karten") {
 			stringstream ss(value);
 			string karte;
 			while (getline(ss, karte, '|')) {
 				tempPlayer.addKarte(karte);
 			}
-			manager.addPlayer(tempPlayer); 
+			manager.addPlayer(tempPlayer);
 		}
+		else if (key == "naechsteSpieler") naechsteSpieler = stoi(value);
 	}
 	manager.setCurrentRound(round);
+	manager.setCurrentPlayer(naechsteSpieler);
 	saveFile.close();
 	return manager;
 }
