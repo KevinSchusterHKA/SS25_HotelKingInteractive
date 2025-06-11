@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+
 //#include "player.h"
 //#include "map.h"
 //#include "controls.h"
@@ -11,7 +12,6 @@ using namespace std;
 
 #define GAMEVERSION "00.01"
 
-
 int main()
 {
     cout << "Hotel King Interactive T0.1\n";
@@ -20,6 +20,7 @@ int main()
     //start game
     //check game results
     //check winner
+
 
     cout << "Thanks for playing Hotel King " << GAMEVERSION << endl;
     //end game
