@@ -83,7 +83,7 @@ void Menu_test() {
 
 }
 
-int main() {
+int control_main() {
 
     // Menu tests
 
