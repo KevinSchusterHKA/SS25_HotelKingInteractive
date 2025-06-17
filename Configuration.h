@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include "GameSettings.h"
-#include "Score.h"
 #include "GameFunctionManager.hpp"
 
 using namespace std;
@@ -10,22 +9,26 @@ using namespace std;
 class Configuration {
 private:
 	GameSettings settings;
+	string configPath = "config.txt";
+	string logPath = "game.txt";
+	string savePath = "save.txt";
+	string highscorePath = "highscore.txt";
 
 public:
 	GameSettings getSettings();
 
 	//config
-	bool loadConfig(string path);
+	bool loadConfig();
 	void printSettings();
 
 	//save+load
 	void writeLog(GameFunctionManager info);
-	void saveGame(string logPath, int wieVieleSpieler);
-	GameFunctionManager loadGame(string savePath);
+	void saveGame();
+	GameFunctionManager loadGame();
+	void printLoadGame(GameFunctionManager g);
 
 	//highscore
 	void sammlungHighscore(vector<Player> players);
-	vector<Player> sortedHighscore(string path);
+	vector<Player> sortedHighscore();
 	void showHighscore(vector<Player> p);
-
 };
