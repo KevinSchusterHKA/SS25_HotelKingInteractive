@@ -10,16 +10,22 @@ using namespace std;
 class Configuration {
 private:
 	GameSettings settings;
-	vector<Score> highscores;
 
 public:
+	GameSettings getSettings();
+
+	//config
 	bool loadConfig(string path);
 	void printSettings();
-	void writeLog(GameFunctionManager info);
 
+	//save+load
+	void writeLog(GameFunctionManager info);
 	void saveGame(string logPath, int wieVieleSpieler);
 	GameFunctionManager loadGame(string savePath);
 
-	GameSettings getSettings();
-	
+	//highscore
+	void sammlungHighscore(vector<Player> players);
+	vector<Player> sortedHighscore(string path);
+	void showHighscore(vector<Player> p);
+
 };
