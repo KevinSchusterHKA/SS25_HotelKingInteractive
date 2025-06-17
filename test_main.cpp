@@ -8,7 +8,7 @@ using namespace std;
 int main() {
     Configuration config;
 /***************************************   test loadConfig  **********************************************/
-    if (config.loadConfig("config.txt")) {
+    if (config.loadConfig()) {
         cout << "Konfiguration erfolgreich geladen:\n";
         config.printSettings();
     }
@@ -52,36 +52,17 @@ int main() {
     
 
 /***************************************   test saveGame  **********************************************/
-    config.saveGame("game.log", 3);
+    config.saveGame();
     cout << "test save fertig" << endl << endl;
 
 /***************************************   test loadGame  **********************************************/
-
-    GameFunctionManager manager = config.loadGame("save.txt");
-
-    cout << "Aktuelle Runde: " << manager.getCurrentRound() << endl;
-    cout << "Aktuelle Spieler: " << manager.getCurrentPlayer() << endl;
-
-    for (const Player& p : manager.getPlayers()) {
-        cout << "-----------------------------" << endl;
-        cout << "Name: " << p.getName() << endl;
-        cout << "ID: " << p.getID() << endl;
-        cout << "Budget: " << p.getMoney() << endl;
-        cout << "Position: " << p.getPosition() << endl;
-        cout << "Im Gefaengnis? " << (p.inPrison() ? "Ja" : "Nein") << endl;
-        cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
-        cout << "Karten: ";
-        vector<string> karten = p.getKarten();
-        for (const string& k : karten) {
-            cout << k << " ";
-        }
-        cout << endl;
-    }
-
+    GameFunctionManager manager = config.loadGame();
+    config.printLoadGame(manager);
+    
 /***************************************   test Highscore  **********************************************/
     config.sammlungHighscore(players);
     vector<Player> sortedPlayer;
-    sortedPlayer = config.sortedHighscore("highscore.txt");
+    sortedPlayer = config.sortedHighscore();
     cout << endl;
     config.showHighscore(sortedPlayer);
 
