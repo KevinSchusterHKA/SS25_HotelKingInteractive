@@ -17,8 +17,8 @@ public:
 	void printSettings();
 	void writeLog(GameFunctionManager info);
 
-	void saveGame(string logPath, string savePath, int wieVieleSpieler);
-	GameFunctionManager loadGame(string path);
+	void saveGame(string logPath, int wieVieleSpieler);
+	GameFunctionManager loadGame(string savePath);
 
 	GameSettings getSettings();
 	
