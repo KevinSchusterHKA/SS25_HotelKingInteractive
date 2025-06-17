@@ -102,7 +102,7 @@ void Configuration::writeLog(GameFunctionManager info) {
 	logFile.close();
 }
 
-void Configuration::saveGame(string logPath, string savePath, int wieVieleSpieler) {
+void Configuration::saveGame(string logPath, int wieVieleSpieler) {
 /***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
 	int maxRound = 0; 
@@ -163,7 +163,7 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	logFile.close();
 
 /****************************************** Neue Dateil save  ************************************************************************/
-	ofstream saveFile(savePath);
+	ofstream saveFile("savePath.txt");
 	if (!saveFile.is_open()) {
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
@@ -196,9 +196,9 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	saveFile.close();
 }
 
-GameFunctionManager Configuration::loadGame(string path) {
+GameFunctionManager Configuration::loadGame(string savePath) {
 	GameFunctionManager manager;
-	ifstream saveFile(path);	//offen
+	ifstream saveFile(savePath);	//offen
 
 	if (!saveFile.is_open()) {		//Ob nicht offen
 		cout << "Datei konnte nicht geöffnet werden" << endl;
