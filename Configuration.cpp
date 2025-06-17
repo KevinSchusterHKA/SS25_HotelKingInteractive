@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #include "Configuration.h"
 #include "Player.hpp"
 
@@ -14,7 +15,7 @@ bool Configuration::loadConfig(string path) {
 	ifstream file(path);	//offen
 
 	if (!file.is_open()) {		//Ob nicht offen
-		cout << "Datei konnte nicht geöffnet werden" << endl; 
+		cout << "Log-Datei konnte nicht geoeffnet werden" << endl; 
 		return false;
 	}	
 
@@ -74,9 +75,8 @@ void Configuration::printSettings() {
 
 void Configuration::writeLog(GameFunctionManager info) {
 	ofstream logFile("game.log", ios::app);		//append
-
 	if (!logFile.is_open()) {
-		cout << "Fehler beim Öffnen der Log-Datei." << endl;
+		cout << "Fehler beim Oeffnen der Log-Datei." << endl;
 		return;
 	}
 
@@ -109,7 +109,7 @@ void Configuration::saveGame(string logPath, int wieVieleSpieler) {
 	
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
-		cout << "Fehler beim Öffnen der Log-Datei." << endl;
+		cout << "Fehler beim Oeffnen der Log-Datei." << endl;
 		return;
 	}
 
@@ -163,7 +163,7 @@ void Configuration::saveGame(string logPath, int wieVieleSpieler) {
 	logFile.close();
 
 /****************************************** Neue Dateil save  ************************************************************************/
-	ofstream saveFile("savePath.txt");
+	ofstream saveFile("save.txt");
 	if (!saveFile.is_open()) {
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
@@ -201,7 +201,7 @@ GameFunctionManager Configuration::loadGame(string savePath) {
 	ifstream saveFile(savePath);	//offen
 
 	if (!saveFile.is_open()) {		//Ob nicht offen
-		cout << "Datei konnte nicht geöffnet werden" << endl;
+		cout << "Save-Datei konnte nicht geoeffnet werden" << endl;
 		return manager;	//leer
 	}
 
@@ -244,5 +244,58 @@ GameFunctionManager Configuration::loadGame(string savePath) {
 	manager.setCurrentPlayer(naechsteSpieler);
 	saveFile.close();
 	return manager;
+}
+
+void Configuration::sammlungHighscore(vector<Player> players) {
+	ofstream highscoreFile("highscore.txt", ios::app);	//append für speichern alle Ergebnisse
+	if (!highscoreFile.is_open()) {
+		cout << "Fehler beim Oeffnen der Highscore-Datei" << endl;
+		return;
+	}
+
+	//write
+	for (int i = 0; i < players.size(); i++) {
+		highscoreFile << players[i].getName() << "=" << players[i].getMoney() << endl;
+	}
+
+	highscoreFile.close();
+}
+
+vector<Player> Configuration::sortedHighscore(string path) {
+	vector<Player> sortedPlayers;
+
+	ifstream file(path);	//offen
+	if (!file.is_open()) {		//Ob nicht offen
+		cout << "Datei-Highscore konnte nicht geoeffnet werden" << endl;
+		return sortedPlayers;
+	}
+
+	string zeile;
+	while (getline(file, zeile)) {
+		// Leere Zeilen oder Kommentare überspringen und Leerzeichen nicht nutzlich hier. Ich habe die Highscore-Dateil selbst geschrieben
+		//Such '='
+		size_t pos = zeile.find('=');	//size_t = unsigned integer
+		if (pos == string::npos) { continue; }	//wobei npos = nicht gefunden
+
+		string name = zeile.substr(0, pos);
+		string score = zeile.substr(pos + 1);
+		
+		//push
+		Player p(name, stoi(score), 0);
+		sortedPlayers.push_back(p);
+	}
+	file.close();
+
+	//sortier highscore
+	sort(sortedPlayers.begin(), sortedPlayers.end(), [](Player& a, Player& b) { return a.getMoney() > b.getMoney();});
+
+	
+	return sortedPlayers;
+}
+
+void Configuration::showHighscore(vector<Player> p) {
+	for (int i = 0; i < p.size(); i++) {
+		cout << p[i].getName() << " " << p[i].getMoney() << endl;
+	}
 }
 
