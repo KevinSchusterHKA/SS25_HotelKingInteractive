@@ -52,7 +52,7 @@ int main() {
     
 
 /***************************************   test saveGame  **********************************************/
-    config.saveGame("game.log", "save.txt", 3);
+    config.saveGame("game.log", 3);
     cout << "test save fertig" << endl << endl;
 
 /***************************************   test loadGame  **********************************************/
