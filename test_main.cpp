@@ -78,5 +78,12 @@ int main() {
         cout << endl;
     }
 
+/***************************************   test Highscore  **********************************************/
+    config.sammlungHighscore(players);
+    vector<Player> sortedPlayer;
+    sortedPlayer = config.sortedHighscore("highscore.txt");
+    cout << endl;
+    config.showHighscore(sortedPlayer);
+
     return 0;
 }
