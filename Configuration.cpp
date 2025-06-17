@@ -11,8 +11,8 @@ GameSettings Configuration::getSettings() {
 	return settings;
 }
 
-bool Configuration::loadConfig(string path) {
-	ifstream file(path);	//offen
+bool Configuration::loadConfig() {
+	ifstream file(configPath);	//offen
 
 	if (!file.is_open()) {		//Ob nicht offen
 		cout << "Log-Datei konnte nicht geoeffnet werden" << endl; 
@@ -74,7 +74,7 @@ void Configuration::printSettings() {
 }
 
 void Configuration::writeLog(GameFunctionManager info) {
-	ofstream logFile("game.log", ios::app);		//append
+	ofstream logFile(logPath, ios::app);		//append
 	if (!logFile.is_open()) {
 		cout << "Fehler beim Oeffnen der Log-Datei." << endl;
 		return;
@@ -102,10 +102,12 @@ void Configuration::writeLog(GameFunctionManager info) {
 	logFile.close();
 }
 
-void Configuration::saveGame(string logPath, int wieVieleSpieler) {
+void Configuration::saveGame() {
 /***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
 	int maxRound = 0; 
+	int wieVieleSpieler = settings.playerCount + settings.cpuCount;
+	int ind = wieVieleSpieler;
 	
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
@@ -169,7 +171,6 @@ void Configuration::saveGame(string logPath, int wieVieleSpieler) {
 		return;
 	}
 
-	int ind = wieVieleSpieler;
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
 	for (int i = parsedPlayers.size()-1; i >= parsedPlayers.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
@@ -196,7 +197,7 @@ void Configuration::saveGame(string logPath, int wieVieleSpieler) {
 	saveFile.close();
 }
 
-GameFunctionManager Configuration::loadGame(string savePath) {
+GameFunctionManager Configuration::loadGame() {
 	GameFunctionManager manager;
 	ifstream saveFile(savePath);	//offen
 
@@ -246,6 +247,27 @@ GameFunctionManager Configuration::loadGame(string savePath) {
 	return manager;
 }
 
+void Configuration::printLoadGame(GameFunctionManager g) {
+	cout << "Aktuelle Runde: " << g.getCurrentRound() << endl;
+	cout << "Aktuelle Spieler: " << g.getCurrentPlayer() << endl;
+
+	for (const Player& p : g.getPlayers()) {
+		cout << "-----------------------------" << endl;
+		cout << "Name: " << p.getName() << endl;
+		cout << "ID: " << p.getID() << endl;
+		cout << "Budget: " << p.getMoney() << endl;
+		cout << "Position: " << p.getPosition() << endl;
+		cout << "Im Gefaengnis? " << (p.inPrison() ? "Ja" : "Nein") << endl;
+		cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
+		cout << "Karten: ";
+		vector<string> karten = p.getKarten();
+		for (const string& k : karten) {
+			cout << k << " ";
+		}
+		cout << endl;
+	}
+}
+
 void Configuration::sammlungHighscore(vector<Player> players) {
 	ofstream highscoreFile("highscore.txt", ios::app);	//append für speichern alle Ergebnisse
 	if (!highscoreFile.is_open()) {
@@ -261,10 +283,10 @@ void Configuration::sammlungHighscore(vector<Player> players) {
 	highscoreFile.close();
 }
 
-vector<Player> Configuration::sortedHighscore(string path) {
+vector<Player> Configuration::sortedHighscore() {
 	vector<Player> sortedPlayers;
 
-	ifstream file(path);	//offen
+	ifstream file(highscorePath);	//offen
 	if (!file.is_open()) {		//Ob nicht offen
 		cout << "Datei-Highscore konnte nicht geoeffnet werden" << endl;
 		return sortedPlayers;
