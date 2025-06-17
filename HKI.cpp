@@ -2,19 +2,49 @@
 //
 
 #include <iostream>
+#include "Unittests.hpp"
+
+using namespace std;
+
+#define GAMEVERSION "00.02"
+
+//#define ACTIVATE_UNIT_TEST_CONTROL
+//#define ACTIVATE_UNIT_TEST_CONFIG
+//#define ACTIVATE_UNIT_TEST_MAP
+//#define ACTIVATE_UNIT_TEST_PLAYER
+
 
 int main()
 {
-    std::cout << "Hotel King Interactive T0.1\n";
+    cout << "Hotel King Interactive T" << GAMEVERSION << endl;
+#ifdef ACTIVATE_UNIT_TEST_CONTROL
+    cout << "Testing Engine Control!\n";
+    control_main();
+#endif
+
+#ifdef ACTIVATE_UNIT_TEST_CONFIG
+    cout << "Testing Engine Config!\n";
+    config_main();
+#endif
+
+#ifdef ACTIVATE_UNIT_TEST_MAP
+    cout << "Testing Engine Map!\n";
+    map_main();
+#endif
+
+#ifdef ACTIVATE_UNIT_TEST_PLAYER
+    cout << "Testing Engine Player!\n";
+    player_main();
+#endif
+
+
+    //initial game
+    //start game
+    //check game results
+    //check winner
+
+
+    cout << "Thanks for playing Hotel King " << GAMEVERSION << endl;
+    //end game
 }
 
-// Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"
-// Programm debuggen: F5 oder "Debuggen" > Menü "Debuggen starten"
-
-// Tipps für den Einstieg: 
-//   1. Verwenden Sie das Projektmappen-Explorer-Fenster zum Hinzufügen/Verwalten von Dateien.
-//   2. Verwenden Sie das Team Explorer-Fenster zum Herstellen einer Verbindung mit der Quellcodeverwaltung.
-//   3. Verwenden Sie das Ausgabefenster, um die Buildausgabe und andere Nachrichten anzuzeigen.
-//   4. Verwenden Sie das Fenster "Fehlerliste", um Fehler anzuzeigen.
-//   5. Wechseln Sie zu "Projekt" > "Neues Element hinzufügen", um neue Codedateien zu erstellen, bzw. zu "Projekt" > "Vorhandenes Element hinzufügen", um dem Projekt vorhandene Codedateien hinzuzufügen.
-//   6. Um dieses Projekt später erneut zu öffnen, wechseln Sie zu "Datei" > "Öffnen" > "Projekt", und wählen Sie die SLN-Datei aus.
