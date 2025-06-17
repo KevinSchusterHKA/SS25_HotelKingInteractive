@@ -1,0 +1,118 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\laura\\SS25_HotelKingInteractive\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|solutionrelative:Server.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|solutionrelative:Server.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\Configuration.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|solutionrelative:Configuration.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\Menu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|solutionrelative:Menu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|solutionrelative:MenuManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\Player.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4E026C15-4DF2-49E5-A33B-BE89A5B2E81B}|HKI.vcxproj|solutionrelative:Player.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Server.hpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.hpp",
+              "RelativeDocumentMoniker": "Server.hpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.hpp",
+              "RelativeToolTip": "Server.hpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-06-13T09:50:43.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Server.cpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.cpp",
+              "RelativeDocumentMoniker": "Server.cpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.cpp",
+              "RelativeToolTip": "Server.cpp",
+              "ViewState": "AgIAAAABAAAAAAAAAAAAACcBAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-13T09:49:10.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Configuration.cpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Configuration.cpp",
+              "RelativeDocumentMoniker": "Configuration.cpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Configuration.cpp",
+              "RelativeToolTip": "Configuration.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-13T09:49:15.553Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Menu.cpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Menu.cpp",
+              "RelativeDocumentMoniker": "Menu.cpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Menu.cpp",
+              "RelativeToolTip": "Menu.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-13T09:49:13.295Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MenuManager.cpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.cpp",
+              "RelativeDocumentMoniker": "MenuManager.cpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.cpp",
+              "RelativeToolTip": "MenuManager.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-13T09:49:12.213Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Player.cpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Player.cpp",
+              "RelativeDocumentMoniker": "Player.cpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Player.cpp",
+              "RelativeToolTip": "Player.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-13T09:49:11.159Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

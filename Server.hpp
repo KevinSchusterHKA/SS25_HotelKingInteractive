@@ -18,7 +18,14 @@ private:
 	int numberOfCPUPlayer;
 	string playerName;
 	string rulesPath;
-
+	bool buyfield;
+	int price;
+	int rent;
+	int ownerid;
+	string specialtile;
+	int wunschfeldid;
+	int positionofothers;
+	bool transport;
 
 public:
 	vector<Player> showMainDialog();
