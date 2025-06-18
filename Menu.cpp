@@ -23,8 +23,9 @@ Notes:
 #include <chrono>
 
 #include "Menu.hpp"
+#include "Map.hpp"
 
-using namespace std;;
+using namespace std;
 
 
 /*
@@ -70,13 +71,16 @@ void Menu::displayMainMenu() {
 void Menu::displayIngameMenu(GameFunctionManager gameFunctionManager) {
     clear_screen();
     cout << "--------- Runde " << gameFunctionManager.getCurrentRound() << " ----------" << endl;
-    cout << "       Player " << (gameFunctionManager.getCurrentPlayer() + 1) << ": " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getName() << endl; 
-    cout << "Position: " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getPosition() << "  -  Budget: " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getMoney() << endl;
+    cout << "       Player " << (gameFunctionManager.getCurrentPlayer() + 1) << ": " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getName() << endl;
+    int pos = gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getPosition();
+    cout << "Position: " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getPosition() << " - " << gameFunctionManager.getMap().getTile(pos).get()->getName() << endl;
+    cout << "Budget: " << gameFunctionManager.getPlayers()[gameFunctionManager.getCurrentPlayer()].getMoney() << endl;
     cout << "----------------------------" << endl;
     for (int i = 0; i < menuitems.size(); i++) {
         if (i == current_position) {
             cout << "> " << getMenuItems()[i] << " <" << endl; // Highlight current position
-        } else {
+        }
+        else {
             cout << "  " << getMenuItems()[i] << endl;
         }
     }
