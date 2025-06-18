@@ -12,6 +12,7 @@ std::string SpecialTile::getTypeString() const {
         case SpecialType::GoToJail:     return "GoToJail";
         case SpecialType::FreeParking:  return "FreeParking";
         case SpecialType::Tax:     return "Tax";
+        case SpecialType::LuxuryTax:     return "LuxuryTax";
         case SpecialType::Event:        return "Event";
         case SpecialType::Community:    return "Community";
         case SpecialType::Hubschrauberlandeplatz: return "Hubschrauberlandeplatz";
