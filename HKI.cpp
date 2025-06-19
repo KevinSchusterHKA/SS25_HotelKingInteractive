@@ -12,6 +12,7 @@ using namespace std;
 //#define ACTIVATE_UNIT_TEST_CONFIG
 //#define ACTIVATE_UNIT_TEST_MAP
 //#define ACTIVATE_UNIT_TEST_PLAYER
+#define ACTIVATE_UNIT_TEST_SERVER
 
 
 int main()
@@ -35,6 +36,11 @@ int main()
 #ifdef ACTIVATE_UNIT_TEST_PLAYER
     cout << "Testing Engine Player!\n";
     player_main();
+#endif
+
+#ifdef ACTIVATE_UNIT_TEST_SERVER
+    cout << "Testing Engine Server!\n";
+    server_main();
 #endif
 
 

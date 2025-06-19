@@ -1,22 +1,2 @@
 Menu: Hotel King Interactiv initialized with 4 items.
 Menu: Ingame initialized with 7 items.
-Ingame: Yes - Current Menu: Ingame
-Ingame: Yes - Current Menu: Ingame
-Down: P, Current Menu: Ingame, Current Position: 0
-Ingame: Yes - Current Menu: Ingame
-Ingame: Yes - Current Menu: Ingame
-Down: P, Current Menu: Ingame, Current Position: 1
-Ingame: Yes - Current Menu: Ingame
-Ingame: Yes - Current Menu: Ingame
-Down: P, Current Menu: Ingame, Current Position: 2
-Ingame: Yes - Current Menu: Ingame
-Ingame: Yes - Current Menu: Ingame
-Down: P, Current Menu: Ingame, Current Position: 3
-Ingame: Yes - Current Menu: Ingame
-Ingame: Yes - Current Menu: Ingame
-Down: P, Current Menu: Ingame, Current Position: 4
-Ingame: Yes - Current Menu: Ingame
-Ingame: Yes - Current Menu: Ingame
-Down: P, Current Menu: Ingame, Current Position: 5
-Ingame: Yes - Current Menu: Ingame
-Enter: END

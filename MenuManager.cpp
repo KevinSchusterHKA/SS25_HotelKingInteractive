@@ -33,6 +33,7 @@ Notes:
 
 #include "MenuManager.hpp"
 #include "Player.hpp"
+#include "Server.hpp"
 
 using namespace std;
 
@@ -59,8 +60,8 @@ void MenuManager::initMenus() {
 
     //Main Menu
     Menu startMenu(0, "Hotel King Interactiv", {"Neues Spiel", "Spiel laden", "Highscores", "Exit"}, true);
-    Menu newGameMenu(1, "Neues Spiel starten", {"Anzahl Spieler", "Regeln einstellen", "Spiel starten", "Zurück"}, true);
-    Menu loadGameMenu(1, "Spiel laden",  {"Spiel laden", "Zurück"}, true);
+    //Menu newGameMenu(1, "Neues Spiel starten", {"Anzahl Spieler", "Regeln einstellen", "Spiel starten", "Zurück"}, true);
+    //Menu loadGameMenu(1, "Spiel laden",  {"Spiel laden", "Zurück"}, true);
     
     //Ingame Overlay Menu
     Menu inGameMenu(0, "Ingame", {"Würfeln", "Handeln und Tauschen", "Inventar anzeigen", "Feld anzeigen", "Spielbrett anzeigen", "Spielstand speichern", "Exit"}, true);
@@ -70,8 +71,8 @@ void MenuManager::initMenus() {
 
     if (!menus.empty()) current_menu = &menus[0]; 
 
-    getCurrentMenu().addSubmenu(newGameMenu);
-    getCurrentMenu().addSubmenu(loadGameMenu);
+    //getCurrentMenu().addSubmenu(newGameMenu);
+    //getCurrentMenu().addSubmenu(loadGameMenu);
 
     getMenulog() << "Menu: " << menus[0].getHeader() << " initialized with " << menus[0].getMenuItems().size() << " items." << endl;
     getMenulog() << "Menu: " << menus[1].getHeader() << " initialized with " << menus[1].getMenuItems().size() << " items." << endl;
@@ -136,13 +137,17 @@ void MenuManager::doOperation(char input) {
             }
         }     
     } else if (input == 13 && !isInGame() && getCurrentLayer() == 0) {
+
+        vector<Player> gamePlayers;
+        Server server(gamePlayers);
+
         switch (getCurrentMenu().getCurrentPosition()) {
             case 0: {
-                //Spiel starten
+                server.SpielStarten();
                 break;
             }    
             case 1: {
-                //Spiel laden
+                server.SpielLaden();
                 break;
             }    
             case 2: {
