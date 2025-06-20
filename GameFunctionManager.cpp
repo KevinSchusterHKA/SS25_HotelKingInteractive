@@ -16,6 +16,7 @@ Notes:
  -  Doesnt need to be called directly, but is used by the MenuManager to handle game logic.
 */
 
+
 #include <conio.h>
 #include <iostream>
 #include <fstream>
@@ -30,8 +31,9 @@ Notes:
 
 #include "GameFunctionManager.hpp"
 #include "Player.hpp"
+#include "Map.hpp"
 
-using namespace std;
+using namespace std;;
 
 /*
 Clears the console screen.
@@ -53,10 +55,11 @@ Generator funktion to create a new GameFunctionManager object.
 @param current_player The index of the current player. (Normal is 0 at start)
 */
 GameFunctionManager::GameFunctionManager() {
-    this->current_player = current_player;
+    this->current_round = 0;
     this->pasch_counter = 0; 
     this->current_player = 0; 
     vector<Player> players; 
+    GameMap map; 
 }
 
 /*
@@ -69,14 +72,13 @@ void GameFunctionManager::addPlayer(Player player) {
 }
 
 
-
 /**
 *Displays all of the information of the current player.
 *@param player The Player object whose information is to be displayed.
 */
 void GameFunctionManager::showPlayerInformation(Player player) {
     clear_screen();
-    cout << "Player " << (getCurrentPlayer() + 1) << ": " << getPlayers()[getCurrentPlayer()].getName() << endl;
+    cout << "Player " << (getCurrentPlayer() + 1) << ": " << getPlayers()[getCurrentPlayer()].getName() << endl; 
     cout << "Position: " << getPlayers()[getCurrentPlayer()].getPosition() << endl;
     cout << "Budget: " << getPlayers()[getCurrentPlayer()].getMoney() << endl;
     cout << "----------------------------" << endl;
@@ -92,7 +94,7 @@ void GameFunctionManager::showPlayerInformation(Player player) {
     for (int i = 0; i < 40; i++) {
         PropertyTile* propertyTile = dynamic_cast<PropertyTile*>(getMap().getTile(i).get());
         if (propertyTile && propertyTile->getOwnerId() == player.getID()) {
-            cout << propertyTile->getName() << " - Miete: " << propertyTile->getRent() << endl;
+            cout << propertyTile->getName() << " - Miete: " <<propertyTile->getRent() << endl;
         }
     }
 }
@@ -106,9 +108,9 @@ void GameFunctionManager::showTileInfomation(int tile) {
     clear_screen();
     auto& sTile = getMap().tiles[tile];
 
-    if (auto propTile = dynamic_cast<const PropertyTile*>(sTile.get())) {
+     if (auto propTile = dynamic_cast<const PropertyTile*>(sTile.get())) {
         cout << "---------" << propTile->getName() << "---------" << endl;
-        cout << "Besitzer: " << ((propTile->getOwnerId() == -1) ? "Kein Besitzer" : getPlayers()[propTile->getOwnerId() + 1].getName()) << endl;
+        cout << "Besitzer: " << ((propTile->getOwnerId() == -1) ? "Kein Besitzer" : getPlayers()[propTile->getOwnerId()].getName()) << endl;
         cout << " Preis : " << propTile->getPrice() << endl;
         cout << " Miete: " << endl;
         int counter = 1;
@@ -116,10 +118,9 @@ void GameFunctionManager::showTileInfomation(int tile) {
             cout << "       Stufe " << counter << ": " << rent << endl;
             counter++;
         }
-    }
-    else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {
+    } else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {
         std::cout << "  Name: " << specialTile->getName() << "\n"
-            << "  Category: " << specialTile->getTypeString() << "\n";
+                  << "  Category: " << specialTile->getTypeString() << "\n";
     }
 }
 
@@ -129,11 +130,11 @@ Prints the current map of the game in the console.
 void GameFunctionManager::showMap() {
     clear_screen();
     cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
-    cout << "| Gefängnis    | Amaliens. |  E-Werk  | Hirschs. | Kriegss. | West-Bhf | Fastplatz  | Gemeinschaft | Kaiser A. | Durlacher A. | Frei Parken   |" << endl;
+    cout << "| Gefängnis    | Amaliens. |  E-Werk  | Hirschs. | Kriegss. | West-Bhf | Fastplatz  | Gemeinschaft | Kaiser A. | Durlacher A. | Frei Parken   |" << endl;  
     cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
     cout << "| Ettlingers.  |                                                                                                              |   Zirkel      |" << endl;
     cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "| Rüppurers.   |                                                                                                              | Gemeinschaft  |" << endl;
+    cout << "| Rüppurers.   |                                                                                                              | Gemeinschaft  |" << endl; 
     cout << "+--------------+                                                                                                              +---------------+" << endl;
     cout << "| Ereignis     |                                                                                                              |    Karlss.    |" << endl;
     cout << "+--------------+                                                                                                              +---------------+" << endl;
@@ -143,7 +144,7 @@ void GameFunctionManager::showMap() {
     cout << "+--------------+                                                                                                              +---------------+" << endl;
     cout << "|   Steuer     |                                                                                                              | Hildaprom.    |" << endl;
     cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "|   Adlers.    |                                                                                                              |   Moltkes.    |" << endl;
+    cout << "|   Adlers.    |                                                                                                              |   Moltkes.    |" << endl; 
     cout << "+--------------+                                                                                                              +---------------+" << endl;
     cout << "| Gemeinschaft |                                                                                                              |    W-Werk     |" << endl;
     cout << "+--------------+                                                                                                              +---------------+" << endl;
@@ -178,14 +179,18 @@ vector<int> GameFunctionManager::rollDice() {
     
         this_thread::sleep_for(chrono::milliseconds(500));
     }
+    getPlayers()[getCurrentPlayer()].move(dice[0] + dice[1]);
+
+    showTileInfomation(getPlayers()[getCurrentPlayer()].getPosition());
+    cout << "----------------------------" << endl;
     cout << "Du hast eine " << dice[0] << " und eine " << dice[1] << " gewürfelt!" << endl;
     if (checkPasch(dice)) {
         cout << "Du hast einen Pasch gewürfelt! Päsche geworfen: " << pasch_counter << endl;
+        setPaschCounter(getPaschCounter() + 1);
     } else {
-        cout << " " << endl;
+        setPaschCounter(0);
     }
-    this_thread::sleep_for(chrono::milliseconds(3000));
-    getPlayers()[getCurrentPlayer()].move(dice[0] + dice[1]);
+    this_thread::sleep_for(chrono::milliseconds(5000));
     
     return dice;
 }
@@ -203,15 +208,37 @@ bool GameFunctionManager::checkPasch(vector<int> dice) {
 Getter function for the current player.
 @return The index of the current player.
 */
-int GameFunctionManager::getCurrentPlayer() { return current_player; }
+int GameFunctionManager::getCurrentPlayer() {return current_player;}
 
 /*
-… @param counter The new value for the pasch counter.
+Getter function for the players vector.abort
+@return A pointer to the vector of Player objects.
+Note: This function returns a pointer to the vector, allowing direct access to the vector.
+*/
+vector<Player>& GameFunctionManager::getPlayers() {return players;}
+
+/*
+Getter function for the pasch counter.
+@return The current value of the pasch counter.
+*/
+int GameFunctionManager::getPaschCounter() {return pasch_counter;}
+
+/*
+ Setter function for the current player.
+ @param player The index of the new current player. 
  */
-void GameFunctionManager::setPaschCounter(int counter) { pasch_counter = counter; }
+void GameFunctionManager::setCurrentPlayer(int player) {current_player = player;}
 
-int  GameFunctionManager::getCurrentRound() { return current_round; }
+/*
+ Setter function for the pasch counter.
+ @param counter The new value for the pasch counter. 
+ */
+void GameFunctionManager::setPaschCounter(int counter) {pasch_counter = counter;}
 
-void GameFunctionManager::setCurrentRound(int round) { current_round = round; }
+int  GameFunctionManager::getCurrentRound() {return current_round;}
 
-GameMap& GameFunctionManager::getMap() { return map; }
+void GameFunctionManager::setCurrentRound(int round) {current_round = round;}
+
+GameMap& GameFunctionManager::getMap() {return map;}
+
+
