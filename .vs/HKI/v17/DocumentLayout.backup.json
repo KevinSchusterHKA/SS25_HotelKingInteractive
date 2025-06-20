@@ -3,8 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\laura\\SS25_HotelKingInteractive\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\GameFunctionManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|solutionrelative:GameFunctionManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\GameFunctionManager.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|solutionrelative:GameFunctionManager.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|solutionrelative:MenuManager.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|solutionrelative:MenuManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|solutionrelative:Server.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|solutionrelative:Server.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EE7993A9-F67C-4076-A6BB-6F6334E741A8}|HKI\\HKI.vcxproj|C:\\Users\\laura\\SS25_HotelKingInteractive\\HKI.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -18,30 +38,95 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MenuManager.hpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.hpp",
+              "RelativeDocumentMoniker": "MenuManager.hpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.hpp",
+              "RelativeToolTip": "MenuManager.hpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-06-20T11:30:50.748Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameFunctionManager.hpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\GameFunctionManager.hpp",
+              "RelativeDocumentMoniker": "GameFunctionManager.hpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\GameFunctionManager.hpp",
+              "RelativeToolTip": "GameFunctionManager.hpp",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-06-20T11:30:45.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Server.hpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.hpp",
+              "RelativeDocumentMoniker": "Server.hpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.hpp",
+              "RelativeToolTip": "Server.hpp",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-06-20T10:33:34.078Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Server.cpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.cpp",
+              "RelativeDocumentMoniker": "Server.cpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\Server.cpp",
+              "RelativeToolTip": "Server.cpp",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAALUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-20T10:03:50.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "GameFunctionManager.cpp",
+              "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\GameFunctionManager.cpp",
+              "RelativeDocumentMoniker": "GameFunctionManager.cpp",
+              "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\GameFunctionManager.cpp",
+              "RelativeToolTip": "GameFunctionManager.cpp",
+              "ViewState": "AgIAAHcAAACA8gBJuucwwLYAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-19T18:51:07.962Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MenuManager.cpp",
               "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.cpp",
               "RelativeDocumentMoniker": "MenuManager.cpp",
               "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\MenuManager.cpp",
               "RelativeToolTip": "MenuManager.cpp",
-              "ViewState": "AgIAADsAAAAAAAAAAAAAAEkAAAAGAAAAAAAAAA==",
+              "ViewState": "AgIAABoBAAAAAAAAAAAAAFEBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-06-19T18:31:40.427Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "HKI.cpp",
               "DocumentMoniker": "C:\\Users\\laura\\SS25_HotelKingInteractive\\HKI.cpp",
               "RelativeDocumentMoniker": "HKI.cpp",
               "ToolTip": "C:\\Users\\laura\\SS25_HotelKingInteractive\\HKI.cpp",
               "RelativeToolTip": "HKI.cpp",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-06-19T18:31:12.639Z",
               "EditorCaption": ""

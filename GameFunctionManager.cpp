@@ -179,13 +179,13 @@ vector<int> GameFunctionManager::rollDice() {
     
         this_thread::sleep_for(chrono::milliseconds(500));
     }
-    getPlayers()[getCurrentPlayer()].move(dice[0] + dice[1]);
+   // getPlayers()[getCurrentPlayer()].move(dice[0] + dice[1]);
 
     showTileInfomation(getPlayers()[getCurrentPlayer()].getPosition());
     cout << "----------------------------" << endl;
     cout << "Du hast eine " << dice[0] << " und eine " << dice[1] << " gewürfelt!" << endl;
     if (checkPasch(dice)) {
-        cout << "Du hast einen Pasch gewürfelt! Päsche geworfen: " << pasch_counter << endl;
+        cout << "Du hast einen Pasch gewürfelt! Päsche geworfen: " << pasch_counter +1 << endl;
         setPaschCounter(getPaschCounter() + 1);
     } else {
         setPaschCounter(0);

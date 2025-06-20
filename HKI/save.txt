@@ -1,11 +1,11 @@
 # SPIELZUSTAND SPEICHERUNG
-round = 19
+round = 15
 
-# Spieler 3
-name = Alice
-playerID = 2
-budget = 9500
-position = 19
+# Spieler 1
+name = Emilie
+playerID = 0
+budget = 2400
+position = 114
 prison = false
 prisonCount = 0
 karten = 
@@ -19,13 +19,22 @@ prison = true
 prisonCount = 3
 karten = 
 
-# Spieler 1
-name = Emilie
-playerID = 0
-budget = 2400
-position = 114
+# Spieler 3
+name = Alice
+playerID = 2
+budget = 9500
+position = 19
 prison = false
 prisonCount = 0
 karten = 
 
-naechsteSpieler = 0
+# Spieler 4
+name = Alex
+playerID = 3
+budget = 800
+position = 10
+prison = false
+prisonCount = 0
+karten =
+
+naechsteSpieler = 1

@@ -38,6 +38,7 @@ Notes:
 
 using namespace std;
 
+
 /*
 Constructor for the MenuManager class.
 Initializes the menu system and opens the log file for menu operations.
@@ -114,7 +115,8 @@ void MenuManager::doOperation(char input) {
             //Würfeln
             //vector<int> roll = getGameFunctionManager().rollDice();
             //getGameFunctionManager().checkPasch(roll) ? gameFunctionManager->setPaschCounter(getGameFunctionManager().getPaschCounter() + 1) : getGameFunctionManager().setPaschCounter(0);
-            server.Spielzug();
+            server.Spielzug(getGameFunctionManager());
+            this_thread::sleep_for(chrono::milliseconds(10000));
             break;
         }
         case 1: {

@@ -27,15 +27,17 @@ private:
 	int wunschfeldid;
 	int positionofothers;
 	bool transport;
-	MenuManager menumanager;
+	MenuManager* menumanager;
 
 
 public:
 	Server(vector<Player>& playersRef);
 	void SpielStarten();
 	void SpielLaden();
+	MenuManager& getMenuManager();
+	void setMenuManager(MenuManager& manager);
 	void showIngameDialog();
-	void Spielzug();
+	void Spielzug(GameFunctionManager& manager);
 
 
 
