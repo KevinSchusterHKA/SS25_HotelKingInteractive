@@ -28,7 +28,6 @@ private:
 	int positionofothers;
 	bool transport;
 	MenuManager menumanager;
-	GameFunctionManager gamefunctionmanager;
 
 
 public:
@@ -36,6 +35,7 @@ public:
 	void SpielStarten();
 	void SpielLaden();
 	void showIngameDialog();
+	void Spielzug();
 
 
 

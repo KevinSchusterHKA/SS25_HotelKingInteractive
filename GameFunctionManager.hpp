@@ -20,6 +20,7 @@ Notes:
 #include <string>
 
 #include "Player.hpp"
+#include "Map.hpp"
 
 using namespace std;
 
@@ -29,16 +30,20 @@ class GameFunctionManager {
         int current_round;
         int pasch_counter;
         vector<Player> players;
+        GameMap map;
 
         void clear_screen();
         int randomNumber();
 
     public:
         GameFunctionManager();
-        
+
         void addPlayer(Player player);
+
+        void showPlayerInformation(Player player);
         void showMap();
-        void showPlayerInventory();
+        void showTileInfomation(int tile);
+
         vector<int> rollDice();
         void buy();
         bool checkPasch(vector<int> dice);
@@ -49,10 +54,12 @@ class GameFunctionManager {
         vector<Player>& getPlayers();
         int getPaschCounter();
         int getCurrentRound();
+        GameMap& getMap();
 
         //Setter
+        void setPlayers(vector<Player> players);
         void setCurrentPlayer(int player);
         void setPaschCounter(int counter);
-        void setCurrentRound(int round); 
+        void setCurrentRound(int round);
 };
 #endif

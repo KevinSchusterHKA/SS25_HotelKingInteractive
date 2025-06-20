@@ -51,6 +51,7 @@ class MenuManager {
 
         
         //Setter
+        void setGameFunctionManager(GameFunctionManager& gameFunctionManager);
         void setCurrentLayer(int layer);
         void setCurrentMenu(Menu& menu);
         void setInGame(bool inGame);

@@ -34,6 +34,10 @@ Notes:
 #include "MenuManager.hpp"
 #include "Menu.hpp"
 #include "Player.hpp"
+#include "Map.hpp"
+#include "Graph.hpp"
+#include "SpecialTile.hpp"
+#include "PropertyTile.hpp"
 
 
 using namespace std;
@@ -89,11 +93,11 @@ int control_main() {
     // Menu tests
 
     IngameMenu_test();
-    Menu_test();
+    //Menu_test();
     
     //Functionality tests
 
-    diceroll_test();
+    //diceroll_test();
 
     
     return 0;
