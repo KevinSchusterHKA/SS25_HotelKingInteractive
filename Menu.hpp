@@ -51,5 +51,5 @@ class Menu {
         void setCurrentPosition(int position);
         string getHeader();
 
-};  
+};
 #endif

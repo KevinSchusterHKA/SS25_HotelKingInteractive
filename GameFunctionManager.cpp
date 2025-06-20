@@ -31,7 +31,7 @@ Notes:
 #include "GameFunctionManager.hpp"
 #include "Player.hpp"
 
-using namespace std;;
+using namespace std;
 
 /*
 Clears the console screen.
@@ -66,6 +66,93 @@ Note: Needs a check if the player already exists in the vector.
 */
 void GameFunctionManager::addPlayer(Player player) {
     players.push_back(player);
+}
+
+
+
+/**
+*Displays all of the information of the current player.
+*@param player The Player object whose information is to be displayed.
+*/
+void GameFunctionManager::showPlayerInformation(Player player) {
+    clear_screen();
+    cout << "Player " << (getCurrentPlayer() + 1) << ": " << getPlayers()[getCurrentPlayer()].getName() << endl;
+    cout << "Position: " << getPlayers()[getCurrentPlayer()].getPosition() << endl;
+    cout << "Budget: " << getPlayers()[getCurrentPlayer()].getMoney() << endl;
+    cout << "----------------------------" << endl;
+    cout << "Ereigniskarten: ";
+    int counter = 1;
+    for (auto item : player.getKarten()) {
+        cout << counter << ") " << item << endl;
+        counter++;
+    }
+    cout << " " << endl;
+    cout << "----------------------------" << endl;
+    cout << "Grundstücke: " << endl;
+    for (int i = 0; i < 40; i++) {
+        PropertyTile* propertyTile = dynamic_cast<PropertyTile*>(getMap().getTile(i).get());
+        if (propertyTile && propertyTile->getOwnerId() == player.getID()) {
+            cout << propertyTile->getName() << " - Miete: " << propertyTile->getRent() << endl;
+        }
+    }
+}
+
+/**
+ * Displays information about the tile at the given index.
+ * @param tile The index of the tile to display information for.
+ * This function clears the screen and prints the name, owner, price, and rent levels of the tile.
+ */
+void GameFunctionManager::showTileInfomation(int tile) {
+    clear_screen();
+    auto& sTile = getMap().tiles[tile];
+
+    if (auto propTile = dynamic_cast<const PropertyTile*>(sTile.get())) {
+        cout << "---------" << propTile->getName() << "---------" << endl;
+        cout << "Besitzer: " << ((propTile->getOwnerId() == -1) ? "Kein Besitzer" : getPlayers()[propTile->getOwnerId() + 1].getName()) << endl;
+        cout << " Preis : " << propTile->getPrice() << endl;
+        cout << " Miete: " << endl;
+        int counter = 1;
+        for (int rent : propTile->getRentLevels()) {
+            cout << "       Stufe " << counter << ": " << rent << endl;
+            counter++;
+        }
+    }
+    else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {
+        std::cout << "  Name: " << specialTile->getName() << "\n"
+            << "  Category: " << specialTile->getTypeString() << "\n";
+    }
+}
+
+/*
+Prints the current map of the game in the console.
+*/
+void GameFunctionManager::showMap() {
+    clear_screen();
+    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
+    cout << "| Gefängnis    | Amaliens. |  E-Werk  | Hirschs. | Kriegss. | West-Bhf | Fastplatz  | Gemeinschaft | Kaiser A. | Durlacher A. | Frei Parken   |" << endl;
+    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
+    cout << "| Ettlingers.  |                                                                                                              |   Zirkel      |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "| Rüppurers.   |                                                                                                              | Gemeinschaft  |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "| Ereignis     |                                                                                                              |    Karlss.    |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "| Eberts.      |                                                                                                              |   Brauers.    |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "| Haupt-Bhf    |                                                                                                              |   Ost-Bhf     |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "|   Steuer     |                                                                                                              | Hildaprom.    |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "|   Adlers.    |                                                                                                              |   Moltkes.    |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "| Gemeinschaft |                                                                                                              |    W-Werk     |" << endl;
+    cout << "+--------------+                                                                                                              +---------------+" << endl;
+    cout << "|   Kronens.   |                                                                                                              | Karl-Friedr.  |" << endl;
+    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------|" << endl;
+    cout << "|    LOS!      | Schlossp. |  Steuer  | Kaisers. | Ereignis | Helipad  | Erbprinzs. | Gemeinschaft |   Walds.  |   Herrens.   |  Ins Gefängis |" << endl;
+    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
+
+
 }
 
 /*
@@ -113,52 +200,18 @@ bool GameFunctionManager::checkPasch(vector<int> dice) {
 }
 
 /*
-Prints the current map of the game in the console.
-*/
-void GameFunctionManager::showMap() {
-    // Placeholder for map display logic
-}
-
-/*
-Shows the player's inventory. Includes items, money, proporty.
-*/
-void GameFunctionManager::showPlayerInventory() {
-    // Placeholder for player inventory display logic
-}
-
-/*
 Getter function for the current player.
 @return The index of the current player.
 */
-int GameFunctionManager::getCurrentPlayer() {return current_player;}
+int GameFunctionManager::getCurrentPlayer() { return current_player; }
 
 /*
-Getter function for the players vector.abort
-@return A pointer to the vector of Player objects.
-Note: This function returns a pointer to the vector, allowing direct access to the vector.
-*/
-vector<Player>& GameFunctionManager::getPlayers() {return players;}
-
-/*
-Getter function for the pasch counter.
-@return The current value of the pasch counter.
-*/
-int GameFunctionManager::getPaschCounter() {return pasch_counter;}
-
-/*
- Setter function for the current player.
- @param player The index of the new current player. 
+… @param counter The new value for the pasch counter.
  */
-void GameFunctionManager::setCurrentPlayer(int player) {current_player = player;}
+void GameFunctionManager::setPaschCounter(int counter) { pasch_counter = counter; }
 
-/*
- Setter function for the pasch counter.
- @param counter The new value for the pasch counter. 
- */
-void GameFunctionManager::setPaschCounter(int counter) {pasch_counter = counter;}
+int  GameFunctionManager::getCurrentRound() { return current_round; }
 
-int  GameFunctionManager::getCurrentRound() {return current_round;}
+void GameFunctionManager::setCurrentRound(int round) { current_round = round; }
 
-void GameFunctionManager::setCurrentRound(int round) {
-    current_round = round;
-}
+GameMap& GameFunctionManager::getMap() { return map; }
