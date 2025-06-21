@@ -169,11 +169,11 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 		return;
 	}
 
-	int ind = wieVieleSpieler;
+	int ind = 1;
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
-	for (int i = parsedPlayers.size()-1; i >= parsedPlayers.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
-		saveFile << "# Spieler " << ind-- << endl;
+	for (int i = parsedPlayers.size()-4; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
+		saveFile << "# Spieler " << ind++ << endl;
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
@@ -190,7 +190,7 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 
 		//current spieler
 		if (i == parsedPlayers.size() - wieVieleSpieler) {
-			saveFile << "naechsteSpieler = " << parsedPlayers[i].getID() << endl;
+			saveFile << "naechste Spieler ID = " << parsedPlayers[i].getID() << endl;
 		}
 	}
 	saveFile.close();

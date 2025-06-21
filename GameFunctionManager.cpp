@@ -112,12 +112,13 @@ void GameFunctionManager::showTileInfomation(int tile) {
         cout << "---------" << propTile->getName() << "---------" << endl;
         cout << "Besitzer: " << ((propTile->getOwnerId() == -1) ? "Kein Besitzer" : getPlayers()[propTile->getOwnerId()].getName()) << endl;
         cout << " Preis : " << propTile->getPrice() << endl;
-        cout << " Miete: " << endl;
-        int counter = 1;
+        cout << " Miete: " << propTile->getRentLevels()[0] << endl;
+        // Auskommentieren für alle rent levels
+		/*int counter = 1;  
         for (int rent : propTile->getRentLevels()) {
-            cout << "       Stufe " << counter << ": " << rent << endl;
+            cout << "       Stufe " << counter << ": " << propTile->getRentLevels()[0] << endl;
             counter++;
-        }
+        }*/
     } else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {
         std::cout << "  Name: " << specialTile->getName() << "\n"
                   << "  Category: " << specialTile->getTypeString() << "\n";
@@ -181,7 +182,7 @@ vector<int> GameFunctionManager::rollDice() {
     }
    // getPlayers()[getCurrentPlayer()].move(dice[0] + dice[1]);
 
-    showTileInfomation(getPlayers()[getCurrentPlayer()].getPosition());
+    //showTileInfomation(getPlayers()[getCurrentPlayer()].getPosition());
     cout << "----------------------------" << endl;
     cout << "Du hast eine " << dice[0] << " und eine " << dice[1] << " gewürfelt!" << endl;
     if (checkPasch(dice)) {

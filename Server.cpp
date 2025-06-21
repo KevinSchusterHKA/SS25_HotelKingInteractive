@@ -125,6 +125,15 @@ void Server::SpielStarten() {
 	//cout << players[0].getName() << " beginnt" << endl;
 
 ////////////////////////////////////////////////////////////saveGame speichert nicht die aktuellen Spielstände ab sondern immer die gleichen voreingestellten////////////////////////////////////////////
+	GameFunctionManager info = getMenuManager().getGameFunctionManager();
+	info.setCurrentPlayer(0);
+	config.writeLog(info);
+	info.setCurrentPlayer(1);
+	config.writeLog(info);
+	info.setCurrentPlayer(2);
+	config.writeLog(info);
+	info.setCurrentPlayer(3);
+	config.writeLog(info);
 	config.saveGame("game.log", "savetest.txt", 4);
 	cout << "Spieler gespeichert" << endl << endl;
 	
