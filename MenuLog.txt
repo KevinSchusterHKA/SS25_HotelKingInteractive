@@ -1,0 +1,6 @@
+Menu: Hotel King Interactive initialized with 4 items.
+Menu: Ingame initialized with 7 items.
+Ingame: No - Current Menu: Hotel King Interactive
+Ingame: No - Current Menu: Hotel King Interactive
+Up: H, Current Menu: Hotel King Interactive, Current Position: 24551408
+Ingame: No - Current Menu: Hotel King Interactive

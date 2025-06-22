@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "cl.exe",
+      "args": [
+        "/Zi",
+        "/EHsc",
+        "HKI.cpp",
+        "Configuration.cpp",
+        "GameFunctionManager.cpp",
+        "Graph.cpp",
+        "Map.cpp",
+        "Menu.cpp",
+        "MenuManager.cpp",
+        "Player.cpp",
+        "PropertyTile.cpp",
+        "Server.cpp",
+        "SpecialTile.cpp",
+        "test.cpp",
+        "test_main.cpp",
+        "test_server.cpp",
+        "UnitTest.cpp"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$msCompile"]
+    }
+  ]
+}

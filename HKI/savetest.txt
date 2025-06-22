@@ -1,0 +1,40 @@
+# SPIELZUSTAND SPEICHERUNG
+round = 19
+
+# Spieler 1
+name = q1
+playerID = 0
+budget = 500
+position = 0
+prison = false
+prisonCount = 0
+karten = 
+
+naechsteSpieler = 0
+# Spieler 2
+name = q2
+playerID = 1
+budget = 500
+position = 0
+prison = false
+prisonCount = 0
+karten = 
+
+# Spieler 3
+name = q3
+playerID = 2
+budget = 500
+position = 0
+prison = false
+prisonCount = 0
+karten = 
+
+# Spieler 4
+name = q4
+playerID = 3
+budget = 500
+position = 0
+prison = false
+prisonCount = 0
+karten = 
+

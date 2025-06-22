@@ -1,0 +1,40 @@
+# SPIELZUSTAND SPEICHERUNG
+round = 15
+
+# Spieler 1
+name = Emilie
+playerID = 0
+budget = 2400
+position = 10
+prison = false
+prisonCount = 0
+karten = 
+
+# Spieler 2
+name = bob
+playerID = 1
+budget = 3800
+position = 30
+prison = true
+prisonCount = 3
+karten = 
+
+# Spieler 3
+name = Alice
+playerID = 2
+budget = 9500
+position = 19
+prison = false
+prisonCount = 0
+karten = 
+
+# Spieler 4
+name = Alex
+playerID = 3
+budget = 800
+position = 10
+prison = false
+prisonCount = 0
+karten =
+
+naechsteSpieler = 1
