@@ -190,7 +190,7 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 
 		//current spieler
 		if (i == parsedPlayers.size() - wieVieleSpieler) {
-			saveFile << "naechste Spieler ID = " << parsedPlayers[i].getID() << endl;
+			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID() << endl;
 		}
 	}
 	saveFile.close();
@@ -238,7 +238,7 @@ GameFunctionManager Configuration::loadGame(string path) {
 			}
 			manager.addPlayer(tempPlayer);
 		}
-		else if (key == "naechsteSpieler") naechsteSpieler = stoi(value);
+		else if (key == "naechsteSpielerID") naechsteSpieler = stoi(value);
 	}
 	manager.setCurrentRound(round);
 	manager.setCurrentPlayer(naechsteSpieler);
