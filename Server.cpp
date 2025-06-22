@@ -138,7 +138,8 @@ void Server::SpielStarten() {
 	
 
 	this_thread::sleep_for(chrono::milliseconds(2000));
-	Spielzug(getMenuManager().getGameFunctionManager());
+	Spielzug(getMenuManager().getGameFunctionManager());	//Spiel starten
+	//GefaengnisCheck(getMenuManager().getGameFunctionManager());
 }
 
 
@@ -167,8 +168,9 @@ void Server::SpielLaden() {
 	this_thread::sleep_for(chrono::milliseconds(5000));
 	getMenuManager().setInGame(true);
 	getMenuManager().getGameFunctionManager().setPlayers(players);
-	getMenuManager().setCurrentMenu(getMenuManager().getMenus()[1]);
-	GefaengnisCheck(getMenuManager().getGameFunctionManager());	//Checken ob Spieler im Gefaengnis
+	Spielzug(getMenuManager().getGameFunctionManager());	//Spiel starten
+	//GefaengnisCheck(getMenuManager().getGameFunctionManager());				//Checken ob Spieler im Gefaengnis
+	//getMenuManager().setCurrentMenu(getMenuManager().getMenus()[1]);
 	
 }
 void Server::showIngameDialog() {
@@ -189,7 +191,8 @@ void Server::showIngameDialog() {
 
 void Server::Spielzug(GameFunctionManager& gamemanager) {
 	cout << "InGame?" << getMenuManager().isInGame() << endl;
-	//getMenuManager().setInGame(true);
+	GefaengnisCheck(gamemanager);				//Checken ob Spieler im Gefaengnis
+	getMenuManager().setInGame(true);
 	getMenuManager().setCurrentMenu(getMenuManager().getMenus()[1]);
 	getMenuManager().handleMenus();
 }
@@ -405,22 +408,26 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 				gamefunc.getPlayers()[id].setPrisonCount(0);  // Gefaengnis-Zaehler zuruecksetzen
 				cout << "Erfolgreich freigekauft, du kannst jetzt deinen Zug taetigen" << endl;
 				this_thread::sleep_for(chrono::milliseconds(400));
-				Spielzug(gamefunc);
+				//Spielzug(gamefunc);
+				return;
 			}
 			else {
 				cout << "ok viel Glueck dann beim Pasch werfen ;)" << endl;
 				Paschwerfen(gamefunc);
+				return;
 			}
 		}
 		else {
 			cout << "Du hast leider nicht genug Geld, um dich freizukaufen :( Versuch dein Glück beim Paschwerfen!" << endl;
 			Paschwerfen(gamefunc);
+			return;
 		}
 
 	}
-	else {
-		Spielzug(gamefunc);
-	}
+	//else {
+	//	Spielzug(gamefunc);
+	//	return;
+	//}
 }
 void Server::Paschwerfen(GameFunctionManager& game){
 	int id = game.getCurrentPlayer();
@@ -429,20 +436,22 @@ void Server::Paschwerfen(GameFunctionManager& game){
 	if (dice[0] == dice[1]) {									//Wenn Pasch geworfen
 		cout << "Du hast einen Pasch! Du kommst aus dem Gefaengnis frei." << endl;
 		game.getPlayers()[id].setPrisonCount(0);  // Zaehler zuruecksetzen
-		Spielzug(game);		//Spielzug fortsetzen
+		dice.clear();
+		//Spielzug(game);		//Spielzug fortsetzen
+		return;
 	}
 	else {
 		game.getPlayers()[id].deductPrisonTime();
 		if (game.getPlayers()[id].getPrisonCount() == 0) {		//wenn 3. Runde Gefaengnis
 			cout << "Kein Pasch, aber du hast deine Strafe abgesessen. Du kommst nächstes Mal frei." << endl;
-			naechsterSpieler(game);
 		}
 		else {
 			cout << "Kein Pasch. Du musst noch " << game.getPlayers()[id].getPrisonCount() << " Runden im Gefaengnis bleiben." << endl;
 		}
+		dice.clear();
 		naechsterSpieler(game);
+		return;
 	}
-	dice.clear();
 }
 
 void Server::naechsterSpieler(GameFunctionManager& manager) {
@@ -458,7 +467,8 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 	}
 	cout << "naechster Spieler" << endl;
 	this_thread::sleep_for(chrono::milliseconds(400));
-	GefaengnisCheck(manager);									//checken, ob gerade im Gefängnis
+	Spielzug(manager);								
+	//GefaengnisCheck(manager);									//checken, ob gerade im Gefängnis
 }
 MenuManager& Server::getMenuManager() { return *menumanager; }
 void Server::setMenuManager(MenuManager& manager) { this->menumanager = &manager; }
