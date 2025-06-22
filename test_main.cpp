@@ -49,7 +49,7 @@ int main() {
         config.writeLog(info);
     }
     cout << "test log fertig" << endl << endl;
-    
+    //config.clearLog();
 
 /***************************************   test saveGame  **********************************************/
     config.saveGame();

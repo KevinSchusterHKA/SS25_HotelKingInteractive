@@ -10,7 +10,7 @@ class Configuration {
 private:
 	GameSettings settings;
 	string configPath = "config.txt";
-	string logPath = "game.txt";
+	string logPath = "game.log";
 	string savePath = "save.txt";
 	string highscorePath = "highscore.txt";
 
@@ -23,6 +23,7 @@ public:
 
 	//save+load
 	void writeLog(GameFunctionManager info);
+	void clearLog();
 	void saveGame();
 	GameFunctionManager loadGame();
 	void printLoadGame(GameFunctionManager g);

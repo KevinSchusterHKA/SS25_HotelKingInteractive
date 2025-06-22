@@ -22,7 +22,7 @@ bool Configuration::loadConfig() {
 
 	string zeile;
 	while (getline(file, zeile)) {
-		// Leere Zeilen oder Kommentare Ã¼berspringen
+		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
 
 		//Such '='
@@ -102,12 +102,22 @@ void Configuration::writeLog(GameFunctionManager info) {
 	logFile.close();
 }
 
+void Configuration::clearLog() {
+	ofstream logFile(logPath, ios::trunc);	//trunc for empty file
+	if (!logFile.is_open()) {
+		cout << "Fehler beim Oeffnen der Log-Datei zum Leeren." << endl;
+		return;
+	}
+	logFile.close();
+	cout << "Log-Datei wurde erfolgreich geleert" << endl;
+}
+
 void Configuration::saveGame() {
-/***************************   lexicalische analyse fÃ¼r log-Dateil  **********************************************************/
+/***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
 	int maxRound = 0; 
-	int wieVieleSpieler = settings.playerCount + settings.cpuCount;
-	int ind = wieVieleSpieler;
+	int wieVieleSpieler = 4;
+	int ind = 1;
 	
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
@@ -121,7 +131,7 @@ void Configuration::saveGame() {
 		if (zeile.empty()) { continue; }
 		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "";
 
-		// Aufteilen der Zeile in SchlÃ¼ssel-Wert-Paare
+		// Aufteilen der Zeile in Schlüssel-Wert-Paare
 		stringstream ss(zeile);
 		string segment;
 		while (getline(ss, segment, ',')) {
@@ -167,14 +177,14 @@ void Configuration::saveGame() {
 /****************************************** Neue Dateil save  ************************************************************************/
 	ofstream saveFile("save.txt");
 	if (!saveFile.is_open()) {
-		cout << "Speicherdatei konnte nicht geÃ¶ffnet werden." << endl;
+		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
 	}
 
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
-	for (int i = parsedPlayers.size()-1; i >= parsedPlayers.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
-		saveFile << "# Spieler " << ind-- << endl;
+	for (int i = parsedPlayers.size()-wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
+		saveFile << "# Spieler " << ind++ << endl;
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
@@ -191,7 +201,7 @@ void Configuration::saveGame() {
 
 		//current spieler
 		if (i == parsedPlayers.size() - wieVieleSpieler) {
-			saveFile << "naechsteSpieler = " << parsedPlayers[i].getID() << endl;
+			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID() << endl;
 		}
 	}
 	saveFile.close();
@@ -209,7 +219,7 @@ GameFunctionManager Configuration::loadGame() {
 	string zeile;
 	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "", prison = "";
 	while (getline(saveFile, zeile)) {
-		// Leere Zeilen oder Kommentare Ã¼berspringen
+		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
 
 		//Such '='
@@ -239,7 +249,7 @@ GameFunctionManager Configuration::loadGame() {
 			}
 			manager.addPlayer(tempPlayer);
 		}
-		else if (key == "naechsteSpieler") naechsteSpieler = stoi(value);
+		else if (key == "naechsteSpielerID") naechsteSpieler = stoi(value);
 	}
 	manager.setCurrentRound(round);
 	manager.setCurrentPlayer(naechsteSpieler);
@@ -269,7 +279,7 @@ void Configuration::printLoadGame(GameFunctionManager g) {
 }
 
 void Configuration::sammlungHighscore(vector<Player> players) {
-	ofstream highscoreFile("highscore.txt", ios::app);	//append fÃ¼r speichern alle Ergebnisse
+	ofstream highscoreFile("highscore.txt", ios::app);	//append für speichern alle Ergebnisse
 	if (!highscoreFile.is_open()) {
 		cout << "Fehler beim Oeffnen der Highscore-Datei" << endl;
 		return;
@@ -294,7 +304,7 @@ vector<Player> Configuration::sortedHighscore() {
 
 	string zeile;
 	while (getline(file, zeile)) {
-		// Leere Zeilen oder Kommentare Ã¼berspringen und Leerzeichen nicht nutzlich hier. Ich habe die Highscore-Dateil selbst geschrieben
+		// Leere Zeilen oder Kommentare überspringen und Leerzeichen nicht nutzlich hier. Ich habe die Highscore-Dateil selbst geschrieben
 		//Such '='
 		size_t pos = zeile.find('=');	//size_t = unsigned integer
 		if (pos == string::npos) { continue; }	//wobei npos = nicht gefunden
