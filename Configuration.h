@@ -25,6 +25,7 @@ public:
 
 	//save+load
 	void writeLog(GameFunctionManager info);
+	void clearLog();
 	void saveGame();
 	GameFunctionManager loadGame();
 	void printLoadGame(GameFunctionManager g);
