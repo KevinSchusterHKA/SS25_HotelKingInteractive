@@ -2,38 +2,38 @@
 round = 19
 
 # Spieler 1
-name = q1
+name = aa
 playerID = 0
 budget = 500
-position = 0
+position = 10
 prison = false
-prisonCount = 0
+prisonCount = 3
 karten = 
 
-naechsteSpieler = 0
+naechsteSpielerID = 0
 # Spieler 2
-name = q2
+name = bb
 playerID = 1
 budget = 500
-position = 0
+position = 10
 prison = false
-prisonCount = 0
+prisonCount = 2
 karten = 
 
 # Spieler 3
-name = q3
+name = cc
 playerID = 2
 budget = 500
-position = 0
+position = 10
 prison = false
-prisonCount = 0
+prisonCount = 1
 karten = 
 
 # Spieler 4
-name = q4
+name = CPUSpieler0
 playerID = 3
 budget = 500
-position = 0
+position = 10
 prison = false
 prisonCount = 0
 karten = 

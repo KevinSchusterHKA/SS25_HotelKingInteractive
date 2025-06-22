@@ -211,3 +211,7 @@ Round = 1, playerID  = 0, name = q1, Budget = 500, karten = , position = 0, pris
 Round = 1, playerID  = 1, name = q2, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
 Round = 1, playerID  = 2, name = q3, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
 Round = 1, playerID  = 3, name = q4, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 0, name = aa, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 1, name = bb, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 2, name = cc, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 3, name = CPU Spieler 0, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0

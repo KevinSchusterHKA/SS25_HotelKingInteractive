@@ -115,7 +115,7 @@ void MenuManager::doOperation(char input) {
             //Würfeln
             //vector<int> roll = getGameFunctionManager().rollDice();
             //getGameFunctionManager().checkPasch(roll) ? gameFunctionManager->setPaschCounter(getGameFunctionManager().getPaschCounter() + 1) : getGameFunctionManager().setPaschCounter(0);
-            server.Spielzug(getGameFunctionManager());
+            server.Wuerfeln(getGameFunctionManager());
             this_thread::sleep_for(chrono::milliseconds(10000));
             break;
         }
