@@ -30,6 +30,7 @@ private:
 	int positionofothers;
 	bool transport;
 	MenuManager* menumanager;
+	Configuration config;
 	void Paschwerfen(GameFunctionManager& manager);
 	void naechsterSpieler(GameFunctionManager& manager);
 
@@ -39,12 +40,12 @@ public:
 	void SpielStarten();
 	void SpielLaden();
 	MenuManager& getMenuManager();
+	Configuration getConfiguration();
 	void setMenuManager(MenuManager& manager);
 	void showIngameDialog();
 	void Spielzug(GameFunctionManager& manager);
 	void Wuerfeln(GameFunctionManager& manager);
 	void GefaengnisCheck(GameFunctionManager& gamefunc);
-	void GameOverCheck(GameFunctionManager& gamefunc);
 
 
 

@@ -146,7 +146,6 @@ void Server::SpielStarten() {
 void Server::SpielLaden() {
 	MenuManager manager = MenuManager();
 	setMenuManager(manager);
-	Configuration config;
 	GameFunctionManager gamefunctionmanager = config.loadGame();
 	getMenuManager().setGameFunctionManager(gamefunctionmanager) ;
 
@@ -480,3 +479,4 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 }
 MenuManager& Server::getMenuManager() { return *menumanager; }
 void Server::setMenuManager(MenuManager& manager) { this->menumanager = &manager; }
+Configuration Server::getConfiguration() { return config; }
