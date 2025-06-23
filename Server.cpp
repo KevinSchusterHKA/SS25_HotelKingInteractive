@@ -507,3 +507,10 @@ void Server::Ende() {
 	cout << "Das Spiel ist zu Ende. Hoffe ihr hattet Spaß :)" << endl;
 	exit(0);
 }
+
+void Server::SpielstandSpeichern() {
+
+	cout << "Das Spiel wurde gespeichert. Bis zum naechsten Mal :)" << endl;	//Spielstände sind bereits gespeichert worden nach jedem Zug
+
+	exit(0);
+}

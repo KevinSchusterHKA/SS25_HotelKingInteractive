@@ -146,6 +146,7 @@ void MenuManager::doOperation(char input) {
         }
         case 5: {
             //Spielstand speichern
+			server.SpielstandSpeichern();
             break;
         }
         default: {
