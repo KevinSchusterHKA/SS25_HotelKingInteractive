@@ -168,30 +168,11 @@ void MenuManager::doOperation(char input) {
         }
         case 2: {
             //Highscores anzeigen
-
-            //Will be implemented when Config implementation is uploaded to Github
-            //Asuming the Higscorelist in the txt-Document is allready sorted
-
-            /*
-            vector<Score> highscores = Configuration.getHighscores();
-            int counter = 1;
-            for (auto score : highscores) {
-                cout << counter << ") " << score.getPlayerName() << " - " << score.getFinalBudget() << endl;
-                counter++;
-            }
-            */
-
-            //For test purposes (will be deleated later):
             clear_screen();
-            ifstream highscores("HighscoresTest.txt");
-            if (highscores.is_open()) {
-                string line;
-                while (getline(highscores, line)) {
-                    cout << line << endl;
-                }
-            }
+            server.getConfiguration().sortedHighscore();
+            server.getConfiguration().showHighscores();
+
             this_thread::sleep_for(chrono::milliseconds(10000));
-            highscores.close();
             break;
         }
         default:

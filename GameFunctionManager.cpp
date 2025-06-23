@@ -38,6 +38,20 @@ Notes:
 #define UE "\xC3\xBC"  // ü
 #define SZ "\xC3\x9F"  // ß
 
+#define BLACK "\e[0;30m"
+#define RED "\e[0;31m"
+#define GREEN "\e[0;32m"
+#define YELLOW "\e[0;33m"
+#define BLUE "\e[0;34m"
+#define MAGENTA "\e[0;35m"
+#define CYAN "\e[0;36m"
+#define WHITE "\e[0;37m"
+#define BROWN "\033[33m"
+#define PINK "\033[35m"
+#define RESET "\e[0m"
+
+const string LIGHT_ORANGE = "\033[38;5;214m";
+
 using namespace std;
 
 /*
@@ -135,31 +149,75 @@ Prints the current map of the game in the console.
 */
 void GameFunctionManager::showMap() {
     clear_screen();
-    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
-    cout << "| Gefängnis    | Amaliens. |  E-Werk  | Hirschs. | Kriegss. | West-Bhf | Fastplatz  | Gemeinschaft | Kaiser A. | Durlacher A. | Frei Parken   |" << endl;  
-    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
-    cout << "| Ettlingers.  |                                                                                                              |   Zirkel      |" << endl;
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "| Rüppurers.   |                                                                                                              | Gemeinschaft  |" << endl; 
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "| Ereignis     |                                                                                                              |    Karlss.    |" << endl;
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "| Eberts.      |                                                                                                              |   Brauers.    |" << endl;
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "| Haupt-Bhf    |                                                                                                              |   Ost-Bhf     |" << endl;
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "|   Steuer     |                                                                                                              | Hildaprom.    |" << endl;
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "|   Adlers.    |                                                                                                              |   Moltkes.    |" << endl; 
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "| Gemeinschaft |                                                                                                              |    W-Werk     |" << endl;
-    cout << "+--------------+                                                                                                              +---------------+" << endl;
-    cout << "|   Kronens.   |                                                                                                              | Karl-Friedr.  |" << endl;
-    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------|" << endl;
-    cout << "|    LOS!      | Schlossp. |  Steuer  | Kaisers. | Ereignis | Helipad  | Erbprinzs. | Gemeinschaft |   Walds.  |   Herrens.   |  Ins Gefängis |" << endl;
-    cout << "+--------------+-----------+----------+----------+----------+----------+------------+--------------+-----------+--------------+---------------+" << endl;
+    vector<string> tileNames;
+    tileNames.push_back("        LOS!         ");
+    tileNames.push_back(string(BROWN) + "Kronenstra" + string(SZ) + "e  " + RESET); 
+    tileNames.push_back(string(WHITE) + "  Aktionsfeld " + RESET);
+    tileNames.push_back(string(BROWN) + " Adlerstra" + string(SZ) + "e  " + RESET);
+    tileNames.push_back(string(WHITE) + " Aktionsfeld  " + RESET);
+    tileNames.push_back(string(WHITE) + "   Steuer     " + RESET);
+    tileNames.push_back(string(WHITE) + " Hauptbahnhof " + RESET);
+    tileNames.push_back(string(CYAN) + "  Ebertstra" + string(SZ) + "e " + RESET);
+    tileNames.push_back(string(WHITE) + "  Aktionsfeld " + RESET);
+    tileNames.push_back(string(CYAN) + "R" + string(UE) + "ppurerstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(CYAN) + "Ettlingerstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(WHITE) + "Nur zu Besuch/Gef" + string(AE) + "nis" + RESET);
+    tileNames.push_back(string(PINK) + "  Amalienstra" + string(SZ) + "e " + RESET);
+    tileNames.push_back(string(WHITE) + "E-Werk" + RESET);
+    tileNames.push_back(string(PINK) + "Hirschstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(PINK) + "Kriegstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(WHITE) + "Westbahnhof" + RESET);
+    tileNames.push_back(string(LIGHT_ORANGE) + "  Fastplatz   " + RESET);
+    tileNames.push_back(string(WHITE) + "Aktionsfeld" + RESET);
+    tileNames.push_back(string(LIGHT_ORANGE) + "Kaiserallee" + RESET);
+    tileNames.push_back(string(LIGHT_ORANGE) + "Durlacher Allee" + RESET);
+    tileNames.push_back(string(WHITE) + "Frei Parken" + RESET);
+    tileNames.push_back(string(RED) + "Zirkel" + RESET);
+    tileNames.push_back(string(WHITE) + "Aktionsfeld" + RESET);
+    tileNames.push_back(string(RED) + "Karlsstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(RED) + "Brauersstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(WHITE) + "Ostbahnhof" + RESET);
+    tileNames.push_back(string(YELLOW) + "Hildapromenade" + RESET);
+    tileNames.push_back(string(YELLOW) + "Moltkestra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(WHITE) + "Aktionsfeld" + RESET);
+    tileNames.push_back(string(WHITE) + "Wasserwerk" + RESET);
+    tileNames.push_back(string(YELLOW) + "Karl-F-Stra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(WHITE) + "Ins Gef" + string(AE) + "nis" + RESET);
+    tileNames.push_back(string(GREEN) + "  Herrenstra" + string(SZ) + "e " + RESET);
+    tileNames.push_back(string(GREEN) + "Waldstra" + string(SZ) + "e " + RESET);
+    tileNames.push_back(string(WHITE) + "Aktionsfeld" + RESET);
+    tileNames.push_back(string(GREEN) + "Erbprinzstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(WHITE) + "  Helipad  " + RESET);
+    tileNames.push_back(string(WHITE) + "Aktionsfeld" + RESET);
+    tileNames.push_back(string(BLUE) + "Kaiserstra" + string(SZ) + "e" + RESET);
+    tileNames.push_back(string(WHITE) + "Steuer" + RESET);
+    tileNames.push_back(string(BLUE) + "Schlosspromenade" + RESET);
 
-
+    cout << "+-----------------------+------------------+--------+--------------+-------------+-------------+----------------+-------------+-------------+-----------------+--------------+" << endl;
+    cout << "| " << tileNames[11] << " | " << tileNames[12] << " | " << tileNames[13] << " | " << tileNames[14] << " | " << tileNames[15] << " | " << tileNames[16] << " | " << tileNames[17] << " | " << tileNames[18] << " | " << tileNames[19] << " | " << tileNames[20] << " | " << tileNames[21] << "  | " <<endl;
+    cout << "+-----------------------+------------------+--------+--------------+-------------+-------------+----------------+-------------+-------------+-----------------+--------------+" << endl;
+    cout << "|    " << tileNames[10] << "    |                                                                                                                                     |    " << tileNames[22] << "    |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[9] << "     |                                                                                                                                     | " << tileNames[23] << "  |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[8] << "     |                                                                                                                                     | " << tileNames[24] << "  |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[7] << "     |                                                                                                                                     |" << tileNames[25] << " |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[6] << "     |                                                                                                                                     |  " << tileNames[26] << "  |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[5] << "     |                                                                                                                                     |" << tileNames[27] << "|" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[4] << "     |                                                                                                                                     | " << tileNames[28] << " |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[3] << "     |                                                                                                                                     | " << tileNames[29] << "  |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[2] << "     |                                                                                                                                     | " << tileNames[30] << "   |" << endl;
+    cout << "+-----------------------+                                                                                                                                     +--------------+" << endl;
+    cout << "|    " << tileNames[1] << "     |                                                                                                                                     | " << tileNames[31] << "|"  << endl;
+    cout << "+-----------------------+------------------+--------+--------------+-------------+-------------+----------------+-------------+-------------+-----------------+--------------+" << endl;
+    cout << "| " << tileNames[0] << " | " << tileNames[41] << " | " << tileNames[40] << " | " << tileNames[39] << " | " << tileNames[38] << " | " << tileNames[37] << " | " << tileNames[36] << " | " << tileNames[35] << " | " << tileNames[34] << " | " << tileNames[33] << " | " << tileNames[32] << "  |" << endl;
+    cout << "+-----------------------+------------------+--------+--------------+-------------+-------------+----------------+-------------+-------------+-----------------+--------------+" << endl;
 }
 
 /*
@@ -248,5 +306,6 @@ void GameFunctionManager::setCurrentRound(int round) {current_round = round;}
 GameMap& GameFunctionManager::getMap() {return map;}
 
 void GameFunctionManager::setPlayers(vector<Player> players) { this->players = players; }
+
 
 
