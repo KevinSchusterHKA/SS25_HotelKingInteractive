@@ -197,12 +197,10 @@ void Server::Spielzug(GameFunctionManager& gamemanager) {
 	getMenuManager().handleMenus();
 }
 void Server::Wuerfeln(GameFunctionManager& manager) {
-	//players= manager.getPlayers();
-	//cout << "Player 3" << players[2].getName() << endl;
+
 	int id = manager.getCurrentPlayer();
 	//cout << "id:" << id << endl;
 
-	//Spielzug
 	do {																			
 		dice = manager.rollDice();
 		cout << "gewuerfelte Zahlen: " << dice[0] << ", " << dice[1] << endl;
@@ -235,13 +233,14 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 					positionofothers = manager.getPlayers()[i].getPosition();
 					if (positionofothers == tile) {								//dieser Player steht schon auf dem Feld
 						cout << manager.getPlayers()[i].getName() << "befindet sich gerade schon auf diesem Feld. Gib 50 Euro ab!" << endl;
-						if (manager.getPlayers()[id].getMoney() >= 50) {
+						if (manager.getPlayers()[id].getMoney() > 50) {
 							manager.getPlayers()[id].addMoney(-50);
 							manager.getPlayers()[i].addMoney(50);
 						}
 						else {													//nicht genug Geld
 							cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
 							//Game Over
+							manager.getPlayers()[id].setGameOver();
 						}
 					}
 				}
@@ -254,7 +253,7 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 				price = propTile->getPrice();
 
 				if (propTile->getOwnerId() == -1) {											//wenn Feld noch nicht gekauft
-					if (manager.getPlayers()[id].getMoney() >= price) {									//wenn genug Geld zum Kaufen da
+					if (manager.getPlayers()[id].getMoney() > price) {									//wenn genug Geld zum Kaufen da
 						cout << "Moechtest du das Feld kaufen?(dein Budget:"<<manager.getPlayers()[id].getMoney()<<") (0: nein, 1:ja)" << endl;
 						cin >> buyfield;
 						if (buyfield) {
@@ -275,14 +274,15 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 
 					cout << "Das Fed besitzt " << ownerid << ". Du musst " << rent << " Euro Miete zahlen." << endl;
 
-					if (manager.getPlayers()[id].getMoney() >= rent) {					//genug Geld fuer Rente
+					if (manager.getPlayers()[id].getMoney() > rent) {					//genug Geld fuer Miete
 
 						manager.getPlayers()[id].addMoney(-rent);
 						manager.getPlayers()[ownerid].addMoney(rent);
 					}
-					else {													//nicht genug Geld fuer Rente
+					else {													//nicht genug Geld fuer Miete
 						cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
 							//Game Over
+						manager.getPlayers()[id].setGameOver();
 					}
 				}
 			}
@@ -305,25 +305,27 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 				}
 				else if (specialtile == "Tax") {								//Einkommenssteuer zahlen
 					cout << "Zahle 200 Euro Einkommenssteuer!" << endl;
-					if (manager.getPlayers()[id].getMoney() >= 100) {					//genug Geld
+					if (manager.getPlayers()[id].getMoney() > 100) {					//genug Geld
 
 						manager.getPlayers()[id].addMoney(-200);
 					}
 					else {													//nicht genug Geld
 						cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
 						//Game Over
+						manager.getPlayers()[id].setGameOver();
 					}
 				}
 				else if (specialtile == "LuxuryTax") {							//Zusatzsteuer zahlen
 
 					cout << "Zahle 100 Euro Zusatzsteuer!" << endl;
-					if (manager.getPlayers()[id].getMoney() >= 200) {					//genug Geld
+					if (manager.getPlayers()[id].getMoney() > 200) {					//genug Geld
 
 						manager.getPlayers()[id].addMoney(-200);
 					}
 					else {													//nicht genug Geld
 						cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
 						//Game Over
+						manager.getPlayers()[id].setGameOver();
 					}
 				}
 				else if (specialtile == "Event") {								//Eventfeld
@@ -337,7 +339,7 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 					cout << "Du darfst dir ein beliebiges Feld aussuchen, zu dem du fliegen kannst. Das kostet aber 100 Euro." << endl;
 
 
-					if (manager.getPlayers()[id].getMoney() >= 100) {					//genug Geld zum Fliegen
+					if (manager.getPlayers()[id].getMoney() > 100) {					//genug Geld zum Fliegen
 						cout << "Moechtest du fliegen? (nein=0 ja=1)" << endl;
 						cin >> transport;
 
@@ -361,7 +363,7 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 				}
 				else if (specialtile == "Bahnhof") {							//Bahnhof
 					cout << "Du darfst dir einen beliebigen Bahnhof aussuchen, zu dem du fahren kannst. Das kostet aber 50 Euro." << endl;
-					if (manager.getPlayers()[id].getMoney() >= 50) {					//genug Geld zum Fliegen
+					if (manager.getPlayers()[id].getMoney() > 50) {					//genug Geld zum Fliegen
 						cout << "Moechtest du fahren? (nein=0 ja=1)" << endl;
 						cin >> transport;
 						if (transport) {									//moechte fahren
@@ -400,7 +402,7 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 
 	if (gamefunc.getPlayers()[id].getPrisonCount() > 0) {
 		cout << gamefunc.getPlayers()[id].getName() <<"befindet sich leider im Gefaengnis." << endl;
-		if (gamefunc.getPlayers()[id].getMoney() >= 100) {			//wenn genug Geld zum Freikaufen da
+		if (gamefunc.getPlayers()[id].getMoney() > 100) {			//wenn genug Geld zum Freikaufen da
 			cout << "Moechtest du dich freikaufen(100 Euro) oder lieber versuchen, einen Pasch zu wuerfeln ? (dein budget : " << gamefunc.getPlayers()[id].getMoney() << ")" << " (0: wuerfeln, 1 : freikaufen)" << endl;
 			cin >> freikaufen;
 			if (freikaufen) {
@@ -443,7 +445,7 @@ void Server::Paschwerfen(GameFunctionManager& game){
 	else {
 		game.getPlayers()[id].deductPrisonTime();
 		if (game.getPlayers()[id].getPrisonCount() == 0) {		//wenn 3. Runde Gefaengnis
-			cout << "Kein Pasch, aber du hast deine Strafe abgesessen. Du kommst nächstes Mal frei." << endl;
+			cout << "Kein Pasch, aber du hast deine Strafe abgesessen. Du kommst naechstes Mal frei." << endl;
 		}
 		else {
 			cout << "Kein Pasch. Du musst noch " << game.getPlayers()[id].getPrisonCount() << " Runden im Gefaengnis bleiben." << endl;
@@ -456,19 +458,36 @@ void Server::Paschwerfen(GameFunctionManager& game){
 
 void Server::naechsterSpieler(GameFunctionManager& manager) {
 	int id = manager.getCurrentPlayer();
-	if (id == 3) {													//naechster Spieler
-		id = 0;
+	bool nochmal = false;
+
+	//Checken ob Game Over
+	do {	
+		switch (id) {
+		case 0:
+			manager.getPlayers()[1].getGameOver() ? id = 2 : id = 1;
+			id == 2 ? nochmal = true : nochmal = false;	//wenn Spieler 2, dann nochmal abfragen ob Game Over
+			break;
+		case 1:
+			manager.getPlayers()[2].getGameOver() ? id = 3 : id = 2;
+			id == 3 ? nochmal = true : nochmal = false;
+			break;
+		case 2:
+			manager.getPlayers()[3].getGameOver() ? id = 0 : id = 3;
+			id == 0 ? manager.setCurrentRound(manager.getCurrentRound() + 1) : manager.setCurrentRound(manager.getCurrentRound());	//wenn Spieler 3, dann neue Runde
+			id == 0 ? nochmal = true : nochmal = false;
+			break;
+		case 3:
+			manager.getPlayers()[0].getGameOver() ? id = 1 : id = 0;
+			manager.setCurrentRound(manager.getCurrentRound() + 1);
+			id == 1 ? nochmal = true : nochmal = false;
+			break;
+		}
 		manager.setCurrentPlayer(id);
-		manager.setCurrentRound(manager.getCurrentRound() + 1);		//neue Runde
-	}
-	else {
-		id = id + 1;
-		manager.setCurrentPlayer(id);
-	}
+	} while (nochmal);
+
 	cout << "naechster Spieler" << endl;
 	this_thread::sleep_for(chrono::milliseconds(400));
-	Spielzug(manager);								
-	//GefaengnisCheck(manager);									//checken, ob gerade im Gefängnis
+	GefaengnisCheck(manager);									//checken, ob gerade im Gefaengnis
 }
 MenuManager& Server::getMenuManager() { return *menumanager; }
 void Server::setMenuManager(MenuManager& manager) { this->menumanager = &manager; }

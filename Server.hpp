@@ -44,6 +44,7 @@ public:
 	void Spielzug(GameFunctionManager& manager);
 	void Wuerfeln(GameFunctionManager& manager);
 	void GefaengnisCheck(GameFunctionManager& gamefunc);
+	void GameOverCheck(GameFunctionManager& gamefunc);
 
 
 

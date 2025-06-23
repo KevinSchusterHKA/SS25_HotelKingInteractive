@@ -7,7 +7,7 @@
 
 // Konstruktor-Implementierung
 Player::Player(const std::string& name, int startMoney, int playerID)
-    : name(name), money(startMoney), currentField(0), prison(false), prisonCount(0), playerID(playerID) {}
+    : name(name), money(startMoney), currentField(0), prison(false), prisonCount(0), gameover(false), playerID(playerID) {}
 
 
 std::string Player::getName() const {
@@ -28,6 +28,10 @@ bool Player::inPrison() const {
 
 int Player::getPrisonCount() const {
     return prisonCount;
+}
+
+bool Player::getGameOver() const {
+    return gameover;
 }
 
 int Player::getID() const {
@@ -57,6 +61,10 @@ void Player::setPrison() {
 
 void Player::setPrisonCount(int neuPrisonCount) {
     prisonCount = neuPrisonCount;
+}
+
+void Player::setGameOver() {
+    gameover = true;
 }
 
 void Player::deductPrisonTime() {
