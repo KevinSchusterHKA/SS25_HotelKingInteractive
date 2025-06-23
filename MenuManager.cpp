@@ -36,6 +36,11 @@ Notes:
 #include "Map.hpp"
 #include "Server.hpp"
 
+#define AE "\xC3\xA4"  // ä
+#define OE "\xC3\xB6"  // ö
+#define UE "\xC3\xBC"  // ü
+#define SZ "\xC3\x9F"  // ß
+
 using namespace std;
 
 
@@ -62,11 +67,9 @@ void MenuManager::initMenus() {
 
     //Main Menu
     Menu startMenu(0, "Hotel King Interactive", { "Neues Spiel", "Spiel laden", "Highscores", "Exit" }, false);
-    //Menu newGameMenu(1, "Neues Spiel starten", {"Anzahl Spieler", "Regeln einstellen", "Spiel starten", "Zurück"}, true);
-    //Menu loadGameMenu(1, "Spiel laden",  {"Spiel laden", "Zurück"}, true);
 
     //Ingame Overlay Menu
-    Menu inGameMenu(0, "Ingame", { "Würfeln", "Handeln und Tauschen", "Inventar anzeigen", "Feld anzeigen", "Spielbrett anzeigen", "Spielstand speichern", "Exit" }, true);
+    Menu inGameMenu(0, "Ingame", { "W" + string(UE) + "rfeln", "Handeln und Tauschen", "Inventar anzeigen", "Feld anzeigen", "Spielbrett anzeigen", "Spielstand speichern", "Exit" }, true);
 
     menus.push_back(startMenu);
     menus.push_back(inGameMenu);

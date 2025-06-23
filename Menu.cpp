@@ -25,6 +25,11 @@ Notes:
 #include "Menu.hpp"
 #include "Map.hpp"
 
+#define AE "\xC3\xA4"  // ä
+#define OE "\xC3\xB6"  // ö
+#define UE "\xC3\xBC"  // ü
+#define SZ "\xC3\x9F"  // ß
+
 using namespace std;
 
 
@@ -56,7 +61,7 @@ This function handles the user input for navigating through the menu.
 void Menu::displayMainMenu() {
     clear_screen();
     cout << getHeader() << endl; // Display the header of the menu
-    cout << "Zum navigieren im Menü die Pfeiltasten und Enter verwenden." << endl;
+    cout << "Zum navigieren im Men" << UE << " die Pfeiltasten und Enter verwenden." << endl;
     cout << "------------------" << endl;
 
     for (int i = 0; i < menuitems.size(); i++) {
