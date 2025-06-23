@@ -33,7 +33,12 @@ Notes:
 #include "Player.hpp"
 #include "Map.hpp"
 
-using namespace std;;
+#define AE "\xC3\xA4"  // ä
+#define OE "\xC3\xB6"  // ö
+#define UE "\xC3\xBC"  // ü
+#define SZ "\xC3\x9F"  // ß
+
+using namespace std;
 
 /*
 Clears the console screen.
@@ -90,7 +95,7 @@ void GameFunctionManager::showPlayerInformation(Player player) {
     }
     cout << " " << endl;
     cout << "----------------------------" << endl;
-    cout << "Grundstücke: " << endl;
+    cout << "Grundst" + string(UE) + "cke: " << endl;
     for (int i = 0; i < 40; i++) {
         PropertyTile* propertyTile = dynamic_cast<PropertyTile*>(getMap().getTile(i).get());
         if (propertyTile && propertyTile->getOwnerId() == player.getID()) {
@@ -184,9 +189,9 @@ vector<int> GameFunctionManager::rollDice() {
 
     //showTileInfomation(getPlayers()[getCurrentPlayer()].getPosition());
     cout << "----------------------------" << endl;
-    cout << "Du hast eine " << dice[0] << " und eine " << dice[1] << " gewürfelt!" << endl;
+    cout << "Du hast eine " << dice[0] << " und eine " << dice[1] << " gew" + string(UE) + "rfelt!" << endl;
     if (checkPasch(dice)) {
-        cout << "Du hast einen Pasch gewürfelt! Päsche geworfen: " << pasch_counter +1 << endl;
+        cout << "Du hast einen Pasch gew" + string(UE) + "rfelt! P" + string(AE) + "sche geworfen: " << pasch_counter +1 << endl;
         setPaschCounter(getPaschCounter() + 1);
     } else {
         setPaschCounter(0);
