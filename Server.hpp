@@ -31,8 +31,10 @@ private:
 	bool transport;
 	MenuManager* menumanager;
 	Configuration config;
+	GameSettings settings;
 	void Paschwerfen(GameFunctionManager& manager);
 	void naechsterSpieler(GameFunctionManager& manager);
+	void Ende();
 
 
 public:
