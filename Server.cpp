@@ -27,6 +27,10 @@ Server::Server(std::vector<Player>& playersRef)
 	: players(playersRef) {
 }
 
+/**
+ * @brief Startet ein neues Spiel, initialisiert Spieler, Menüs und Einstellungen.
+ * Fragt die Anzahl der Spieler ab, erstellt Spielerobjekte, setzt Startpositionen und startet das Spiel.
+ */
 void Server::SpielStarten() {
 
 	MenuManager manager = MenuManager();
@@ -142,7 +146,10 @@ void Server::SpielStarten() {
 	//GefaengnisCheck(getMenuManager().getGameFunctionManager());
 }
 
-
+/**
+ * @brief Lädt ein gespeichertes Spiel und stellt den Spielzustand wieder her.
+ * Initialisiert das Menü, lädt den Spielstand und setzt die Spieler entsprechend.
+ */
 void Server::SpielLaden() {
 	MenuManager manager = MenuManager();
 	setMenuManager(manager);
@@ -161,6 +168,10 @@ void Server::SpielLaden() {
 	//getMenuManager().setCurrentMenu(getMenuManager().getMenus()[1]);
 	
 }
+
+/**
+ * @brief Zeigt den Ingame-Dialog an und ruft das Ingame-Menü auf.
+ */
 void Server::showIngameDialog() {
 	/*
 	cout << "Player 1: " << players[0].getName() << "Position " << players[0].getPosition() << endl;
@@ -177,6 +188,11 @@ void Server::showIngameDialog() {
 
 }
 
+/**
+ * @brief Führt den Spielzug für den aktuellen Spieler aus.
+ * Prüft, ob der Spieler im Gefängnis ist, setzt das Spiel auf "InGame" und ruft das Ingame-Menü auf.
+ * @param gamemanager Referenz auf den GameFunctionManager.
+ */
 void Server::Spielzug(GameFunctionManager& gamemanager) {
 	cout << "InGame?" << getMenuManager().isInGame() << endl;
 	GefaengnisCheck(gamemanager);				//Checken ob Spieler im Gefaengnis
@@ -184,6 +200,12 @@ void Server::Spielzug(GameFunctionManager& gamemanager) {
 	getMenuManager().setCurrentMenu(getMenuManager().getMenus()[1]);
 	getMenuManager().handleMenus();
 }
+
+/**
+ * @brief Führt den Würfelvorgang für den aktuellen Spieler aus.
+ * Bewegt den Spieler, prüft Spezialfelder, behandelt Miete, Kauf und Game Over.
+ * @param manager Referenz auf den GameFunctionManager.
+ */
 void Server::Wuerfeln(GameFunctionManager& manager) {
 
 	int id = manager.getCurrentPlayer();
@@ -385,6 +407,11 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 
 	naechsterSpieler(manager);
 }
+
+/**
+ * @brief Prüft, ob der aktuelle Spieler im Gefängnis ist, und behandelt die Freikauf- oder Paschlogik.
+ * @param gamefunc Referenz auf den GameFunctionManager.
+ */
 void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 	int id = gamefunc.getCurrentPlayer();
 
@@ -419,6 +446,11 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 	//	return;
 	//}
 }
+
+/**
+ * @brief Führt einen Paschwurf im Gefängnis durch und setzt ggf. den Spieler frei.
+ * @param game Referenz auf den GameFunctionManager.
+ */
 void Server::Paschwerfen(GameFunctionManager& game){
 	int id = game.getCurrentPlayer();
 	dice = game.rollDice();
@@ -444,6 +476,10 @@ void Server::Paschwerfen(GameFunctionManager& game){
 	}
 }
 
+/**
+ * @brief Wechselt zum nächsten Spieler, prüft auf Game Over und startet ggf. eine neue Runde.
+ * @param manager Referenz auf den GameFunctionManager.
+ */
 void Server::naechsterSpieler(GameFunctionManager& manager) {
 	int id = manager.getCurrentPlayer();
 	bool nochmal = false;
@@ -499,15 +535,36 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 	this_thread::sleep_for(chrono::milliseconds(400));
 	GefaengnisCheck(manager);									//checken, ob gerade im Gefaengnis
 }
+
+/**
+ * @brief Gibt eine Referenz auf den aktuellen MenuManager zurück.
+ * @return Referenz auf MenuManager.
+ */
 MenuManager& Server::getMenuManager() { return *menumanager; }
+
+/**
+ * @brief Setzt den MenuManager.
+ * @param manager Referenz auf MenuManager.
+ */
 void Server::setMenuManager(MenuManager& manager) { this->menumanager = &manager; }
+
+/**
+ * @brief Gibt die aktuelle Konfiguration zurück.
+ * @return Konfigurationsobjekt.
+ */
 Configuration Server::getConfiguration() { return config; }
 
+/**
+ * @brief Beendet das Spiel nach Rundenlimiterreichung oder 'last one standing'.
+ */
 void Server::Ende() {
 	cout << "Das Spiel ist zu Ende. Hoffe ihr hattet Spaß :)" << endl;
 	exit(0);
 }
 
+/**
+* @brief Aufruf aus 'Spielstand Speichern'. Beendet das Spiel.
+*/
 void Server::SpielstandSpeichern() {
 
 	cout << "Das Spiel wurde gespeichert. Bis zum naechsten Mal :)" << endl;	//Spielstände sind bereits gespeichert worden nach jedem Zug

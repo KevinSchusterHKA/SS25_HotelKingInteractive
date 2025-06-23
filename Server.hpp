@@ -10,7 +10,9 @@
 
 using namespace std;
 
-
+/**
+* @brief Server class that manages the game state and player interactions.
+*/
 class Server {
 private:
 	//vector<Player> players;

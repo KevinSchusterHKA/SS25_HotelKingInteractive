@@ -1,7 +1,10 @@
 Round = 1, playerID  = 0, name = Tom, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
-Round = 1, playerID  = 1, name = Sinan, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 1, name = Tim, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
 Round = 1, playerID  = 2, name = CPU Spieler 0, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
 Round = 1, playerID  = 3, name = CPU Spieler 1, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
 Round = 1, playerID  = 0, name = Tom, Budget = 400, karten = , position = 6, prison  = false, prisonCount  = 0
-Round = 1, playerID  = 1, name = Sinan, Budget = 500, karten = , position = 5, prison  = false, prisonCount  = 0
-Round = 1, playerID  = 2, name = CPU Spieler 0, Budget = 500, karten = , position = 11, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 1, name = Tim, Budget = 170, karten = , position = 16, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 2, name = CPU Spieler 0, Budget = 300, karten = , position = 7, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 3, name = CPU Spieler 1, Budget = 500, karten = , position = 17, prison  = false, prisonCount  = 0
+Round = 2, playerID  = 0, name = Tom, Budget = 350, karten = , position = 17, prison  = false, prisonCount  = 0
+Round = 2, playerID  = 1, name = Tim, Budget = 170, karten = , position = 21, prison  = false, prisonCount  = 0
