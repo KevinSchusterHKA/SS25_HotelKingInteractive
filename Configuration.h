@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include "GameSettings.h"
-#include "Score.h"
 #include "GameFunctionManager.hpp"
 
 using namespace std;
@@ -12,17 +11,28 @@ using namespace std;
 class Configuration {
 private:
 	GameSettings settings;
-	vector<Score> highscores;
+	string configPath = "../Config/config.txt";
+	string logPath = "game.txt";
+	string savePath = "save.txt";
+	string highscorePath = "highscore.txt";
 
 public:
-	bool loadConfig(string path);
-	void printSettings();
-	void writeLog(GameFunctionManager info);
-
-	void saveGame(string logPath, string savePath, int wieVieleSpieler);
-	GameFunctionManager loadGame(string path);
-
 	GameSettings getSettings();
-	
+
+	//config
+	bool loadConfig();
+	void printSettings();
+
+	//save+load
+	void writeLog(GameFunctionManager info);
+	void clearLog();
+	void saveGame();
+	GameFunctionManager loadGame();
+	void printLoadGame(GameFunctionManager g);
+
+	//highscore
+	void sammlungHighscore(vector<Player> players);
+	vector<Player> sortedHighscore();
+	void showHighscore(vector<Player> p);
 };
 #endif

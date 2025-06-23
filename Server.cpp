@@ -37,7 +37,7 @@ void Server::SpielStarten() {
 
 	Configuration config;
 
-	while (!config.loadConfig(rulesPath)) {
+	while (!config.loadConfig()) {
 
 		cout << "Pfad ungueltig \n \n Pfad zur Konfigurationsdatei: " << endl;
 		cin >> rulesPath; //selber eingeben, falls ungueltig
@@ -133,7 +133,7 @@ void Server::SpielStarten() {
 	config.writeLog(info);
 	info.setCurrentPlayer(3);
 	config.writeLog(info);
-	config.saveGame("game.log", "savetest.txt", 4);
+	config.saveGame();
 	cout << "Spieler gespeichert" << endl << endl;
 	
 
@@ -147,22 +147,11 @@ void Server::SpielLaden() {
 	MenuManager manager = MenuManager();
 	setMenuManager(manager);
 	Configuration config;
-	GameFunctionManager gamefunctionmanager = config.loadGame("savetest.txt");
+	GameFunctionManager gamefunctionmanager = config.loadGame();
 	getMenuManager().setGameFunctionManager(gamefunctionmanager) ;
 
-	cout << "Aktuelle Runde: " << getMenuManager().getGameFunctionManager().getCurrentRound() << endl;
-	cout << "Aktueller Spieler: " << getMenuManager().getGameFunctionManager().getCurrentPlayer() << endl;
+	config.printLoadGame(gamefunctionmanager);	//Spieler und Runden anzeigen
 
-	for (const Player& p : getMenuManager().getGameFunctionManager().getPlayers()) {
-		cout << "-----------------------------" << endl;
-		cout << "Name: " << p.getName() << endl;
-		cout << "ID: " << p.getID() << endl;
-		cout << "Budget: " << p.getMoney() << endl;
-		cout << "Position: " << p.getPosition() << endl;
-		cout << "Im Gefaengnis? " << (p.inPrison() ? "Ja" : "Nein") << endl;
-		cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
-		cout << endl;
-	}
 	players = getMenuManager().getGameFunctionManager().getPlayers();
 	//cout << "Position " << players[0].getName() << ": " << players[0].getPosition() << endl; //test
 	this_thread::sleep_for(chrono::milliseconds(5000));

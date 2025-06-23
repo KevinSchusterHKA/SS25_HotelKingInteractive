@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #include "Configuration.h"
 #include "Player.hpp"
 
@@ -10,13 +11,13 @@ GameSettings Configuration::getSettings() {
 	return settings;
 }
 
-bool Configuration::loadConfig(string path) {
-	ifstream file(path);	//offen
+bool Configuration::loadConfig() {
+	ifstream file(configPath);	//offen
 
 	if (!file.is_open()) {		//Ob nicht offen
-		cout << "Datei konnte nicht geöffnet werden" << endl; 
+		cout << "Log-Datei konnte nicht geoeffnet werden" << endl;
 		return false;
-	}	
+	}
 
 
 	string zeile;
@@ -73,10 +74,9 @@ void Configuration::printSettings() {
 }
 
 void Configuration::writeLog(GameFunctionManager info) {
-	ofstream logFile("game.log", ios::app);		//append
-
+	ofstream logFile(logPath, ios::app);		//append
 	if (!logFile.is_open()) {
-		cout << "Fehler beim Öffnen der Log-Datei." << endl;
+		cout << "Fehler beim Oeffnen der Log-Datei." << endl;
 		return;
 	}
 
@@ -86,30 +86,42 @@ void Configuration::writeLog(GameFunctionManager info) {
 
 	//write
 	logFile << "Round = " << info.getCurrentRound()
-			<< ", playerID  = " << p.getID()
-			<< ", name = " << p.getName()
-			<< ", Budget = " << p.getMoney()
-			<< ", karten = ";
+		<< ", playerID  = " << p.getID()
+		<< ", name = " << p.getName()
+		<< ", Budget = " << p.getMoney()
+		<< ", karten = ";
 	vector<string> karten = p.getKarten();
 	for (size_t i = 0; i < karten.size(); ++i) {
 		logFile << karten[i];
 		if (i != karten.size() - 1) logFile << "|";
 	}
 	logFile << ", position = " << p.getPosition()
-			<< ", prison  = " << (p.inPrison() ? "true" : "false")
-			<< ", prisonCount  = " << p.getPrisonCount() << endl;
+		<< ", prison  = " << (p.inPrison() ? "true" : "false")
+		<< ", prisonCount  = " << p.getPrisonCount() << endl;
 
 	logFile.close();
 }
 
-void Configuration::saveGame(string logPath, string savePath, int wieVieleSpieler) {
+void Configuration::clearLog() {
+	ofstream logFile(logPath, ios::trunc);	//trunc for empty file
+	if (!logFile.is_open()) {
+		cout << "Fehler beim Oeffnen der Log-Datei zum Leeren." << endl;
+		return;
+	}
+	logFile.close();
+	cout << "Log-Datei wurde erfolgreich geleert" << endl;
+}
+
+void Configuration::saveGame() {
 /***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
 	int maxRound = 0; 
+	int wieVieleSpieler = 4;
+	int ind = 1;
 	
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
-		cout << "Fehler beim Öffnen der Log-Datei." << endl;
+		cout << "Fehler beim Oeffnen der Log-Datei." << endl;
 		return;
 	}
 
@@ -163,16 +175,15 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	logFile.close();
 
 /****************************************** Neue Dateil save  ************************************************************************/
-	ofstream saveFile(savePath);
+	ofstream saveFile("save.txt");
 	if (!saveFile.is_open()) {
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
 	}
 
-	int ind = 1;
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
-	for (int i = parsedPlayers.size()-4; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
+	for (int i = parsedPlayers.size()-wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
 		saveFile << "# Spieler " << ind++ << endl;
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
@@ -196,12 +207,12 @@ void Configuration::saveGame(string logPath, string savePath, int wieVieleSpiele
 	saveFile.close();
 }
 
-GameFunctionManager Configuration::loadGame(string path) {
+GameFunctionManager Configuration::loadGame() {
 	GameFunctionManager manager;
-	ifstream saveFile(path);	//offen
+	ifstream saveFile(savePath);	//offen
 
 	if (!saveFile.is_open()) {		//Ob nicht offen
-		cout << "Datei konnte nicht geöffnet werden" << endl;
+		cout << "Save-Datei konnte nicht geoeffnet werden" << endl;
 		return manager;	//leer
 	}
 
@@ -244,5 +255,79 @@ GameFunctionManager Configuration::loadGame(string path) {
 	manager.setCurrentPlayer(naechsteSpieler);
 	saveFile.close();
 	return manager;
+}
+
+void Configuration::printLoadGame(GameFunctionManager g) {
+	cout << "Aktuelle Runde: " << g.getCurrentRound() << endl;
+	cout << "Aktuelle Spieler: " << g.getCurrentPlayer() << endl;
+
+	for (const Player& p : g.getPlayers()) {
+		cout << "-----------------------------" << endl;
+		cout << "Name: " << p.getName() << endl;
+		cout << "ID: " << p.getID() << endl;
+		cout << "Budget: " << p.getMoney() << endl;
+		cout << "Position: " << p.getPosition() << endl;
+		cout << "Im Gefaengnis? " << (p.getPrisonCount() > 0 ? "Ja" : "Nein") << endl;
+		cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
+		cout << "Karten: ";
+		vector<string> karten = p.getKarten();
+		for (const string& k : karten) {
+			cout << k << " ";
+		}
+		cout << endl;
+	}
+}
+
+void Configuration::sammlungHighscore(vector<Player> players) {
+	ofstream highscoreFile("highscore.txt", ios::app);	//append für speichern alle Ergebnisse
+	if (!highscoreFile.is_open()) {
+		cout << "Fehler beim Oeffnen der Highscore-Datei" << endl;
+		return;
+	}
+
+	//write
+	for (int i = 0; i < players.size(); i++) {
+		highscoreFile << players[i].getName() << "=" << players[i].getMoney() << endl;
+	}
+
+	highscoreFile.close();
+}
+
+vector<Player> Configuration::sortedHighscore() {
+	vector<Player> sortedPlayers;
+
+	ifstream file(highscorePath);	//offen
+	if (!file.is_open()) {		//Ob nicht offen
+		cout << "Datei-Highscore konnte nicht geoeffnet werden" << endl;
+		return sortedPlayers;
+	}
+
+	string zeile;
+	while (getline(file, zeile)) {
+		// Leere Zeilen oder Kommentare überspringen und Leerzeichen nicht nutzlich hier. Ich habe die Highscore-Dateil selbst geschrieben
+		//Such '='
+		size_t pos = zeile.find('=');	//size_t = unsigned integer
+		if (pos == string::npos) { continue; }	//wobei npos = nicht gefunden
+
+		string name = zeile.substr(0, pos);
+		string score = zeile.substr(pos + 1);
+
+		//push
+		Player p(name, stoi(score), 0);
+		sortedPlayers.push_back(p);
+	}
+	file.close();
+
+	//sortier highscore
+	sort(sortedPlayers.begin(), sortedPlayers.end(), [](Player& a, Player& b) { return a.getMoney() > b.getMoney(); });
+
+
+	return sortedPlayers;
+}
+
+void Configuration::showHighscore(vector<Player> p) {
+	for (int i = 0; i < p.size(); i++) {
+		cout << p[i].getName() << " " << p[i].getMoney() << endl;
+	}
 }
 

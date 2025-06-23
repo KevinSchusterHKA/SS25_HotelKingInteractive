@@ -8,7 +8,7 @@ using namespace std;
 int config_main() {
     Configuration config;
 /***************************************   test loadConfig  **********************************************/
-    if (config.loadConfig("Config\config.txt")) {
+    if (config.loadConfig()) {
         cout << "Konfiguration erfolgreich geladen:\n";
         config.printSettings();
     }
@@ -49,34 +49,22 @@ int config_main() {
         config.writeLog(info);
     }
     cout << "test log fertig" << endl << endl;
-    
+    //config.clearLog();
 
 /***************************************   test saveGame  **********************************************/
-    config.saveGame("game.log", "save.txt", 3);
+    config.saveGame();
     cout << "test save fertig" << endl << endl;
 
-/***************************************   test loadGame  **********************************************/
+    /***************************************   test loadGame  **********************************************/
+    GameFunctionManager manager = config.loadGame();
+    config.printLoadGame(manager);
 
-    GameFunctionManager manager = config.loadGame("save.txt");
-
-    cout << "Aktuelle Runde: " << manager.getCurrentRound() << endl;
-    cout << "Aktuelle Spieler: " << manager.getCurrentPlayer() << endl;
-
-    for (const Player& p : manager.getPlayers()) {
-        cout << "-----------------------------" << endl;
-        cout << "Name: " << p.getName() << endl;
-        cout << "ID: " << p.getID() << endl;
-        cout << "Budget: " << p.getMoney() << endl;
-        cout << "Position: " << p.getPosition() << endl;
-        cout << "Im Gefaengnis? " << (p.inPrison() ? "Ja" : "Nein") << endl;
-        cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
-        cout << "Karten: ";
-        vector<string> karten = p.getKarten();
-        for (const string& k : karten) {
-            cout << k << " ";
-        }
-        cout << endl;
-    }
+    /***************************************   test Highscore  **********************************************/
+    config.sammlungHighscore(players);
+    vector<Player> sortedPlayer;
+    sortedPlayer = config.sortedHighscore();
+    cout << endl;
+    config.showHighscore(sortedPlayer);
 
     return 0;
 }
