@@ -169,8 +169,7 @@ void MenuManager::doOperation(char input) {
         case 2: {
             //Highscores anzeigen
             clear_screen();
-            server.getConfiguration().sortedHighscore();
-            server.getConfiguration().showHighscores();
+            server.getConfiguration().showHighscore(server.getConfiguration().sortedHighscore());
 
             this_thread::sleep_for(chrono::milliseconds(10000));
             break;
