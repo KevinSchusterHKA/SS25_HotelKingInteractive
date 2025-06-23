@@ -445,15 +445,27 @@ void Server::Paschwerfen(GameFunctionManager& game){
 }
 
 void Server::naechsterSpieler(GameFunctionManager& manager) {
-	int id = manager.getCurrentPlayer();
+	int startPlayer = manager.getCurrentPlayer();
+	int id = startPlayer;
 	bool nochmal = false;
+	// Speicherlogik zuerst, damit kein Code mit falschem< currentplayer arbeitet
 
-	//Checken ob Game Over
-	do {	
+	int originalCurrentPlayer = manager.getCurrentPlayer();		//aktuellen Spielstand merken
+	auto& players = manager.getPlayers();
+	getConfiguration().clearLog();						//Log clearen
+
+	for (int i = 0; i < players.size(); ++i) {			//jeder Spieler einmal durch
+		manager.setCurrentPlayer(i);
+		getConfiguration().writeLog(manager);
+	}
+	getConfiguration().saveGame();
+	manager.setCurrentPlayer(originalCurrentPlayer);		//auf ursprünglichen SPieler für Spiellogik zurücksetzen
+
+	do {
 		switch (id) {
 		case 0:
 			manager.getPlayers()[1].getGameOver() ? id = 2 : id = 1;
-			id == 2 ? nochmal = true : nochmal = false;	//wenn Spieler 2, dann nochmal abfragen ob Game Over
+			id == 2 ? nochmal = true : nochmal = false;
 			break;
 		case 1:
 			manager.getPlayers()[2].getGameOver() ? id = 3 : id = 2;
@@ -461,22 +473,23 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 			break;
 		case 2:
 			manager.getPlayers()[3].getGameOver() ? id = 0 : id = 3;
-			id == 0 ? manager.setCurrentRound(manager.getCurrentRound() + 1) : manager.setCurrentRound(manager.getCurrentRound());	//wenn Spieler 3, dann neue Runde
+			if (id == 0) manager.setCurrentRound(manager.getCurrentRound() + 1);
 			id == 0 ? nochmal = true : nochmal = false;
 			break;
 		case 3:
 			manager.getPlayers()[0].getGameOver() ? id = 1 : id = 0;
-			manager.setCurrentRound(manager.getCurrentRound() + 1);
+			if (id == 0) manager.setCurrentRound(manager.getCurrentRound() + 1);
 			id == 1 ? nochmal = true : nochmal = false;
 			break;
 		}
 		manager.setCurrentPlayer(id);
 	} while (nochmal);
 
-	cout << "naechster Spieler" << endl;
+	cout << "Der naechste Spieler ist an der Reihe!" << endl;
 	this_thread::sleep_for(chrono::milliseconds(400));
-	GefaengnisCheck(manager);									//checken, ob gerade im Gefaengnis
+	GefaengnisCheck(manager);									//checken ob im Gefängnis
 }
+
 MenuManager& Server::getMenuManager() { return *menumanager; }
 void Server::setMenuManager(MenuManager& manager) { this->menumanager = &manager; }
 Configuration Server::getConfiguration() { return config; }
