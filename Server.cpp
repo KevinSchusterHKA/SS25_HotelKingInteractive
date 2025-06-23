@@ -45,7 +45,7 @@ void Server::SpielStarten() {
 	cout << "Konfiguration wurde erfolgreich geladen: \n" << endl;
 	//config.printSettings();
 
-	GameSettings settings = config.getSettings();
+	settings = config.getSettings();
 	
 
 	cout << "Wie viele Spieler spielen? (1-4) " << endl;					//Anzahl der Spieler abfragen
@@ -471,6 +471,27 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 			id == 1 ? nochmal = true : nochmal = false;
 			break;
 		}
+		int currentround = manager.getCurrentRound();
+		if (currentround = settings.roundLimit) {
+			Ende();
+		}
+		for (int i = 0; i < 4; i++) {									//checken wie viele Spieler Game Over sind
+			int gameovercount = 0;
+			if (manager.getPlayers()[i].getGameOver()) {
+				gameovercount++;
+			}
+			if (gameovercount == 3) {									//Wenn es nur noch einen Spieler gibt
+				for (int i = 0; i < 4; i++) {
+					if (!manager.getPlayers()[i].getGameOver()) {
+						cout << "Spieler " << manager.getPlayers()[i].getName() << " hat gewonnen!" << endl; //Herausfinden, welcher Spieler gewonnen hat und Spiel beenden
+						getConfiguration().sammlungHighscore(manager.getPlayers());
+						Ende();
+						return;
+					}
+				}
+			}
+		}
+
 		manager.setCurrentPlayer(id);
 	} while (nochmal);
 
@@ -481,3 +502,8 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 MenuManager& Server::getMenuManager() { return *menumanager; }
 void Server::setMenuManager(MenuManager& manager) { this->menumanager = &manager; }
 Configuration Server::getConfiguration() { return config; }
+
+void Server::Ende() {
+	cout << "Das Spiel ist zu Ende. Hoffe ihr hattet Spaß :)" << endl;
+	exit(0);
+}
