@@ -1,0 +1,10 @@
+Round = 1, playerID  = 0, name = aa, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 1, name = bb, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 2, name = CPU Spieler 0, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 3, name = CPU Spieler 1, Budget = 500, karten = , position = 0, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 0, name = aa, Budget = 380, karten = , position = 9, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 1, name = bb, Budget = 500, karten = , position = 7, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 2, name = CPU Spieler 0, Budget = 500, karten = , position = 5, prison  = false, prisonCount  = 0
+Round = 1, playerID  = 3, name = CPU Spieler 1, Budget = 442, karten = , position = 9, prison  = false, prisonCount  = 0
+Round = 2, playerID  = 0, name = aa, Budget = 258, karten = , position = 18, prison  = false, prisonCount  = 0
+Round = 2, playerID  = 1, name = bb, Budget = 500, karten = , position = 10, prison  = false, prisonCount  = 0

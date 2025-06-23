@@ -31,7 +31,7 @@ void Server::SpielStarten() {
 
 	MenuManager manager = MenuManager();
 	setMenuManager(manager);
-
+	getConfiguration().clearLog();	//Log leeren vor dem Spielstart
 	cout << "Pfad zur Konfiguration: " << rulesPath << endl;				// Konfigurationsdatei einlesen
 	//cin >> rulesPath; Configpfad selber eingeben
 
@@ -447,7 +447,8 @@ void Server::Paschwerfen(GameFunctionManager& game){
 void Server::naechsterSpieler(GameFunctionManager& manager) {
 	int id = manager.getCurrentPlayer();
 	bool nochmal = false;
-
+	getConfiguration().writeLog(manager);
+	getConfiguration().saveGame();	//Log schreiben und Spielstand speichern
 	//Checken ob Game Over
 	do {	
 		switch (id) {
