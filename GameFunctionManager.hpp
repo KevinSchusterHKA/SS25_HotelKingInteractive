@@ -33,6 +33,7 @@ class GameFunctionManager {
         GameMap map;
 
         void clear_screen();
+        void enableVirtualTerminal();
         int randomNumber();
 
     public:
