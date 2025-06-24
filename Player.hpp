@@ -21,7 +21,7 @@ private:
 
 public:
     // Konstruktor
-    Player(const std::string& name, int startMoney, int playerID);
+    Player(const std::string& name, int startMoney, int playerID, bool realPlayer = true);
 
     // Getter
     std::string getName() const;
@@ -30,6 +30,7 @@ public:
     bool inPrison() const;
     int getPrisonCount() const;
     int getID() const;
+    bool realPlayer;
     std::vector<std::string> getKarten() const;
 
     // Setter / Aktionen

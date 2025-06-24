@@ -83,7 +83,7 @@ void Server::SpielStarten() {
 	}
 	numberOfCPUPlayer = 4 - numberOfPlayer;
 	//Player anzahlCPU = CPU(numberOfCPUPlayer); // Funktion in Player für CPU Gegner mit Übergabeparameter Anzahl CPU Gegner
-	cout << "Anzahl CPU Gegner: " << numberOfCPUPlayer << endl;
+	cout << "Anzahl CPU Gegner: " << numberOfCPUPlayer << endl;//ich sehe das so, dass immer 4 spieler sein sollen?? warum nicht spieler einstellbar und dann rest CPU einstellbar. bsp. 1 spieler und 2 Cpu oder anders, aber so dass nicht immer 4??? egal, ich arbetite einfach mit dem stand weiter
 
 	
 	for (int i = 0; i < numberOfCPUPlayer; i++) {						// CPU Spieler Namen und ID erstelen
@@ -91,7 +91,7 @@ void Server::SpielStarten() {
 		playerName = "CPU Spieler " + to_string(i);
 		
 
-		Player cpuPlayer(playerName, settings.startBudget, 4 - numberOfCPUPlayer + i);
+		Player cpuPlayer(playerName, settings.startBudget, 4 - numberOfCPUPlayer + i, false);// false ist bezogen auf die bool. false bedeutet kein echter player
 
 		//players.push_back(cpuPlayer);
 		
@@ -192,6 +192,65 @@ void Server::Spielzug(GameFunctionManager& manager) {
 	//cout << "Player 3" << players[2].getName() << endl;
 	int id = manager.getCurrentPlayer();
 	cout << "id:" << id << endl;
+	if (!current.isRealPlayer()) {//prüfung ob echter spieler.
+		cout << "[CPU] " << current.getName() << " ist am Zug." << endl;
+
+
+		if (current.inPrison()) {
+			cout << "[CPU] " << current.getName() << " ist im Gefängnis (noch " << current.getPrisonCount() << " Runden)." << endl;
+
+			// Versuche, mit Pasch rauszukommen (3 Versuche max)
+			bool pasch = false;
+			for (int versuch = 1; versuch <= 3; ++versuch) {
+				cout << "[CPU] Pasch-Versuch " << versuch << "..." << endl;
+				vector<int> dice = manager.rollDice();
+				cout << "Gewürfelt: " << dice[0] << " + " << dice[1] << endl;
+
+				if (dice[0] == dice[1]) {
+					pasch = true;
+					cout << "[CPU] Pasch gewürfelt! Befreit." << endl;
+					current.setPrisonCount(0);
+					current.move(dice[0] + dice[1]);
+					break;
+				}
+			}
+
+			if (!pasch) {
+				current.deductPrisonTime();
+				cout << "[CPU] Kein Pasch. Muss im Gefängnis bleiben." << endl;
+				return; // Zug endet hier
+
+
+			}
+		}
+
+		vector<int> dice = manager.rollDice();
+		cout << "[CPU] würfelt: " << dice[0] << " + " << dice[1] << endl;
+
+		// Pasch zählen
+		if (dice[0] == dice[1]) {
+			manager.incrementPaschCounter();
+		} else {
+			manager.resetPaschCounter();
+		}
+
+		// Spieler bewegen
+		current.move(dice[0] + dice[1]);
+
+		int tile = current.getPosition();
+		if (tile >= 40) {
+			tile -= 40;
+			current.setPosition(tile);
+			current.addMoney(200);
+			cout << "[CPU] zieht über LOS ? 200? erhalten." << endl;
+		}
+
+
+		cout << "[CPU] Zug beendet." << endl;
+		// CPU-Zug, noch nicht ganz fertig und weiß nicht ob es genau funktioniert. feld muss noch ausgewertet werden und bla bla. Zeile 195 bis 253 sind neu!!
+	}
+	else {//das ist das else für den menschlichen player
+
 		do {																			//Spielzug
 			vector<int> dice = manager.rollDice();
 			cout << "gewürfelte Zahlen: " << dice[0] << ", " << dice[1] << endl;
@@ -377,7 +436,7 @@ void Server::Spielzug(GameFunctionManager& manager) {
 			}
 
 		} while (manager.getPaschCounter() == 1 || manager.getPaschCounter() == 2);		//nochmal würfeln wenn du Pasch hattest
-
+	}//ende für das Else des Players
 		//Spielerzug zuende -> nächster Spieler
 
 		if (id == 3) {

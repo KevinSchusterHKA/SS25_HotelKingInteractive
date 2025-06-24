@@ -6,9 +6,9 @@
 #include "Player.hpp"  // Eigene Headerdatei einbinden
 
 // Konstruktor-Implementierung
-Player::Player(const std::string& name, int startMoney, int playerID)
-    : name(name), money(startMoney), currentField(0), prison(false), prisonCount(0), playerID(playerID) {}
-
+Player::Player(const std::string& name, int startMoney, int playerID, bool realPlayer)
+    : name(name), money(startMoney), currentField(0), prison(false),
+      prisonCount(0), playerID(playerID), realPlayer(realPlayer) {}
 
 std::string Player::getName() const {
     return name;
@@ -66,9 +66,12 @@ void Player::deductPrisonTime() {
 }
 
 void Player::addKarte(const std::string& karte) {
-    
+
 }
 
+bool Player::isRealPlayer() const {
+    return realPlayer;
+}
 //Noch Nicht gemacht: debug(), pay(), addkarten(), removekarten()
 
 
