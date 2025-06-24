@@ -7,12 +7,12 @@
 const std::string Graph::nodeNames[TOTAL_NODES] = {
     "LOS",
     "Kronenstraße",
-    "Gemeinschaftsfeld",
+    "Aktionsfeld",
     "Adlerstraße",
     "Einkommensteuer",
     "Hauptbahnhof",
     "Ebertstraße",
-    "Ereignisfeld",
+    "Aktionsfeld",
     "Rueppurrerstraße",
     "Ettlingerstraße",
     "Nur zu Besuch / Gefaengnis",
@@ -22,12 +22,12 @@ const std::string Graph::nodeNames[TOTAL_NODES] = {
     "Kriegsstraße",
     "West-Bahnhof",
     "Fastplatz",
-    "Gemeinschaftsfeld",
+    "Aktionsfeld",
     "Kaiser Allee",
     "Durlacher Allee",
     "Frei Parken",
     "Zirkel",
-    "Gemeinschaftsfeld",
+    "Aktionsfeld",
     "Karlstraße",
     "Brauerstraße",
     "OstBahnhof",
@@ -38,10 +38,10 @@ const std::string Graph::nodeNames[TOTAL_NODES] = {
     "Gehe ins Gefaengnis",
     "Herrenstraße",
     "Waldstraße",
-    "Gemeinschaftsfeld",
+    "Aktionsfeld",
     "Erbprinzenstraße",
     "Hubschrauberlandeplatz",
-    "Ereignisfeld",
+    "Aktionsfeld",
     "Kaiserstraße",
     "Zusatzsteuer",
     "Schlossplatz"
@@ -115,8 +115,8 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
     }
 
     //Inserting special tiles
-    tiles[Gemeinschaftsfeld] = std::make_shared<SpecialTile>(
-        Gemeinschaftsfeld, "Gemeinschaftsfeld", SpecialType::Community);
+    tiles[Aktionsfeld] = std::make_shared<SpecialTile>(
+        Aktionsfeld, "Aktionsfeld", SpecialType::Action);
 
     tiles[Einkommensteuer] = std::make_shared<SpecialTile>(
         Einkommensteuer, "Einkommensteuer", SpecialType::Tax);
@@ -126,8 +126,8 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
     tiles[WestBahnhof] = std::make_shared<SpecialTile>(
         WestBahnhof, "WestBahnhof", SpecialType::Bahnhof);
 
-    tiles[Ereignisfeld] = std::make_shared<SpecialTile>(
-        Ereignisfeld, "Ereignisfeld", SpecialType::Event);
+    tiles[Aktionsfeld2] = std::make_shared<SpecialTile>(
+        Aktionsfeld2, "Aktionsfeld", SpecialType::Action);
 
     tiles[Gefaengnis] = std::make_shared<SpecialTile>(
         Gefaengnis, "Nur zu Besuch / Gefaengnis", SpecialType::GoToJail);
@@ -138,14 +138,14 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
     tiles[Wasserwerk] = std::make_shared<PropertyTile>(
         Wasserwerk, nodeNames[Wasserwerk], PropertyType::Utility, 150, 0, -1, 0);
 
-    tiles[Gemeinschaftsfeld2] = std::make_shared<SpecialTile>(
-        Gemeinschaftsfeld2, "Gemeinschaftsfeld", SpecialType::Community);
+    tiles[Aktionsfeld3] = std::make_shared<SpecialTile>(
+        Aktionsfeld3, "Aktionsfeld", SpecialType::Action);
 
     tiles[FreiParken] = std::make_shared<SpecialTile>(
         FreiParken, "Frei Parken", SpecialType::FreeParking);
 
-    tiles[Gemeinschaftsfeld3] = std::make_shared<SpecialTile>(
-        Gemeinschaftsfeld3, "Gemeinschaftsfeld", SpecialType::Community);
+    tiles[Aktionsfeld4] = std::make_shared<SpecialTile>(
+        Aktionsfeld4, "Aktionsfeld", SpecialType::Action);
 
     tiles[OstBahnhof] = std::make_shared<SpecialTile>(
         OstBahnhof, "Ostbahnhof", SpecialType::Bahnhof);
@@ -153,14 +153,14 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
     tiles[GeheinsGefaengnis] = std::make_shared<SpecialTile>(
         GeheinsGefaengnis, "Gehe ins Gefaengnis", SpecialType::GoToJail);
 
-    tiles[Gemeinschaftsfeld4] = std::make_shared<SpecialTile>(
-        Gemeinschaftsfeld4, "Gemeinschaftsfeld", SpecialType::Community);
+    tiles[Aktionsfeld5] = std::make_shared<SpecialTile>(
+        Aktionsfeld5, "Aktionsfeld", SpecialType::Action);
 
     tiles[Hubschrauberlandeplatze] = std::make_shared<SpecialTile>(
         Hubschrauberlandeplatze, "Hubschrauberlandeplatze", SpecialType::Hubschrauberlandeplatz);
 
-    tiles[Ereignisfeld2] = std::make_shared<SpecialTile>(
-        Ereignisfeld2, "Ereignisfeld", SpecialType::Event);
+    tiles[Aktionsfeld6] = std::make_shared<SpecialTile>(
+        Aktionsfeld6, "Aktionsfeld", SpecialType::Action);
 
     tiles[Zusatzsteuer] = std::make_shared<SpecialTile>(
         Zusatzsteuer, "Zusatzsteuer", SpecialType::LuxuryTax);

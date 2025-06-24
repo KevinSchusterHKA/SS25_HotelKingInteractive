@@ -39,6 +39,7 @@
     <ClInclude Include="..\Configuration.h" />
     <ClInclude Include="..\GameFunctionManager.hpp" />
     <ClInclude Include="..\GameSettings.h" />
+    <ClInclude Include="..\Graph.hpp" />
     <ClInclude Include="..\Map.hpp" />
     <ClInclude Include="..\Menu.hpp" />
     <ClInclude Include="..\MenuManager.hpp" />

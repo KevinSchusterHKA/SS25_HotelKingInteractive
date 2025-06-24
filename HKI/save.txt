@@ -1,39 +1,39 @@
 # SPIELZUSTAND SPEICHERUNG
-round = 2
+round = 3
 
 # Spieler 1
-name = CPUSpieler0
-playerID = 2
-budget = 300
-position = 7
+name = Tom
+playerID = 0
+budget = 80
+position = 21
 prison = false
 prisonCount = 0
 karten = 
 
-naechsteSpielerID = 2
+naechsteSpielerID = 0
 # Spieler 2
-name = CPUSpieler1
-playerID = 3
-budget = 500
-position = 17
+name = Tim
+playerID = 1
+budget = 220
+position = 27
 prison = false
 prisonCount = 0
 karten = 
 
 # Spieler 3
-name = Tom
-playerID = 0
-budget = 350
-position = 17
+name = CPUSpieler0
+playerID = 2
+budget = 200
+position = 8
 prison = false
 prisonCount = 0
 karten = 
 
 # Spieler 4
-name = Tim
-playerID = 1
-budget = 170
-position = 21
+name = CPUSpieler1
+playerID = 3
+budget = 500
+position = 22
 prison = false
 prisonCount = 0
 karten = 
