@@ -96,8 +96,20 @@ void Configuration::writeLog(GameFunctionManager info) {
 		if (i != karten.size() - 1) logFile << "|";
 	}
 	logFile << ", position = " << p.getPosition()
-		<< ", prisonCount  = " << p.getPrisonCount() << endl;
+		<< ", prisonCount  = " << p.getPrisonCount();
 
+	// Grundstücke
+	logFile << ", grundstuecke = ";
+	bool first = true;
+	for (int i = 0; i < 40; i++) {
+		PropertyTile* propertyTile = dynamic_cast<PropertyTile*>(info.getMap().getTile(i).get());
+		if (propertyTile && propertyTile->getOwnerId() == p.getID()) {
+			if (!first) logFile << "|";
+			logFile << propertyTile->getName() << "/" << propertyTile->getRent();
+			first = false;
+		}
+	}
+	logFile << endl;
 	logFile.close();
 }
 
@@ -114,9 +126,10 @@ void Configuration::clearLog() {
 void Configuration::saveGame() {
 /***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
+	vector<string> parsedGrundstuecke;
 	int maxRound = 0; 
 	int wieVieleSpieler = 4;
-	int ind = 1;
+	int naechsteSpielerID = 0;
 	
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
@@ -128,7 +141,7 @@ void Configuration::saveGame() {
 
 	while (getline(logFile, zeile)) {
 		if (zeile.empty()) { continue; }
-		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "";
+		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = ""; string grundstuecke = "";
 
 		// Aufteilen der Zeile in Schlüssel-Wert-Paare
 		stringstream ss(zeile);
@@ -151,9 +164,12 @@ void Configuration::saveGame() {
 			else if (key == "karten") karten = value;
 			else if (key == "position") position = stoi(value);
 			else if (key == "prisonCount") prisonCount = stoi(value);
+			else if (key == "grundstuecke") grundstuecke = value;
 		}
 
 		if (round > maxRound) { maxRound = round; }	//update round
+
+		parsedGrundstuecke.push_back(grundstuecke);
 
 		// Rekonstruiere den Spieler
 		Player p(name, budget, playerID);
@@ -193,13 +209,15 @@ void Configuration::saveGame() {
 			saveFile << karten[i];
 			if (i != karten.size() - 1) saveFile << "|";
 		}
-		saveFile << endl << endl;
+		saveFile << endl;
+		saveFile << "grundstuecke = " << parsedGrundstuecke[i] << endl << endl;
 
 		//current spieler
-		if (i == parsedPlayers.size()-1) {
-			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID()+1 << endl;
+		if (i == parsedPlayers.size()-1) {	//letze element
+			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID() << endl;
 		}
 	}
+	
 	saveFile.close();
 }
 
@@ -244,6 +262,26 @@ GameFunctionManager Configuration::loadGame() {
 			}
 			manager.addPlayer(tempPlayer);
 		}
+		else if (key == "grundstuecke") {
+			stringstream ss(value);
+			string grundstueck;
+			while (getline(ss, grundstueck, '|')) {
+				size_t trenner = grundstueck.find('/');
+				if (trenner == string::npos) continue;
+
+				string name = grundstueck.substr(0, trenner);
+				int rent = stoi(grundstueck.substr(trenner + 1));
+
+				for (int i = 0; i < 40; ++i) {
+					shared_ptr<Tile> t = manager.getMap().getTile(i);
+					PropertyTile* pt = dynamic_cast<PropertyTile*>(t.get());
+					if (pt && pt->getName() == name) {
+						pt->setOwner(tempPlayer.getID());
+						pt->setRent(rent);
+					}
+				}
+			}
+		}
 		else if (key == "naechsteSpielerID") naechsteSpieler = stoi(value);
 	}
 	manager.setCurrentRound(round);
@@ -268,6 +306,17 @@ void Configuration::printLoadGame(GameFunctionManager g) {
 		vector<string> karten = p.getKarten();
 		for (const string& k : karten) {
 			cout << k << " ";
+		}
+		cout << endl;
+		cout << "Grundstuecke: ";
+		bool first = true;
+		for (int i = 0; i < 40; ++i) {
+			PropertyTile* pt = dynamic_cast<PropertyTile*>(g.getMap().getTile(i).get());
+			if (pt && pt->getOwnerId() == p.getID()) {
+				if (!first) cout << " | ";
+				cout << pt->getName() << "/" << pt->getRent();
+				first = false;
+			}
 		}
 		cout << endl;
 	}
