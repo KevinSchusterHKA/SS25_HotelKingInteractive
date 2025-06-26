@@ -218,7 +218,7 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 		if (manager.getPaschCounter() == 3) {							//Wenn 3. Mal Pasch -> Gefaengnis
 
 			cout << "Das war dein 3. Pasch... Gehe ins Gefaengnis" << endl;
-			manager.getPlayers()[id].inPrison();
+			manager.getPlayers()[id].setPrisonCount(3);
 			manager.getPlayers()[id].setPosition(10);
 		}
 		else {
@@ -307,7 +307,7 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 				}
 				else if (specialtile == "GoToJail") {							//Ins Gefaengnis gehen
 					cout << "Gehe ins Gefaengnis!" << endl;
-					manager.getPlayers()[id].inPrison();
+					manager.getPlayers()[id].setPrisonCount(3);
 					manager.getPlayers()[id].setPosition(10);
 				}
 				else if (specialtile == "FreeParking") {						//Frei Parken

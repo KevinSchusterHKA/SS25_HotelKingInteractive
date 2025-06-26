@@ -43,7 +43,7 @@ int config_main() {
         info.setCurrentRound(i);
         info.setCurrentPlayer(0); players[0].addMoney(100); players[0].setPosition(6*i);     //spieler1
         config.writeLog(info);
-        info.setCurrentPlayer(1); players[1].addMoney(200); players[1].setPosition(2 * i); players[1].setPrison();    //spieler2
+        info.setCurrentPlayer(1); players[1].addMoney(200); players[1].setPosition(2 * i);   //spieler2
         config.writeLog(info);
         info.setCurrentPlayer(2); players[2].addMoney(500); players[2].setPosition(1 * i); players[2].addKarte("TEST"); //spieler3
         config.writeLog(info);
