@@ -35,6 +35,7 @@ buildingLevel(0),groudID(-1) {}
     std::vector<int> getRentLevels() const {return rentLevels;}
     // Setter
     void setOwner(int playerId) { ownerId = playerId; }
+    void setRent(int r) { rent = r; }
     /// <summary>
     /// Function: Set up the street rent table
     /// </summary>
