@@ -382,9 +382,9 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 
 							while (wunschfeldid != 5 && wunschfeldid != 15 && wunschfeldid != 25) {
 								cout << "Da darfst du nicht hin" << endl;
-								manager.getPlayers()[id].addMoney(-50);
-								manager.getPlayers()[id].setPosition(wunschfeldid);
 							}
+							manager.getPlayers()[id].addMoney(-50);
+							manager.getPlayers()[id].setPosition(wunschfeldid);
 						}
 						else {												//moechte nicht fahren
 							cout << "ok dann bleibst du hier stehen" << endl;
@@ -532,7 +532,7 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 	} while (nochmal);
 
 	cout << "naechster Spieler" << endl;
-	this_thread::sleep_for(chrono::milliseconds(3000));
+	this_thread::sleep_for(chrono::milliseconds(2000));
 	GefaengnisCheck(manager);									//checken, ob gerade im Gefaengnis
 }
 
