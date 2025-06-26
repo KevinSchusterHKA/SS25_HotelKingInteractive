@@ -196,8 +196,8 @@ void Configuration::saveGame() {
 		saveFile << endl << endl;
 
 		//current spieler
-		if (i == parsedPlayers.size() - wieVieleSpieler) {
-			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID() << endl;
+		if (i == parsedPlayers.size()-1) {
+			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID()+1 << endl;
 		}
 	}
 	saveFile.close();
