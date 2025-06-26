@@ -532,7 +532,7 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 	} while (nochmal);
 
 	cout << "naechster Spieler" << endl;
-	this_thread::sleep_for(chrono::milliseconds(400));
+	this_thread::sleep_for(chrono::milliseconds(3000));
 	GefaengnisCheck(manager);									//checken, ob gerade im Gefaengnis
 }
 
