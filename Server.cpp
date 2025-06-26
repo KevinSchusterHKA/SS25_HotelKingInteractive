@@ -245,9 +245,121 @@ void Server::Spielzug(GameFunctionManager& manager) {
 			cout << "[CPU] zieht über LOS ? 200? erhalten." << endl;
 		}
 
+	auto& sTile = manager.getMap().tiles[tile];
+
+	if (auto propTile = dynamic_cast<PropertyTile*>(sTile.get())) {
+	    // Grundstück
+	    int preis = propTile->getPrice();
+	    int owner = propTile->getOwnerId();
+
+	    if (owner == -1) {
+	        // a) Freies Grundstück
+	        if (current.getMoney() >= preis) {
+	            cout << "[CPU] kauft das Grundstück für " << preis << "?." << endl;
+	            current.addMoney(-preis);
+	            propTile->setOwner(current.getID());
+	        } else {
+	            cout << "[CPU] hat nicht genug Geld für das Grundstück." << endl;
+	        }
+	    }
+	    else if (owner == current.getID()) {
+	        // b) Eigenes Grundstück ? nichts tun
+	        cout << "[CPU] ist auf eigenem Grundstück." << endl;
+	    }
+	    else {
+	        // c) Fremdes Grundstück ? Miete zahlen
+	        int miete = propTile->getRent();
+	        cout << "[CPU] zahlt Miete (" << miete << "?) an Spieler " << owner << "." << endl;
+
+	        if (current.getMoney() >= miete) {
+	            current.addMoney(-miete);
+	            manager.getPlayers()[owner].addMoney(miete);
+	        } else {
+	            cout << "[CPU] hat nicht genug Geld ? Insolvenz/Ende?" << endl;
+	            // TODO: Insolvenzlogik
+	        }
+	    }
+
+	} else if (auto specialTile = dynamic_cast<SpecialTile*>(sTile.get())) {
+	    string typ = specialTile->getTypeString();
+
+	    if (typ == "Event" || typ == "Community") {
+	        cout << "[CPU] zieht eine " << typ << "-Karte." << endl;
+	        // TODO: Karte ziehen und ausführen
+	    }
+	    else if (typ == "Tax") {
+	        cout << "[CPU] zahlt 200? Steuer." << endl;
+	        if (current.getMoney() >= 200) {
+	            current.addMoney(-200);
+	        } else {
+	            cout << "[CPU] kann Steuer nicht zahlen ? Insolvenz?" << endl;
+	        }
+	    }
+	    else if (typ == "LuxuryTax") {
+	        cout << "[CPU] zahlt 100? Zusatzsteuer." << endl;
+	        if (current.getMoney() >= 100) {
+	            current.addMoney(-100);
+	        } else {
+	            cout << "[CPU] kann Zusatzsteuer nicht zahlen ? Insolvenz?" << endl;
+	        }
+	    }
+	    else if (typ == "GoToJail") {
+	        cout << "[CPU] muss ins Gefängnis!" << endl;
+	        current.setPrison();
+	        return; // Zug endet hier
+	    }
+	    else if (typ == "Jail") {
+	        cout << "[CPU] ist nur zu Besuch im Gefängnis." << endl;
+	    }
+	    else if (typ == "Start") {
+	        current.addMoney(200);
+	        cout << "[CPU] landet auf LOS und erhält 200?." << endl;
+	    }
+	    else {
+	        cout << "[CPU] landet auf einem Spezialfeld: " << typ << endl;
+	        // Kann ignoriert werden oder später ausbauen
+	    }
+	}
+
+		// Paschlogik: nochmal würfeln?
+		int paschCount = manager.getPaschCounter();
+		if (dice[0] == dice[1]) {
+			if (paschCount >= 3) {
+				cout << "[CPU] 3 Paschs in Folge ? geht ins Gefängnis!" << endl;
+				current.setPrison();
+				manager.resetPaschCounter();
+				return; // Zug endet
+			} else {
+				cout << "[CPU] hat einen Pasch gewürfelt und darf nochmal würfeln!" << endl;
+				// CPU darf nochmal ? rekursiv oder per Schleife
+				this_thread::sleep_for(chrono::milliseconds(1000));
+
+				// Rekursion für weiteren Pasch-Zug
+				Spielzug(manager); // ?Achte darauf, Endlosschleifen zu vermeiden
+				return;
+			}
+		} else {
+			manager.resetPaschCounter(); // Kein Pasch ? Zähler zurücksetzen
+		}
+
+		if (current.getMoney() < 0) {
+			cout << "[CPU] " << current.getName() << " ist pleite! ? Insolvenz!" << endl;
+
+			// Evtl. Flag setzen oder Spieler deaktivieren
+			// Beispiel: Position auf -1, Geld auf 0
+			current.setPosition(-1);
+			current.addMoney(-current.getMoney()); // Geld auf 0 setzen
+
+			// Optional: Markierung als inaktiv (wenn du sowas in der Player-Klasse einbaust)
+			// current.setActive(false);
+
+			// Oder: Spieler aus der Liste entfernen (nur wenn stabil!)
+			// Achtung bei Vektor-Manipulation während Spiel läuft!
+		}//keine fahrt logik, npc fährt nicht??
+
 
 		cout << "[CPU] Zug beendet." << endl;
-		// CPU-Zug, noch nicht ganz fertig und weiß nicht ob es genau funktioniert. feld muss noch ausgewertet werden und bla bla. Zeile 195 bis 253 sind neu!!
+		// CPU-Zug, noch nicht ganz fertig / getestet. feld muss noch ausgewertet werden und bla bla. Zeile 195 bis 362 sind neu!!
 	}
 	else {//das ist das else für den menschlichen player
 
