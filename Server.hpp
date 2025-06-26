@@ -31,6 +31,7 @@ private:
 	int wunschfeldid;
 	int positionofothers;
 	bool transport;
+	int freiparkenpot;
 	MenuManager* menumanager;
 	Configuration config;
 	GameSettings settings;
