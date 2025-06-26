@@ -484,11 +484,8 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 	bool nochmal = false;
 
 	int originalCurrentPlayer = manager.getCurrentPlayer();		//aktuellen Spieler merken
-
-	for (int i = 0; i < 4; ++i) {				//Log schreiben und Spielstand speichern
-		manager.setCurrentPlayer(i);
-		getConfiguration().writeLog(manager);
-	}
+	getConfiguration().writeLog(manager);				//Log schreiben und Spielstand speichern
+	
 	manager.setCurrentPlayer(originalCurrentPlayer);		//auf ursprünglichen Spieler für Spiellogik zurücksetzen
 
 	//Checken ob Game Over
