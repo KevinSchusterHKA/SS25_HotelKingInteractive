@@ -7,7 +7,7 @@
 
 // Konstruktor-Implementierung
 Player::Player(const std::string& name, int startMoney, int playerID)
-    : name(name), money(startMoney), currentField(0), prison(false), prisonCount(0), gameover(false), playerID(playerID) {}
+    : name(name), money(startMoney), currentField(0), prisonCount(0), gameover(false), playerID(playerID) {}
 
 
 std::string Player::getName() const {
@@ -20,10 +20,6 @@ int Player::getMoney() const{
 
 int Player::getPosition() const {
     return currentField;
-}
-
-bool Player::inPrison() const {
-    return prison;
 }
 
 int Player::getPrisonCount() const {
@@ -52,11 +48,6 @@ void Player::setPosition(int position) {
 
 void Player::move(int steps) {
     currentField += steps;
-}
-
-void Player::setPrison() {
-    prison = true;
-    prisonCount = 3;
 }
 
 void Player::setPrisonCount(int neuPrisonCount) {

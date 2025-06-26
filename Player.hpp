@@ -28,7 +28,6 @@ public:
     std::string getName() const;
     int getMoney() const;
     int getPosition() const;
-    bool inPrison() const;
     int getPrisonCount() const;
     int getID() const;
     std::vector<std::string> getKarten() const;
@@ -39,7 +38,6 @@ public:
     void setPosition(int field);
     void move(int steps);
     void pay(Player* recipient, int amount);//für mich nicht klar, ob in dem Ojekt Player einzuornen ist
-    void setPrison();
     void deductPrisonTime();
     void setPrisonCount(int neuPrisonCount);
 	void setGameOver();

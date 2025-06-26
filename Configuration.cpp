@@ -96,7 +96,6 @@ void Configuration::writeLog(GameFunctionManager info) {
 		if (i != karten.size() - 1) logFile << "|";
 	}
 	logFile << ", position = " << p.getPosition()
-		<< ", prison  = " << (p.inPrison() ? "true" : "false")
 		<< ", prisonCount  = " << p.getPrisonCount() << endl;
 
 	logFile.close();
@@ -151,7 +150,6 @@ void Configuration::saveGame() {
 			else if (key == "Budget") budget = stoi(value);
 			else if (key == "karten") karten = value;
 			else if (key == "position") position = stoi(value);
-			else if (key == "prison") prison = value;
 			else if (key == "prisonCount") prisonCount = stoi(value);
 		}
 
@@ -161,7 +159,6 @@ void Configuration::saveGame() {
 		Player p(name, budget, playerID);
 		p.setPosition(position);
 		p.setPrisonCount(prisonCount);
-		if (prison == "true") { p.setPrison(); }
 
 		// Karten parsen
 		stringstream kss(karten);
@@ -189,7 +186,6 @@ void Configuration::saveGame() {
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
 		saveFile << "position = " << parsedPlayers[i].getPosition() << endl;
-		saveFile << "prison = " << (parsedPlayers[i].inPrison() ? "true" : "false") << endl;
 		saveFile << "prisonCount = " << parsedPlayers[i].getPrisonCount() << endl;
 		saveFile << "karten = ";
 		vector<string> karten = parsedPlayers[i].getKarten();
@@ -217,7 +213,7 @@ GameFunctionManager Configuration::loadGame() {
 	}
 
 	string zeile;
-	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "", prison = "";
+	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "";
 	while (getline(saveFile, zeile)) {
 		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
@@ -239,7 +235,6 @@ GameFunctionManager Configuration::loadGame() {
 		else if (key == "playerID") tempPlayer = Player(name, 0, stoi(value));
 		else if (key == "budget") tempPlayer.addMoney(stoi(value));
 		else if (key == "position") tempPlayer.setPosition(stoi(value));
-		else if (key == "prison") name = value; if (value == "true") { tempPlayer.setPrison(); }
 		else if (key == "prisonCount") tempPlayer.setPrisonCount(stoi(value));
 		else if (key == "karten") {
 			stringstream ss(value);
