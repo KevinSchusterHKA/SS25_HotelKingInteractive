@@ -16,6 +16,7 @@ Notes:
  -  Doesnt need to be called directly, but is used by the MenuManager to handle game logic.
 */
 
+
 #include <Windows.h>
 #include <conio.h>
 #include <iostream>
@@ -86,6 +87,7 @@ Generator funktion to create a new GameFunctionManager object.
 @param current_player The index of the current player. (Normal is 0 at start)
 */
 GameFunctionManager::GameFunctionManager() {
+
     current_round;
     pasch_counter; 
     current_player; 
@@ -122,6 +124,7 @@ void GameFunctionManager::showPlayerInformation(Player player) {
     cout << " " << endl;
     cout << "----------------------------" << endl;
     cout << "Grundst" + string(UE) + "cke: " << endl;
+
     for (int i = 0; i < 40; i++) {
         PropertyTile* propertyTile = dynamic_cast<PropertyTile*>(getMap().getTile(i).get());
         if (propertyTile && propertyTile->getOwnerId() == player.getID()) {
@@ -145,11 +148,6 @@ void GameFunctionManager::showTileInfomation(int tile) {
         cout << " Preis : " << propTile->getPrice() << endl;
         cout << " Miete: " << propTile->getRentLevels()[0] << endl;
         // Auskommentieren für alle rent levels
-		/*int counter = 1;  
-        for (int rent : propTile->getRentLevels()) {
-            cout << "       Stufe " << counter << ": " << propTile->getRentLevels()[0] << endl;
-            counter++;
-        }*/
     } else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {
         std::cout << "  Name: " << specialTile->getName() << "\n"
                   << "  Category: " << specialTile->getTypeString() << "\n";
@@ -232,6 +230,7 @@ void GameFunctionManager::showMap() {
 	   cout << "+-----------------------+------------------+--------+--------------+-------------+-------------+----------------+-------------+-------------+-----------------+--------------+" << endl;
 	}
 
+
 /*
 Function to roll the dice and return the result.
 The function simulates a dice roll by generating random numbers between 1 and 6.
@@ -255,13 +254,12 @@ vector<int> GameFunctionManager::rollDice() {
     
         this_thread::sleep_for(chrono::milliseconds(500));
     }
-   // getPlayers()[getCurrentPlayer()].move(dice[0] + dice[1]);
 
-    //showTileInfomation(getPlayers()[getCurrentPlayer()].getPosition());
     cout << "----------------------------" << endl;
     cout << "Du hast eine " << dice[0] << " und eine " << dice[1] << " gew" + string(UE) + "rfelt!" << endl;
     if (checkPasch(dice)) {
         cout << "Du hast einen Pasch gew" + string(UE) + "rfelt! P" + string(AE) + "sche geworfen: " << pasch_counter +1 << endl;
+
         setPaschCounter(getPaschCounter() + 1);
     } else {
         setPaschCounter(0);
@@ -318,6 +316,5 @@ void GameFunctionManager::setCurrentRound(int round) {current_round = round;}
 GameMap& GameFunctionManager::getMap() {return map;}
 
 void GameFunctionManager::setPlayers(vector<Player> players) { this->players = players; }
-
 
 
