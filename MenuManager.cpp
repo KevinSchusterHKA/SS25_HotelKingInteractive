@@ -35,7 +35,16 @@ Notes:
 #include "Player.hpp"
 #include "Map.hpp"
 
+#include "Server.hpp"
+
+#define AE "\xC3\xA4"  // ä
+#define OE "\xC3\xB6"  // ö
+#define UE "\xC3\xBC"  // ü
+#define SZ "\xC3\x9F"  // ß
+
+
 using namespace std;
+
 
 /*
 Constructor for the MenuManager class.
@@ -60,11 +69,10 @@ void MenuManager::initMenus() {
 
     //Main Menu
     Menu startMenu(0, "Hotel King Interactive", { "Neues Spiel", "Spiel laden", "Highscores", "Exit" }, false);
-    //Menu newGameMenu(1, "Neues Spiel starten", {"Anzahl Spieler", "Regeln einstellen", "Spiel starten", "Zurück"}, true);
-    //Menu loadGameMenu(1, "Spiel laden",  {"Spiel laden", "Zurück"}, true);
 
     //Ingame Overlay Menu
-    Menu inGameMenu(0, "Ingame", { "Würfeln", "Handeln und Tauschen", "Inventar anzeigen", "Feld anzeigen", "Spielbrett anzeigen", "Spielstand speichern", "Exit" }, true);
+    Menu inGameMenu(0, "Ingame", { "W" + string(UE) + "rfeln", "Handeln und Tauschen", "Inventar anzeigen", "Feld anzeigen", "Spielbrett anzeigen", "Spielstand speichern", "Exit" }, true);
+
 
     menus.push_back(startMenu);
     menus.push_back(inGameMenu);
@@ -105,12 +113,15 @@ Adds a menu to the MenuManager's list of menus.
 void MenuManager::addMenu(Menu& menu) { menus.push_back(menu); }
 
 void MenuManager::doOperation(char input) {
+    vector<Player> gamePlayers;
+    Server server(gamePlayers);
     if (input == 13 && isInGame()) {
         switch (getCurrentMenu().getCurrentPosition()) {
         case 0: {
             //Würfeln
-            vector<int> roll = getGameFunctionManager().rollDice();
-            getGameFunctionManager().checkPasch(roll) ? gameFunctionManager->setPaschCounter(getGameFunctionManager().getPaschCounter() + 1) : getGameFunctionManager().setPaschCounter(0);
+            server.Wuerfeln(getGameFunctionManager());
+            this_thread::sleep_for(chrono::milliseconds(10000));
+
             break;
         }
         case 1: {
@@ -137,6 +148,9 @@ void MenuManager::doOperation(char input) {
         }
         case 5: {
             //Spielstand speichern
+
+			server.SpielstandSpeichern();
+
             break;
         }
         default: {
@@ -145,51 +159,27 @@ void MenuManager::doOperation(char input) {
         }
     }
     else if (input == 13 && !isInGame() && getCurrentLayer() == 0 && !getCurrentMenu().hasSubmenu()) {
+
         switch (getCurrentMenu().getCurrentPosition()) {
         case 0: {
             //Spiel starten
-            //Server.stardialog();
-            cout << "Spielername: " << endl;
-            string name;
-            cin >> name;
-            Player player = Player(name, 1500, 0);
-            getGameFunctionManager().addPlayer(player);
-            getGameFunctionManager().setCurrentPlayer(0);
-            getGameFunctionManager().setCurrentRound(1);
-            setInGame(true);
-            setCurrentMenu(getMenus()[1]); //Switch to Ingame Menu
+            server.SpielStarten();
+
             break;
         }
         case 1: {
             //Spiel laden
+            server.SpielLaden();
+
             break;
         }
         case 2: {
             //Highscores anzeigen
-
-            //Will be implemented when Config implementation is uploaded to Github
-            //Asuming the Higscorelist in the txt-Document is allready sorted
-
-            /*
-            vector<Score> highscores = Configuration.getHighscores();
-            int counter = 1;
-            for (auto score : highscores) {
-                cout << counter << ") " << score.getPlayerName() << " - " << score.getFinalBudget() << endl;
-                counter++;
-            }
-            */
-
-            //For test purposes (will be deleated later):
             clear_screen();
-            ifstream highscores("HighscoresTest.txt");
-            if (highscores.is_open()) {
-                string line;
-                while (getline(highscores, line)) {
-                    cout << line << endl;
-                }
-            }
+            server.getConfiguration().showHighscore(server.getConfiguration().sortedHighscore());
+
             this_thread::sleep_for(chrono::milliseconds(10000));
-            highscores.close();
+
             break;
         }
         default:
@@ -206,7 +196,12 @@ void MenuManager::doOperation(char input) {
 void MenuManager::handleMenus() {
     while (true) {
         getMenulog() << "Ingame: " << (isInGame() ? "Yes" : "No") << " - Current Menu: " << getCurrentMenu().getHeader() << endl;
+        //getGameFunctionManager().setCurrentPlayer(3);
+        //getMenulog() << getGameFunctionManager().getCurrentPlayer() << "wee" << endl;
+
+
         if (isInGame()) {
+            getMenulog() << "TEST";
             getCurrentMenu().displayIngameMenu(*gameFunctionManager);
         }
         else {
@@ -326,6 +321,8 @@ void MenuManager::handleMenus() {
         doOperation(input);
     }
 }
+
+void MenuManager::setGameFunctionManager(GameFunctionManager& gameFunctionManager) { this->gameFunctionManager = &gameFunctionManager; }
 
 /*
 Gets the GameFunctionManager instance managed by the MenuManager.

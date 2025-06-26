@@ -7,16 +7,15 @@
 //HKI-14 Map: Implementierung der Ereignisfelder für Aktionskarten
 std::string SpecialTile::getTypeString() const {
     switch (specialType) {
-        case SpecialType::Start:        return "Start";
-        case SpecialType::Jail:         return "Jail";
-        case SpecialType::GoToJail:     return "GoToJail";
-        case SpecialType::FreeParking:  return "FreeParking";
-        case SpecialType::Tax:     return "Tax";
-        case SpecialType::LuxuryTax:     return "LuxuryTax";
-        case SpecialType::Event:        return "Event";
-        case SpecialType::Community:    return "Community";
+        case SpecialType::Start:                  return "Start";
+        case SpecialType::Jail:                   return "Jail";
+        case SpecialType::GoToJail:               return "GoToJail";
+        case SpecialType::FreeParking:            return "FreeParking";
+        case SpecialType::Tax:                    return "Tax";
+        case SpecialType::LuxuryTax:              return "LuxuryTax";
+        case SpecialType::Action:                 return "Action";
         case SpecialType::Hubschrauberlandeplatz: return "Hubschrauberlandeplatz";
-        case SpecialType::Bahnhof:      return "Bahnhof";
+        case SpecialType::Bahnhof:                return "Bahnhof";
         default: return "Special";
     }
 }

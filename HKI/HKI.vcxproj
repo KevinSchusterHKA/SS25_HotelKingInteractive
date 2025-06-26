@@ -28,21 +28,25 @@
     <ClCompile Include="..\MenuManager.cpp" />
     <ClCompile Include="..\Player.cpp" />
     <ClCompile Include="..\PropertyTile.cpp" />
+    <ClCompile Include="..\Server.cpp" />
     <ClCompile Include="..\SpecialTile.cpp" />
     <ClCompile Include="..\test.cpp" />
     <ClCompile Include="..\test_main.cpp" />
+    <ClCompile Include="..\test_server.cpp" />
     <ClCompile Include="..\UnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Configuration.h" />
     <ClInclude Include="..\GameFunctionManager.hpp" />
     <ClInclude Include="..\GameSettings.h" />
+    <ClInclude Include="..\Graph.hpp" />
     <ClInclude Include="..\Map.hpp" />
     <ClInclude Include="..\Menu.hpp" />
     <ClInclude Include="..\MenuManager.hpp" />
     <ClInclude Include="..\Player.hpp" />
     <ClInclude Include="..\PropertyTile.hpp" />
     <ClInclude Include="..\Score.h" />
+    <ClInclude Include="..\Server.hpp" />
     <ClInclude Include="..\SpecialTile.hpp" />
     <ClInclude Include="..\Tile.hpp" />
     <ClInclude Include="..\Unittests.hpp" />

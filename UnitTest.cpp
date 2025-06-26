@@ -92,8 +92,9 @@ int control_main() {
 
     // Menu tests
 
-    //IngameMenu_test();
-    Menu_test();
+    IngameMenu_test();
+    //Menu_test();
+
     
     //Functionality tests
 

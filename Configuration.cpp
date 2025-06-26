@@ -102,12 +102,23 @@ void Configuration::writeLog(GameFunctionManager info) {
 	logFile.close();
 }
 
+void Configuration::clearLog() {
+	ofstream logFile(logPath, ios::trunc);	//trunc for empty file
+	if (!logFile.is_open()) {
+		cout << "Fehler beim Oeffnen der Log-Datei zum Leeren." << endl;
+		return;
+	}
+	logFile.close();
+	cout << "Log-Datei wurde erfolgreich geleert" << endl;
+}
+
 void Configuration::saveGame() {
-	/***************************   lexicalische analyse für log-Dateil  **********************************************************/
+/***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
-	int maxRound = 0;
-	int wieVieleSpieler = settings.playerCount + settings.cpuCount;
-	int ind = wieVieleSpieler;
+	int maxRound = 0; 
+	int wieVieleSpieler = 4;
+	int ind = 1;
+	
 
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
@@ -173,8 +184,9 @@ void Configuration::saveGame() {
 
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
-	for (int i = parsedPlayers.size() - 1; i >= parsedPlayers.size() - wieVieleSpieler; i--) {	//lese die letze zeile von log-Datei
-		saveFile << "# Spieler " << ind-- << endl;
+
+	for (int i = parsedPlayers.size()-wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
+		saveFile << "# Spieler " << ind++ << endl;
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
@@ -191,7 +203,7 @@ void Configuration::saveGame() {
 
 		//current spieler
 		if (i == parsedPlayers.size() - wieVieleSpieler) {
-			saveFile << "naechsteSpieler = " << parsedPlayers[i].getID() << endl;
+			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID() << endl;
 		}
 	}
 	saveFile.close();
@@ -239,7 +251,7 @@ GameFunctionManager Configuration::loadGame() {
 			}
 			manager.addPlayer(tempPlayer);
 		}
-		else if (key == "naechsteSpieler") naechsteSpieler = stoi(value);
+		else if (key == "naechsteSpielerID") naechsteSpieler = stoi(value);
 	}
 	manager.setCurrentRound(round);
 	manager.setCurrentPlayer(naechsteSpieler);
@@ -257,7 +269,7 @@ void Configuration::printLoadGame(GameFunctionManager g) {
 		cout << "ID: " << p.getID() << endl;
 		cout << "Budget: " << p.getMoney() << endl;
 		cout << "Position: " << p.getPosition() << endl;
-		cout << "Im Gefaengnis? " << (p.inPrison() ? "Ja" : "Nein") << endl;
+		cout << "Im Gefaengnis? " << (p.getPrisonCount() > 0 ? "Ja" : "Nein") << endl;
 		cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
 		cout << "Karten: ";
 		vector<string> karten = p.getKarten();

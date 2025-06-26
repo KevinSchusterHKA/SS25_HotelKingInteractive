@@ -33,6 +33,7 @@ class GameFunctionManager {
         GameMap map;
 
         void clear_screen();
+        void enableVirtualTerminal();
         int randomNumber();
 
     public:
@@ -57,6 +58,7 @@ class GameFunctionManager {
         GameMap& getMap();
 
         //Setter
+        void setPlayers(vector<Player> players);
         void setCurrentPlayer(int player);
         void setPaschCounter(int counter);
         void setCurrentRound(int round);

@@ -17,6 +17,7 @@ private:
     bool prison;
     int prisonCount;
     int playerID;
+	bool gameover;
     std::vector<std::string> karten;
 
 public:
@@ -31,6 +32,7 @@ public:
     int getPrisonCount() const;
     int getID() const;
     std::vector<std::string> getKarten() const;
+    bool getGameOver() const;
 
     // Setter / Aktionen
     void addMoney(int amount);
@@ -40,6 +42,7 @@ public:
     void setPrison();
     void deductPrisonTime();
     void setPrisonCount(int neuPrisonCount);
+	void setGameOver();
     void addKarte(const std::string& karte);
     void removeKarte(const std::string& karte);
 

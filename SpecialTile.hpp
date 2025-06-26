@@ -6,7 +6,7 @@
 
 #include "tile.hpp"
 
-enum class SpecialType { Start, Event,Community, Bahnhof, Tax,LuxuryTax, Jail, GoToJail, FreeParking, Hubschrauberlandeplatz};
+enum class SpecialType { Start, Action, Bahnhof, Tax,LuxuryTax, Jail, GoToJail, FreeParking, Hubschrauberlandeplatz};
 
 class SpecialTile : public Tile {
 private:

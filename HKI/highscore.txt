@@ -1,0 +1,6 @@
+Timmy=34000
+Bob=1234
+Freddy=555000
+Hulk=33333
+Diana=131210
+Phoebe=55
