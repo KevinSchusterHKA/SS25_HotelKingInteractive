@@ -175,7 +175,7 @@ void Configuration::saveGame() {
 	logFile.close();
 
 /****************************************** Neue Dateil save  ************************************************************************/
-	ofstream saveFile("save.txt");
+	ofstream saveFile(saveGame);
 	if (!saveFile.is_open()) {
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
