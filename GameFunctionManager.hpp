@@ -34,10 +34,10 @@ class GameFunctionManager {
 
         void clear_screen();
         void enableVirtualTerminal();
-        int randomNumber();
 
     public:
         GameFunctionManager();
+        int randomNumber();
 
         void addPlayer(Player player);
 

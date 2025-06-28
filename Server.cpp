@@ -310,7 +310,15 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 					manager.getPlayers()[id].setPosition(10);
 				}
 				else if (specialtile == "FreeParking") {						//Frei Parken
-					cout << "Hier kannst du chillen und frei parken :)" << endl;
+					int potGewinn = getPot();
+					if (potGewinn > 0) {
+						manager.getPlayers()[id].addMoney(potGewinn);
+						clearPot();
+						cout << "Glückwunsch! Du bekommst " << potGewinn << "Euro vom Freiparken-Pot!" << endl;
+					}
+					else {
+						cout << "Hier kannst du chillen und frei parken :)" << endl;
+					}
 				}
 				else if (specialtile == "Tax") {								//Einkommenssteuer zahlen
 					cout << "Zahle 200 Euro Einkommenssteuer!" << endl;
@@ -336,12 +344,6 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 						//Game Over
 						manager.getPlayers()[id].setGameOver();
 					}
-				}
-				else if (specialtile == "Event") {								//Eventfeld
-					//Eventkarte ziehen und ggf ausfuehren
-				}
-				else if (specialtile == "Community") {							//Gemeinschaftsfeld
-					//Gemeinschaftskarte ziehen und ggf ausfuehren
 				}
 				else if (specialtile == "Hubschrauberlandeplatz") {				//Hubschrauberlandeplatz
 
@@ -392,8 +394,126 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 					else {												//nicht genug Geld zum Fahren
 						cout << "Du hast aber nicht so viel, also bleibst du hier ;)" << endl;
 					}
+				}
+
+				else if (specialtile == "Action") {
+					cout << "Du bist auf einem Aktionsfeld gelandet! Hoffentlich bekommst du was gutes:" << endl;
+					int actionCard = ((manager.randomNumber() - 1) * 6 + (manager.randomNumber() - 1)) % 12 + 1;
+					this_thread::sleep_for(chrono::milliseconds(2000));
+					//berechnet random number zwischen 1 und 12 anhand einer funktion die nur zwischen 1 und 6 berechnet
+					switch (actionCard) {
+					case 1:
+						std::cout << "Die Parkgebühren steigen – zahle 50 Euro in den Freipark-Topf!" << std::endl;
+						manager.getPlayers()[id].addMoney(-50);
+						addToPot(50);
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 2: {
+						// Aktueller Spieler id
+						int numPlayers = manager.getPlayers().size();
+						int nextId = id;
+						bool found = false;
+						for (int i = 1; i < numPlayers; ++i) {					//finde nächsten lebendigen Spieler (kandidaten)
+							int candidate = (id + i) % numPlayers;
+							if (!manager.getPlayers()[candidate].getGameOver()) {
+								nextId = candidate;
+								found = true;
+								break;
+							}
+						}
+						if (!found) {
+							std::cout << "Alle anderen sind Game Over! Du behältst deine 50 Euro. Warum spielst du eigentlich noch?" << std::endl;
+						}
+						else {
+							manager.getPlayers()[id].addMoney(-50);
+							manager.getPlayers()[nextId].addMoney(50);
+							std::cout << "Großzügigkeit tut gut: Du gibst Spieler '"
+								<< manager.getPlayers()[nextId].getName()
+								<< "' 50 Euro!" << std::endl;
+						}
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					}
+
+					case 3:
+						manager.getPlayers()[id].addMoney(50);
+						std::cout << "Die Bank hat dich lieb heute – du bekommst 50 Euro geschenkt!" << std::endl;
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 4:
+						std::cout << "Der Würfelgott schubst dich voran: Ziehe 3 Felder nach vorne." << std::endl;
+						manager.getPlayers()[id].setPosition(
+							(manager.getPlayers()[id].getPosition() + 3) % 40);
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 5:
+						std::cout << "Oh je! Ein Rückschlag. Gehe 3 Felder zurück (aber nicht den Kopf hängen lassen)." << std::endl;
+						manager.getPlayers()[id].setPosition((manager.getPlayers()[id].getPosition() - 3 + 40) % 40);		//aufpassen wegen negativ !
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 6:
+						std::cout << "Ups... Direkt ins Gefängnis! Gehe nicht über Los, ziehe keine 200 Euro ein. Gar nicht gut" << std::endl;
+						manager.getPlayers()[id].setPosition(10); 
+						manager.getPlayers()[id].setPrisonCount(3); 
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 7:
+						std::cout << "Du Glückspilz! Du findest 35 Euro auf der Straße!" << std::endl;
+						manager.getPlayers()[id].addMoney(35);
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 8:
+						std::cout << "Die Sterne stehen richtig! Du bekommst 65 Euro." << std::endl;
+						manager.getPlayers()[id].addMoney(65);
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 9:
+						std::cout << "Ab auf die Schlosspromenade! Gönn dir den besten Stadtteil (hoffentlich)." << std::endl;
+						manager.getPlayers()[id].setPosition(39);
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 10: {
+						// Kandidaten sammeln: Alle aktiven Spieler außer dir selbst
+						std::vector<int> kandidaten;
+						for (int i = 0; i < manager.getPlayers().size(); ++i) {
+							if (i != id && !manager.getPlayers()[i].getGameOver())
+								kandidaten.push_back(i);
+						}
+						// Gibt es überhaupt einen Kandidaten?
+						if (kandidaten.empty()) {
+							std::cout << "Alle anderen sind Game Over! Niemand zum Tauschen da. Hier ne gute Idee: Such dir Leute mit denen du spielen kannst!" << std::endl;
+						}
+						else {
+							// Einen zufälligen Kandidaten auswählen (1-6 randomnumber, modulo Kandidatenzahl)
+							int randomIndex = (manager.randomNumber() - 1) % kandidaten.size();
+							int tauschPartner = kandidaten[randomIndex];
+
+							// Positionen tauschen
+							int tmp = manager.getPlayers()[id].getPosition();
+							manager.getPlayers()[id].setPosition(manager.getPlayers()[tauschPartner].getPosition());
+							manager.getPlayers()[tauschPartner].setPosition(tmp);
+
+							std::cout << "Verwirrung! Du tauschst die Position mit Spieler '"
+								<< manager.getPlayers()[tauschPartner].getName() << "'." << std::endl;
+						}
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					}
+					case 11:
+						std::cout << "Alarm! SOFORT auf LOS – mach schnell, bevor jemand merkt, dass du gleich 400 Euro kassierst!" << std::endl;
+						manager.getPlayers()[id].setPosition(0);
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					case 12:
+						std::cout << "Schnell, bevor es jemand merkt: Ab auf Freiparken!" << std::endl;
+						manager.getPlayers()[id].setPosition(20);
+						this_thread::sleep_for(chrono::milliseconds(1000));
+						break;
+					}
 
 				}
+
+		
 
 
 			}
@@ -574,3 +694,19 @@ void Server::SpielstandSpeichern() {
 
 	exit(0);
 }
+
+/*
+Funktionsdefinitionen für die Möglichkeitne von Mietfrei
+*/
+void Server::addToPot(int betrag) {
+	pot += betrag;
+}
+
+int Server::getPot() const {
+	return pot;
+}
+
+void Server::clearPot() {
+	pot = 0;
+}
+

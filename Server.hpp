@@ -38,6 +38,9 @@ private:
 	void Paschwerfen(GameFunctionManager& manager);
 	void naechsterSpieler(GameFunctionManager& manager);
 	void Ende();
+	void addToPot(int betrag);
+	int getPot() const;
+	void clearPot();
 
 
 public:
@@ -52,6 +55,7 @@ public:
 	void Wuerfeln(GameFunctionManager& manager);
 	void GefaengnisCheck(GameFunctionManager& gamefunc);
 	void SpielstandSpeichern();
+	int pot = 0;
 
 
 
