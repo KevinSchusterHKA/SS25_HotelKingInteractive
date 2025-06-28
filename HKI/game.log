@@ -1,4 +1,6 @@
-Round = 1, playerID  = 0, name = el, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
-Round = 1, playerID  = 1, name = e, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
-Round = 1, playerID  = 2, name = e, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
-Round = 1, playerID  = 3, name = e, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 0, name = pepe, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 1, name = phil, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 2, name = od4, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 3, name = CPU Spieler 0, Budget = 500, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 0, name = pepe, Budget = 360, karten = , position = 11, prisonCount  = 0, grundstuecke = Amalienstraße/10/0
+Round = 1, playerID  = 1, name = phil, Budget = 380, karten = , position = 9, prisonCount  = 0, grundstuecke = Ettlingerstraße/8/0

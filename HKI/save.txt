@@ -2,35 +2,39 @@
 round = 1
 
 # Spieler 3
-name = c
+name = od4
 playerID = 2
 budget = 500
 position = 0
 prisonCount = 0
 karten = 
+grundstuecke = 
 
-naechsteSpielerID = 2
 # Spieler 4
-name = d
+name = CPUSpieler0
 playerID = 3
 budget = 500
 position = 0
 prisonCount = 0
 karten = 
+grundstuecke = 
 
 # Spieler 1
-name = a
+name = pepe
 playerID = 0
-budget = 500
-position = 5
+budget = 360
+position = 11
 prisonCount = 0
 karten = 
+grundstuecke = Amalienstraße/10/0
 
 # Spieler 2
-name = b
+name = phil
 playerID = 1
-budget = 450
-position = 5
+budget = 380
+position = 9
 prisonCount = 0
 karten = 
+grundstuecke = Ettlingerstraße/8/0
 
+naechsteSpielerID = 1

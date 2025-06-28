@@ -56,6 +56,8 @@ public:
 	void GefaengnisCheck(GameFunctionManager& gamefunc);
 	void SpielstandSpeichern();
 	int pot = 0;
+	void fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile);
+
 
 
 

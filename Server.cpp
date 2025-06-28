@@ -231,314 +231,33 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 				manager.getPlayers()[id].addMoney(200);
 				if (tile == 0) {
 					manager.getPlayers()[id].addMoney(200);			//Checken ob genau auf LOS
+					
 				}
 			}
-			cout << "Position von " << manager.getPlayers()[id].getName() << ": " << manager.getPlayers()[id].getPosition() << endl;
-				
-			manager.showTileInfomation(tile);								//Feldeigenschaften anzeigen
+			manager.showTileInfomation(tile);		//Feldeigenschaften anzeigen
 
-			for (int i = 0; i < 4; i++) {												//checken, ob schon jemand auf dem Feld steht
-				if (i != id){
-					positionofothers = manager.getPlayers()[i].getPosition();
-					if (positionofothers == tile) {								//dieser Player steht schon auf dem Feld
-						cout << manager.getPlayers()[i].getName() << "befindet sich gerade schon auf diesem Feld. Gib 50 Euro ab!" << endl;
+			for (int i = 0; i < 4; i++) {
+				if (i != id) {
+					int positionofothers = manager.getPlayers()[i].getPosition();
+					if (positionofothers == tile) {
+						cout << manager.getPlayers()[i].getName()
+							<< " befindet sich gerade schon auf diesem Feld. Gib 50 Euro ab!" << endl;
 						if (manager.getPlayers()[id].getMoney() > 50) {
 							manager.getPlayers()[id].addMoney(-50);
 							manager.getPlayers()[i].addMoney(50);
 						}
-						else {													//nicht genug Geld
+						else {
 							cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
-							//Game Over
 							manager.getPlayers()[id].setGameOver();
 						}
 					}
 				}
-			}
-
-			auto& sTile = manager.getMap().tiles[tile];
-
-			if (auto propTile = dynamic_cast<PropertyTile*>(sTile.get())) {		//auf Property Tile
-
-				price = propTile->getPrice();
-
-				if (propTile->getOwnerId() == -1) {											//wenn Feld noch nicht gekauft
-					if (manager.getPlayers()[id].getMoney() > price) {									//wenn genug Geld zum Kaufen da
-						cout << "Moechtest du das Feld kaufen?(dein Budget:"<<manager.getPlayers()[id].getMoney()<<") (0: nein, 1:ja)" << endl;
-						cin >> buyfield;
-						if (buyfield) {
-							manager.getPlayers()[id].addMoney(-price);
-							propTile->setOwner(id);
-						}
-						else {
-							cout << "ok dann nicht" << endl;
-						}
-					}
-					else {
-						cout << "Du hast leider nicht genug Geld, um dieses Feld zu kaufen. Weiterr" << endl;	//nicht genug Geld zum Kaufen da
-					}
-				}
-				else {																			//Miete zahlen, wenn vergeben
-					rent = propTile->getRent();
-					ownerid = propTile->getOwnerId();
-
-					cout << "Das Fed besitzt " << ownerid << ". Du musst " << rent << " Euro Miete zahlen." << endl;
-
-					if (manager.getPlayers()[id].getMoney() > rent) {					//genug Geld fuer Miete
-
-						manager.getPlayers()[id].addMoney(-rent);
-						manager.getPlayers()[ownerid].addMoney(rent);
-					}
-					else {													//nicht genug Geld fuer Miete
-						cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
-							//Game Over
-						manager.getPlayers()[id].setGameOver();
-					}
-				}
-				// Hausbau-Logik :
-				if (propTile->getOwnerId() == id) {
-					if (manager.getMap().canUpgradeStreet(propTile, id)) {
-						cout << "Möchtest du auf dieser Straße ein Haus bauen? (Kosten: " << propTile->getHouseCost() << " Euro) (0: nein, 1: ja)" << endl;
-						int bauen = 0;
-						cin >> bauen;
-						if (bauen && manager.getPlayers()[id].getMoney() >= propTile->getHouseCost()) {
-							propTile->setBuildingLevel(propTile->getBuildingLevel() + 1);		// Erhöhe das Haus-Level der Straße um 1 (baue das Haus)
-							manager.getPlayers()[id].addMoney(-propTile->getHouseCost());		 // Ziehe den Hauspreis vom Spielerkonto ab
-							cout << "Herzlichen Glückwunsch! Du hast ein Haus gebaut. Die Miete steigt!" << endl;
-						}
-						else if (bauen) {
-							cout << "Du hast leider nicht genug Geld für ein Haus." << endl;
-						}
-					}
-					else {
-						cout << "Du kannst hier aktuell kein Haus bauen. Baue zuerst auf den anderen Straßen der Farbgruppe gleichmäßig!" << endl;
-					}
-				}
-			}
-			else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {	//auf Special Tile
-
-				specialtile = specialTile->getTypeString();
-				if(specialtile == "Start") {
-					manager.getPlayers()[id].addMoney(400);									//Wenn man direkt auf Los landet bekommt man 400 Euro
-				}
-				else if (specialtile == "Jail") {
-					cout << "Du bist nur zu Besuch hier" << endl;
-				}
-				else if (specialtile == "GoToJail") {							//Ins Gefaengnis gehen
-					cout << "Gehe ins Gefaengnis!" << endl;
-					manager.getPlayers()[id].setPrisonCount(3);
-					manager.getPlayers()[id].setPosition(10);
-				}
-				else if (specialtile == "FreeParking") {						//Frei Parken
-					int potGewinn = getPot();
-					if (potGewinn > 0) {
-						manager.getPlayers()[id].addMoney(potGewinn);
-						clearPot();
-						cout << "Glückwunsch! Du bekommst " << potGewinn << "Euro vom Freiparken-Pot!" << endl;
-					}
-					else {
-						cout << "Hier kannst du chillen und frei parken :)" << endl;
-					}
-				}
-				else if (specialtile == "Tax") {								//Einkommenssteuer zahlen
-					cout << "Zahle 200 Euro Einkommenssteuer!" << endl;
-					if (manager.getPlayers()[id].getMoney() > 100) {					//genug Geld
-
-						manager.getPlayers()[id].addMoney(-200);
-					}
-					else {													//nicht genug Geld
-						cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
-						//Game Over
-						manager.getPlayers()[id].setGameOver();
-					}
-				}
-				else if (specialtile == "LuxuryTax") {							//Zusatzsteuer zahlen
-
-					cout << "Zahle 100 Euro Zusatzsteuer!" << endl;
-					if (manager.getPlayers()[id].getMoney() > 200) {					//genug Geld
-
-						manager.getPlayers()[id].addMoney(-200);
-					}
-					else {													//nicht genug Geld
-						cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
-						//Game Over
-						manager.getPlayers()[id].setGameOver();
-					}
-				}
-				else if (specialtile == "Hubschrauberlandeplatz") {				//Hubschrauberlandeplatz
-
-					cout << "Du darfst dir ein beliebiges Feld aussuchen, zu dem du fliegen kannst. Das kostet aber 100 Euro." << endl;
-
-
-					if (manager.getPlayers()[id].getMoney() > 100) {					//genug Geld zum Fliegen
-						cout << "Moechtest du fliegen? (nein=0 ja=1)" << endl;
-						cin >> transport;
-
-						if (transport) {											//moechte fliegen
-							cout << "Wohin willst du? (Feld ID)" << endl;
-							cin >> wunschfeldid;
-
-							while (wunschfeldid < 0 || wunschfeldid > 39) {
-								cout << "Dieses Feld existiert nicht" << endl;
-							}
-							manager.getPlayers()[id].addMoney(-100);
-							manager.getPlayers()[id].setPosition(wunschfeldid);
-						}
-						else {												//moechte nicht fliegen
-							cout << "ok dann bleibst du hier stehen" << endl;
-						}
-					}
-					else {												//nicht genug Geld zum Fliegen
-						cout << "Du hast aber nicht so viel, also bleibst du hier ;)" << endl;
-					}
-				}
-				else if (specialtile == "Bahnhof") {							//Bahnhof
-					cout << "Du darfst dir einen beliebigen Bahnhof aussuchen, zu dem du fahren kannst. Das kostet aber 50 Euro." << endl;
-					if (manager.getPlayers()[id].getMoney() > 50) {					//genug Geld zum Fliegen
-						cout << "Moechtest du fahren? (nein=0 ja=1)" << endl;
-						cin >> transport;
-						if (transport) {									//moechte fahren
-							cout << "Wohin willst du? (Hauptbahnhof = 5 WestBahnhof = 15 OstBahnhof = 25)" << endl;
-							cin >> wunschfeldid;
-
-							while (wunschfeldid != 5 && wunschfeldid != 15 && wunschfeldid != 25) {
-								cout << "Da darfst du nicht hin" << endl;
-							}
-							manager.getPlayers()[id].addMoney(-50);
-							manager.getPlayers()[id].setPosition(wunschfeldid);
-						}
-						else {												//moechte nicht fahren
-							cout << "ok dann bleibst du hier stehen" << endl;
-						}
-					}
-					else {												//nicht genug Geld zum Fahren
-						cout << "Du hast aber nicht so viel, also bleibst du hier ;)" << endl;
-					}
-				}
-
-				else if (specialtile == "Action") {
-					cout << "Du bist auf einem Aktionsfeld gelandet! Hoffentlich bekommst du was gutes:" << endl;
-					int actionCard = ((manager.randomNumber() - 1) * 6 + (manager.randomNumber() - 1)) % 12 + 1;
-					this_thread::sleep_for(chrono::milliseconds(2000));
-					//berechnet random number zwischen 1 und 12 anhand einer funktion die nur zwischen 1 und 6 berechnet
-					switch (actionCard) {
-					case 1:
-						std::cout << "Die Parkgebühren steigen – zahle 50 Euro in den Freipark-Topf!" << std::endl;
-						manager.getPlayers()[id].addMoney(-50);
-						addToPot(50);
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 2: {
-						// Aktueller Spieler id
-						int numPlayers = manager.getPlayers().size();
-						int nextId = id;
-						bool found = false;
-						for (int i = 1; i < numPlayers; ++i) {					//finde nächsten lebendigen Spieler (kandidaten)
-							int candidate = (id + i) % numPlayers;
-							if (!manager.getPlayers()[candidate].getGameOver()) {
-								nextId = candidate;
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
-							std::cout << "Alle anderen sind Game Over! Du behältst deine 50 Euro. Warum spielst du eigentlich noch?" << std::endl;
-						}
-						else {
-							manager.getPlayers()[id].addMoney(-50);
-							manager.getPlayers()[nextId].addMoney(50);
-							std::cout << "Großzügigkeit tut gut: Du gibst Spieler '"
-								<< manager.getPlayers()[nextId].getName()
-								<< "' 50 Euro!" << std::endl;
-						}
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					}
-
-					case 3:
-						manager.getPlayers()[id].addMoney(50);
-						std::cout << "Die Bank hat dich lieb heute – du bekommst 50 Euro geschenkt!" << std::endl;
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 4:
-						std::cout << "Der Würfelgott schubst dich voran: Ziehe 3 Felder nach vorne." << std::endl;
-						manager.getPlayers()[id].setPosition(
-							(manager.getPlayers()[id].getPosition() + 3) % 40);
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 5:
-						std::cout << "Oh je! Ein Rückschlag. Gehe 3 Felder zurück (aber nicht den Kopf hängen lassen)." << std::endl;
-						manager.getPlayers()[id].setPosition((manager.getPlayers()[id].getPosition() - 3 + 40) % 40);		//aufpassen wegen negativ !
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 6:
-						std::cout << "Ups... Direkt ins Gefängnis! Gehe nicht über Los, ziehe keine 200 Euro ein. Gar nicht gut" << std::endl;
-						manager.getPlayers()[id].setPosition(10); 
-						manager.getPlayers()[id].setPrisonCount(3); 
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 7:
-						std::cout << "Du Glückspilz! Du findest 35 Euro auf der Straße!" << std::endl;
-						manager.getPlayers()[id].addMoney(35);
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 8:
-						std::cout << "Die Sterne stehen richtig! Du bekommst 65 Euro." << std::endl;
-						manager.getPlayers()[id].addMoney(65);
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 9:
-						std::cout << "Ab auf die Schlosspromenade! Gönn dir den besten Stadtteil (hoffentlich)." << std::endl;
-						manager.getPlayers()[id].setPosition(39);
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 10: {
-						// Kandidaten sammeln: Alle aktiven Spieler außer dir selbst
-						std::vector<int> kandidaten;
-						for (int i = 0; i < manager.getPlayers().size(); ++i) {
-							if (i != id && !manager.getPlayers()[i].getGameOver())
-								kandidaten.push_back(i);
-						}
-						// Gibt es überhaupt einen Kandidaten?
-						if (kandidaten.empty()) {
-							std::cout << "Alle anderen sind Game Over! Niemand zum Tauschen da. Hier ne gute Idee: Such dir Leute mit denen du spielen kannst!" << std::endl;
-						}
-						else {
-							// Einen zufälligen Kandidaten auswählen (1-6 randomnumber, modulo Kandidatenzahl)
-							int randomIndex = (manager.randomNumber() - 1) % kandidaten.size();
-							int tauschPartner = kandidaten[randomIndex];
-
-							// Positionen tauschen
-							int tmp = manager.getPlayers()[id].getPosition();
-							manager.getPlayers()[id].setPosition(manager.getPlayers()[tauschPartner].getPosition());
-							manager.getPlayers()[tauschPartner].setPosition(tmp);
-
-							std::cout << "Verwirrung! Du tauschst die Position mit Spieler '"
-								<< manager.getPlayers()[tauschPartner].getName() << "'." << std::endl;
-						}
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					}
-					case 11:
-						std::cout << "Alarm! SOFORT auf LOS – mach schnell, bevor jemand merkt, dass du gleich 400 Euro kassierst!" << std::endl;
-						manager.getPlayers()[id].setPosition(0);
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					case 12:
-						std::cout << "Schnell, bevor es jemand merkt: Ab auf Freiparken!" << std::endl;
-						manager.getPlayers()[id].setPosition(20);
-						this_thread::sleep_for(chrono::milliseconds(1000));
-						break;
-					}
-
-				}
-
-		
-
-
-			}
-
 		}
 
+		fuehreFeldAktionAus(manager, id, tile);
+		cout << "Position von " << manager.getPlayers()[id].getName() << ": " << manager.getPlayers()[id].getPosition() << endl;
+		}
+			
 	} while (manager.getPaschCounter() == 1 || manager.getPaschCounter() == 2);		//nochmal wuerfeln wenn du Pasch hattest
 
 	//Spielerzug zuende -> naechster Spieler
@@ -621,7 +340,6 @@ void Server::Paschwerfen(GameFunctionManager& game){
 void Server::naechsterSpieler(GameFunctionManager& manager) {
 	int id = manager.getCurrentPlayer();
 	bool nochmal = false;
-
 	int originalCurrentPlayer = manager.getCurrentPlayer();		//aktuellen Spieler merken
 	getConfiguration().writeLog(manager);				//Log schreiben und Spielstand speichern
 	
@@ -727,5 +445,303 @@ int Server::getPot() const {
 
 void Server::clearPot() {
 	pot = 0;
+}
+
+
+void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile) {			//// ALLE if/else zu PropertyTile, SpecialTile, Action-Switch-Case, Bahnhöfe etc.
+	auto& sTile = manager.getMap().tiles[tile];
+
+	if (auto propTile = dynamic_cast<PropertyTile*>(sTile.get())) {		//auf Property Tile
+
+		price = propTile->getPrice();
+
+		if (propTile->getOwnerId() == -1) {											//wenn Feld noch nicht gekauft
+			if (manager.getPlayers()[id].getMoney() > price) {									//wenn genug Geld zum Kaufen da
+				cout << "Moechtest du das Feld kaufen?(dein Budget:" << manager.getPlayers()[id].getMoney() << ") (0: nein, 1:ja)" << endl;
+				cin >> buyfield;
+				if (buyfield) {
+					manager.getPlayers()[id].addMoney(-price);
+					propTile->setOwner(id);
+				}
+				else {
+					cout << "ok dann nicht" << endl;
+				}
+			}
+			else {
+				cout << "Du hast leider nicht genug Geld, um dieses Feld zu kaufen. Weiter geht's" << endl;	//nicht genug Geld zum Kaufen da
+			}
+		}
+		else if (propTile->getOwnerId() == id) {					//bist du inhaber?
+			if (manager.getMap().canUpgradeStreet(propTile, id)) {
+				cout << "Möchtest du auf dieser Straße ein Haus bauen? (Kosten: " << propTile->getHouseCost() << " Euro) (0: nein, 1: ja)" << endl;
+				int bauen = 0;
+				cin >> bauen;
+				if (bauen && manager.getPlayers()[id].getMoney() >= propTile->getHouseCost()) {		//darfst du hier bauen?
+					propTile->setBuildingLevel(propTile->getBuildingLevel() + 1);
+					manager.getPlayers()[id].addMoney(-propTile->getHouseCost());
+					cout << "Herzlichen Glückwunsch! Du hast ein Haus gebaut. Die Miete steigt!" << endl;
+				}
+				else if (bauen) {
+					cout << "Du hast leider nicht genug Geld für ein Haus." << endl;
+				}
+			}
+			else {
+				cout << "Du kannst hier aktuell kein Haus bauen. Baue zuerst auf den anderen Straßen der Farbgruppe gleichmäßig!" << endl;
+			}
+		}
+		else {																			//Miete zahlen, wenn vergeben
+			rent = propTile->getRent();
+			ownerid = propTile->getOwnerId();
+
+			cout << "Das Fed besitzt " << ownerid << ". Du musst " << rent << " Euro Miete zahlen." << endl;
+
+			if (manager.getPlayers()[id].getMoney() > rent) {					//genug Geld fuer Miete
+
+				manager.getPlayers()[id].addMoney(-rent);
+				manager.getPlayers()[ownerid].addMoney(rent);
+			}
+			else {													//nicht genug Geld fuer Miete
+				cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
+				//Game Over
+				manager.getPlayers()[id].setGameOver();
+			}
+		}
+
+	}
+
+	else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {	//auf Special Tile
+
+		specialtile = specialTile->getTypeString();
+		if (specialtile == "Start") {
+			manager.getPlayers()[id].addMoney(400);									//Wenn man direkt auf Los landet bekommt man 400 Euro
+		}
+		else if (specialtile == "Jail") {
+			cout << "Du bist nur zu Besuch hier" << endl;
+		}
+		else if (specialtile == "GoToJail") {							//Ins Gefaengnis gehen
+			cout << "Gehe ins Gefaengnis!" << endl;
+			manager.getPlayers()[id].setPrisonCount(3);
+			manager.getPlayers()[id].setPosition(10);
+		}
+		else if (specialtile == "FreeParking") {						//Frei Parken
+			int potGewinn = getPot();
+			if (potGewinn > 0) {
+				manager.getPlayers()[id].addMoney(potGewinn);
+				clearPot();
+				cout << "Glückwunsch! Du bekommst " << potGewinn << "Euro vom Freiparken-Pot!" << endl;
+			}
+			else {
+				cout << "Hier kannst du chillen und frei parken :)" << endl;
+			}
+		}
+		else if (specialtile == "Tax") {								//Einkommenssteuer zahlen
+			cout << "Zahle 200 Euro Einkommenssteuer!" << endl;
+			if (manager.getPlayers()[id].getMoney() > 100) {					//genug Geld
+
+				manager.getPlayers()[id].addMoney(-200);
+			}
+			else {													//nicht genug Geld
+				cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
+				//Game Over
+				manager.getPlayers()[id].setGameOver();
+			}
+		}
+		else if (specialtile == "LuxuryTax") {							//Zusatzsteuer zahlen
+
+			cout << "Zahle 100 Euro Zusatzsteuer!" << endl;
+			if (manager.getPlayers()[id].getMoney() > 200) {					//genug Geld
+
+				manager.getPlayers()[id].addMoney(-200);
+			}
+			else {													//nicht genug Geld
+				cout << "Du hast aber leider nicht genug Geld dafuer... \nGame Over fuer dich :(";
+				//Game Over
+				manager.getPlayers()[id].setGameOver();
+			}
+		}
+		else if (specialtile == "Hubschrauberlandeplatz") {				//Hubschrauberlandeplatz
+
+			cout << "Du darfst dir ein beliebiges Feld aussuchen, zu dem du fliegen kannst. Das kostet aber 100 Euro." << endl;
+
+
+			if (manager.getPlayers()[id].getMoney() > 100) {					//genug Geld zum Fliegen
+				cout << "Moechtest du fliegen? (nein=0 ja=1)" << endl;
+				cin >> transport;
+
+				if (transport) {											//moechte fliegen
+					cout << "Wohin willst du? (Feld ID)" << endl;
+					cin >> wunschfeldid;
+
+					while (wunschfeldid < 0 || wunschfeldid > 39) {
+						cout << "Dieses Feld existiert nicht" << endl;
+					}
+					manager.getPlayers()[id].addMoney(-100);
+					manager.getPlayers()[id].setPosition(wunschfeldid);
+				}
+				else {												//moechte nicht fliegen
+					cout << "ok dann bleibst du hier stehen" << endl;
+				}
+			}
+			else {												//nicht genug Geld zum Fliegen
+				cout << "Du hast aber nicht so viel, also bleibst du hier ;)" << endl;
+			}
+		}
+		else if (specialtile == "Bahnhof") {							//Bahnhof
+			cout << "Du darfst dir einen beliebigen Bahnhof aussuchen, zu dem du fahren kannst. Das kostet aber 50 Euro." << endl;
+			if (manager.getPlayers()[id].getMoney() > 50) {					//genug Geld zum Fliegen
+				cout << "Moechtest du fahren? (nein=0 ja=1)" << endl;
+				cin >> transport;
+				if (transport) {									//moechte fahren
+					cout << "Wohin willst du? (Hauptbahnhof = 5 WestBahnhof = 15 OstBahnhof = 25)" << endl;
+					cin >> wunschfeldid;
+
+					while (wunschfeldid != 5 && wunschfeldid != 15 && wunschfeldid != 25) {
+						cout << "Da darfst du nicht hin" << endl;
+					}
+					manager.getPlayers()[id].addMoney(-50);
+					manager.getPlayers()[id].setPosition(wunschfeldid);
+				}
+				else {												//moechte nicht fahren
+					cout << "ok dann bleibst du hier stehen" << endl;
+				}
+			}
+			else {												//nicht genug Geld zum Fahren
+				cout << "Du hast aber nicht so viel, also bleibst du hier ;)" << endl;
+			}
+		}
+
+		else if (specialtile == "Action") {
+			cout << "Du bist auf einem Aktionsfeld gelandet! Hoffentlich bekommst du was gutes:" << endl;
+			int actionCard = ((manager.randomNumber() - 1) * 6 + (manager.randomNumber() - 1)) % 12 + 1;
+			this_thread::sleep_for(chrono::milliseconds(2000));
+			//berechnet random number zwischen 1 und 12 anhand einer funktion die nur zwischen 1 und 6 berechnet
+			switch (actionCard) {
+			case 1:
+				std::cout << "Die Parkgebuehren steigen – zahle 50 Euro in den Freipark-Topf!" << std::endl;
+				manager.getPlayers()[id].addMoney(-50);
+				addToPot(50);
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			case 2: {
+				// Aktueller Spieler id
+				int numPlayers = manager.getPlayers().size();
+				int nextId = id;
+				bool found = false;
+				for (int i = 1; i < numPlayers; ++i) {					//finde nächsten lebendigen Spieler (kandidaten)
+					int candidate = (id + i) % numPlayers;
+					if (!manager.getPlayers()[candidate].getGameOver()) {
+						nextId = candidate;
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					std::cout << "Alle anderen sind Game Over! Du behaeltst deine 50 Euro. Warum spielst du eigentlich noch?" << std::endl;
+				}
+				else {
+					manager.getPlayers()[id].addMoney(-50);
+					manager.getPlayers()[nextId].addMoney(50);
+					std::cout << "Großzuegigkeit tut gut: Du gibst Spieler '"
+						<< manager.getPlayers()[nextId].getName()
+						<< "' 50 Euro!" << std::endl;
+				}
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			}
+
+			case 3:
+				manager.getPlayers()[id].addMoney(50);
+				std::cout << "Die Bank hat dich lieb heute – du bekommst 50 Euro geschenkt!" << std::endl;
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			case 4:
+				std::cout << "Der Wuerfelgott schubst dich voran: Ziehe 3 Felder nach vorne." << std::endl;
+				manager.getPlayers()[id].setPosition(
+					(manager.getPlayers()[id].getPosition() + 3) % 40);
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				fuehreFeldAktionAus(manager, id, manager.getPlayers()[id].getPosition());
+				break;
+			case 5:
+				std::cout << "Oh je! Ein Rueckschlag. Gehe 3 Felder zurueck (aber nicht den Kopf haengen lassen)." << std::endl;
+				manager.getPlayers()[id].setPosition((manager.getPlayers()[id].getPosition() - 3 + 40) % 40);		//aufpassen wegen negativ !
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				fuehreFeldAktionAus(manager, id, manager.getPlayers()[id].getPosition());
+				break;
+			case 6:
+				std::cout << "Ups... Direkt ins Gefaengnis! Gehe nicht über Los, ziehe keine 200 Euro ein. Gar nicht gut" << std::endl;
+				manager.getPlayers()[id].setPosition(10);
+				manager.getPlayers()[id].setPrisonCount(3);
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			case 7:
+				std::cout << "Du Glueckspilz! Du findest 35 Euro auf der Straße!" << std::endl;
+				manager.getPlayers()[id].addMoney(35);
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			case 8:
+				std::cout << "Die Sterne stehen richtig! Du bekommst 65 Euro." << std::endl;
+				manager.getPlayers()[id].addMoney(65);
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			case 9:
+				std::cout << "Ab auf die Schlosspromenade! Goenn dir den besten Stadtteil (hoffentlich)." << std::endl;
+				manager.getPlayers()[id].setPosition(39);
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				fuehreFeldAktionAus(manager, id, 39);
+				break;
+			case 10: {
+				// Kandidaten sammeln: Alle aktiven Spieler außer dir selbst
+				std::vector<int> kandidaten;
+				for (int i = 0; i < manager.getPlayers().size(); ++i) {
+					if (i != id && !manager.getPlayers()[i].getGameOver())
+						kandidaten.push_back(i);
+				}
+				// Gibt es überhaupt einen Kandidaten?
+				if (kandidaten.empty()) {
+					std::cout << "Alle anderen sind Game Over! Niemand zum Tauschen da. Hier ne gute Idee: Such dir Leute mit denen du spielen kannst!" << std::endl;
+				}
+				else {
+					// Einen zufälligen Kandidaten auswählen (1-6 randomnumber, modulo Kandidatenzahl)
+					int randomIndex = (manager.randomNumber() - 1) % kandidaten.size();
+					int tauschPartner = kandidaten[randomIndex];
+
+					// Positionen tauschen
+					int tmp = manager.getPlayers()[id].getPosition();
+					manager.getPlayers()[id].setPosition(manager.getPlayers()[tauschPartner].getPosition());
+					manager.getPlayers()[tauschPartner].setPosition(tmp);
+
+					std::cout << "Verwirrung! Du tauschst die Position mit Spieler '"
+						<< manager.getPlayers()[tauschPartner].getName() << "'." << std::endl;
+				}
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			}
+			case 11:
+				std::cout << "Alarm! SOFORT auf LOS – mach schnell, bevor jemand merkt, dass du gleich 400 Euro kassierst!" << std::endl;
+				manager.getPlayers()[id].setPosition(0);
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			case 12:
+				manager.getPlayers()[id].setPosition(20);
+				if (getPot() > 0) {
+					int gewinn = getPot();
+					manager.getPlayers()[id].addMoney(gewinn);
+					clearPot();
+					std::cout << "Du bekommst " << gewinn << " Euro aus dem Freiparken-Pot!" << std::endl;
+				}
+				else {
+					std::cout << "Leider ist der FreiParken Pot noch leer. Vielleicht beim nächsten Mal!" << std::endl;
+				}
+				this_thread::sleep_for(chrono::milliseconds(1000));
+				break;
+			}
+
+		}
+
+
+
+
+	}
+
 }
 
