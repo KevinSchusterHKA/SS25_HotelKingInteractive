@@ -577,6 +577,10 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 					}
 					manager.getPlayers()[id].addMoney(-100);
 					manager.getPlayers()[id].setPosition(wunschfeldid);
+
+					manager.showTileInfomation(wunschfeldid);			//Feldeigenschaften
+					fuehreFeldAktionAus(manager, id, wunschfeldid);		//Feldaktion
+
 				}
 				else {												//moechte nicht fliegen
 					cout << "ok dann bleibst du hier stehen" << endl;
@@ -641,7 +645,7 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 				else {
 					manager.getPlayers()[id].addMoney(-50);
 					manager.getPlayers()[nextId].addMoney(50);
-					std::cout << "Großzuegigkeit tut gut: Du gibst Spieler '"
+					std::cout << "Grosszuegigkeit tut gut: Du gibst Spieler '"
 						<< manager.getPlayers()[nextId].getName()
 						<< "' 50 Euro!" << std::endl;
 				}
@@ -688,6 +692,7 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 				manager.getPlayers()[id].setPosition(39);
 				this_thread::sleep_for(chrono::milliseconds(1000));
 				fuehreFeldAktionAus(manager, id, 39);
+				manager.showTileInfomation(39);
 				break;
 			case 10: {
 				// Kandidaten sammeln: Alle aktiven Spieler außer dir selbst
@@ -712,6 +717,8 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 
 					std::cout << "Verwirrung! Du tauschst die Position mit Spieler '"
 						<< manager.getPlayers()[tauschPartner].getName() << "'." << std::endl;
+					manager.showTileInfomation(manager.getPlayers()[id].getPosition());
+					fuehreFeldAktionAus(manager, id, manager.getPlayers()[id].getPosition());
 				}
 				this_thread::sleep_for(chrono::milliseconds(1000));
 				break;
