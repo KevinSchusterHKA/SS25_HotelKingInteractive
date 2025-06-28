@@ -294,6 +294,25 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 						manager.getPlayers()[id].setGameOver();
 					}
 				}
+				// Hausbau-Logik :
+				if (propTile->getOwnerId() == id) {
+					if (manager.getMap().canUpgradeStreet(propTile, id)) {
+						cout << "Möchtest du auf dieser Straße ein Haus bauen? (Kosten: " << propTile->getHouseCost() << " Euro) (0: nein, 1: ja)" << endl;
+						int bauen = 0;
+						cin >> bauen;
+						if (bauen && manager.getPlayers()[id].getMoney() >= propTile->getHouseCost()) {
+							propTile->setBuildingLevel(propTile->getBuildingLevel() + 1);		// Erhöhe das Haus-Level der Straße um 1 (baue das Haus)
+							manager.getPlayers()[id].addMoney(-propTile->getHouseCost());		 // Ziehe den Hauspreis vom Spielerkonto ab
+							cout << "Herzlichen Glückwunsch! Du hast ein Haus gebaut. Die Miete steigt!" << endl;
+						}
+						else if (bauen) {
+							cout << "Du hast leider nicht genug Geld für ein Haus." << endl;
+						}
+					}
+					else {
+						cout << "Du kannst hier aktuell kein Haus bauen. Baue zuerst auf den anderen Straßen der Farbgruppe gleichmäßig!" << endl;
+					}
+				}
 			}
 			else if (auto specialTile = dynamic_cast<const SpecialTile*>(sTile.get())) {	//auf Special Tile
 

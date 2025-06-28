@@ -105,7 +105,7 @@ void Configuration::writeLog(GameFunctionManager info) {
 		PropertyTile* propertyTile = dynamic_cast<PropertyTile*>(info.getMap().getTile(i).get());
 		if (propertyTile && propertyTile->getOwnerId() == p.getID()) {
 			if (!first) logFile << "|";
-			logFile << propertyTile->getName() << "/" << propertyTile->getRent();
+			logFile << propertyTile->getName() << "/" << propertyTile->getRent() << "/" << propertyTile->getBuildingLevel();
 			first = false;
 		}
 	}
@@ -266,11 +266,15 @@ GameFunctionManager Configuration::loadGame() {
 			stringstream ss(value);
 			string grundstueck;
 			while (getline(ss, grundstueck, '|')) {
-				size_t trenner = grundstueck.find('/');
-				if (trenner == string::npos) continue;
+				// Neu: Name/Mite/Hausanzahl speichern und einlesen!
+				size_t trenner1 = grundstueck.find('/');
+				if (trenner1 == string::npos) continue;
+				size_t trenner2 = grundstueck.find('/', trenner1 + 1);
+				if (trenner2 == string::npos) continue;
 
-				string name = grundstueck.substr(0, trenner);
-				int rent = stoi(grundstueck.substr(trenner + 1));
+				string name = grundstueck.substr(0, trenner1);
+				int rent = stoi(grundstueck.substr(trenner1 + 1, trenner2 - trenner1 - 1));
+				int buildingLevel = stoi(grundstueck.substr(trenner2 + 1));
 
 				for (int i = 0; i < 40; ++i) {
 					shared_ptr<Tile> t = manager.getMap().getTile(i);
@@ -278,6 +282,7 @@ GameFunctionManager Configuration::loadGame() {
 					if (pt && pt->getName() == name) {
 						pt->setOwner(tempPlayer.getID());
 						pt->setRent(rent);
+						pt->setBuildingLevel(buildingLevel); 
 					}
 				}
 			}

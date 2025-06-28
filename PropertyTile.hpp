@@ -27,6 +27,9 @@ public:
 buildingLevel(0),groudID(-1) {}
 // Getter
     PropertyType getPropertyType() const { return propertyType; }
+    int getHouseCost() const { return houseCost; }
+    void setBuildingLevel(int newLevel) { buildingLevel = newLevel; }
+
     int getPrice() const { return price; }
     int getRent() const { return rent; }
     int getOwnerId() const { return ownerId; }
