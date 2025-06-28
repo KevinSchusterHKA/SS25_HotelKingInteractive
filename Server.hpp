@@ -31,13 +31,17 @@ private:
 	int wunschfeldid;
 	int positionofothers;
 	bool transport;
+	int bauen;
 	int freiparkenpot;
 	MenuManager* menumanager;
 	Configuration config;
 	GameSettings settings;
+	void fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile);
+	void GefaengnisCheck(GameFunctionManager& gamefunc);
 	void Paschwerfen(GameFunctionManager& manager);
 	void naechsterSpieler(GameFunctionManager& manager);
 	void Ende();
+	int pot = 0;
 	void addToPot(int betrag);
 	int getPot() const;
 	void clearPot();
@@ -50,15 +54,7 @@ public:
 	MenuManager& getMenuManager();
 	Configuration getConfiguration();
 	void setMenuManager(MenuManager& manager);
-	void showIngameDialog();
 	void Spielzug(GameFunctionManager& manager);
 	void Wuerfeln(GameFunctionManager& manager);
-	void GefaengnisCheck(GameFunctionManager& gamefunc);
 	void SpielstandSpeichern();
-	int pot = 0;
-	void fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile);
-
-
-
-
 };
