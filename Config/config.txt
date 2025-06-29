@@ -1,15 +1,5 @@
 #config
-playerCount = 3
-cpuCount = 1
 startBudget = 500
 roundLimit = 20
-timeLimit = 280
-budgetLimit = 50000
-
-#Waehlen etwas (ich weiss noch nicht)
-cpuDifficulty = schwer
 
 test
-
-#Waehlen RUNDENBASIERT, ZEITBASIERT oder BUDGETBASIERT
-gameMode = ZEITBASIERT
