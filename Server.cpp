@@ -605,6 +605,7 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 			else {												//nicht genug Geld zum Fliegen
 				cout << "Du hast aber nicht so viel, also bleibst du hier ;)" << endl;
 			}
+			this_thread::sleep_for(chrono::milliseconds(3000));
 		}
 		else if (specialtile == "Bahnhof") {							//Bahnhof
 			cout << "Du darfst dir einen beliebigen Bahnhof aussuchen, zu dem du fahren kannst. Das kostet aber 50 Euro." << endl;
@@ -628,6 +629,7 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 			else {												//nicht genug Geld zum Fahren
 				cout << "Du hast aber nicht so viel, also bleibst du hier ;)" << endl;
 			}
+			this_thread::sleep_for(chrono::milliseconds(3000));
 		}
 
 		else if (specialtile == "Action") {
