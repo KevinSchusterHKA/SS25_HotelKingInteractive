@@ -37,40 +37,16 @@ bool Configuration::loadConfig() {
 		value.erase(remove(value.begin(), value.end(), ' '), value.end());
 
 		// Zuordnen
-		if (key == "playerCount") { settings.playerCount = stoi(value); }
-		else if (key == "cpuCount") { settings.cpuCount = stoi(value); }
-		else if (key == "startBudget") { settings.startBudget = stoi(value); }
+		if (key == "startBudget") { settings.startBudget = stoi(value); }
 		else if (key == "roundLimit") { settings.roundLimit = stoi(value); }
-		else if (key == "timeLimit") { settings.timeLimit = stoi(value); }
-		else if (key == "budgetLimit") { settings.budgetLimit = stoi(value); }
-		else if (key == "cpuDifficulty") { settings.cpuDifficulty = value; }
-		else if (key == "gameMode") {
-			if (value == "RUNDENBASIERT") settings.gameMode = GameMode::RUNDENBASIERT;
-			else if (value == "ZEITBASIERT") settings.gameMode = GameMode::ZEITBASIERT;
-			else if (value == "BUDGETBASIERT") settings.gameMode = GameMode::BUDGETBASIERT;
-		}
 	}
 	file.close();
 	return true;
 }
 
 void Configuration::printSettings() {
-	string mode;
-	switch (settings.gameMode) {
-	case GameMode::RUNDENBASIERT: mode = "RUNDENBASIERT"; break;
-	case GameMode::ZEITBASIERT: mode = "ZEITBASIERT"; break;
-	case GameMode::BUDGETBASIERT: mode = "BUDGETBASIERT"; break;
-	default: mode = "UNBEKANNT"; break;
-	}
-
-	cout << "playerCount: " << settings.playerCount << endl;
-	cout << "cpuCount: " << settings.cpuCount << endl;
 	cout << "startBudget: " << settings.startBudget << endl;
 	cout << "roundLimit: " << settings.roundLimit << endl;
-	cout << "timeLimit: " << settings.timeLimit << endl;
-	cout << "budgetLimit: " << settings.budgetLimit << endl;
-	cout << "cpuDifficulty: " << settings.cpuDifficulty << endl;
-	cout << "gameMode: " << mode << endl << endl;
 }
 
 void Configuration::writeLog(GameFunctionManager info) {
