@@ -1,36 +1,36 @@
 # SPIELZUSTAND SPEICHERUNG
 round = 19
 
-# Spieler 3
-name = od4
-playerID = 2
-budget = 505
-position = 0
-prisonCount = 0
-karten = 
-grundstuecke = 
-
-# Spieler 4
-name = CPUSpieler0
-playerID = 3
-budget = 505
-position = 0
-prisonCount = 0
-karten = 
-grundstuecke = 
-
 # Spieler 1
-name = pepe
+name = od4
 playerID = 0
+budget = 50
+position = 0
+prisonCount = 0
+karten = 
+grundstuecke = 
+
+# Spieler 2
+name = CPUSpieler0
+playerID = 1
+budget = 50
+position = 0
+prisonCount = 0
+karten = 
+grundstuecke = 
+
+# Spieler 3
+name = pepe
+playerID = 2
 budget = 505
 position = 11
 prisonCount = 0
 karten = 
 grundstuecke = Amalienstraße/10/0
 
-# Spieler 2
+# Spieler 4
 name = phil
-playerID = 1
+playerID = 3
 budget = 380
 position = 9
 prisonCount = 0

@@ -35,11 +35,9 @@ void Server::SpielStarten() {
 
 	MenuManager manager = MenuManager();
 	setMenuManager(manager);
-	getConfiguration().clearLog();	//Log leeren vor dem Spielstart
+	config.clearLog();	//Log leeren vor dem Spielstart
 	cout << "Pfad zur Konfiguration: " << rulesPath << endl;				// Konfigurationsdatei einlesen
-
-	Configuration config;
-
+	config.loadConfig();
 	while (!config.loadConfig()) {
 
 		cout << "Pfad ungueltig \n \n Pfad zur Konfigurationsdatei: " << endl;
@@ -47,6 +45,7 @@ void Server::SpielStarten() {
 	};
 	cout << "Konfiguration wurde erfolgreich geladen: \n" << endl;
 	settings = config.getSettings();
+	config.printSettings();	//Einstellungen anzeigen
 	
 	
 
@@ -136,7 +135,7 @@ void Server::SpielLaden() {
 	config.printLoadGame(gamefunctionmanager);	//Spieler und Runden anzeigen
 	config.loadConfig();
 	settings = config.getSettings();
-	cout << "Round Limit:"<< config.getSettings().roundLimit << endl;
+	//config.printSettings();	//Einstellungen anzeigen
 
 	players = getMenuManager().getGameFunctionManager().getPlayers();
 	this_thread::sleep_for(chrono::milliseconds(5000));
@@ -267,7 +266,7 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 	int id = manager.getCurrentPlayer();
 	bool nochmal = false;
 	int originalCurrentPlayer = manager.getCurrentPlayer();		//aktuellen Spieler merken
-	getConfiguration().writeLog(manager);				//Log schreiben und Spielstand speichern
+	config.writeLog(manager);				//Log schreiben und Spielstand speichern
 	
 	manager.setCurrentPlayer(originalCurrentPlayer);		//auf urspruenglichen Spieler fuer Spiellogik zuruecksetzen
 
@@ -294,6 +293,9 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 			break;
 		}
 		int currentround = manager.getCurrentRound();
+		config.loadConfig();
+		settings = config.getSettings();
+		cout << "Round Limit:" << settings.roundLimit << endl;
 		if (currentround = settings.roundLimit) {
 			cout << "Rundenlimit erreicht! Das Spiel endet jetzt." << endl;		//Rundenlimit erreicht
 			//wer spielt noch?
@@ -303,31 +305,44 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 				}
 			}
 			//welcher Spieler hat am meisten Geld?
-			maxMoney = 0;
+			maxMoney = 0; 
+			winnerID = -1;
 			winnerID2 = -1;
-			winnerID3 = -1; 
+			winnerID3 = -1;
+			bool aufhoeren = false; //Variable zum Beenden der Schleife, wenn 3 Spieler gleich viel Geld haben
 			for (int i = 0; i < 4; i++) {
 				if (!manager.getPlayers()[i].getGameOver() && manager.getPlayers()[i].getMoney() > maxMoney) {
 					maxMoney = manager.getPlayers()[i].getMoney();
 					winnerID = i;
-				}
-				if (!manager.getPlayers()[i].getGameOver() && manager.getPlayers()[i].getMoney() == maxMoney) { //wenn 2 Spieler gleich viel Geld haben
-					winnerID2 = i; //letzter Spieler, der den gleichen Betrag hat
-					//wenn 3 Spieler gleich viel Geld haben
-					int j = i + 1;
-					for (j; j < 4; j++) {
-						if (!manager.getPlayers()[j].getGameOver() && manager.getPlayers()[j].getMoney() == maxMoney) {
-							winnerID3 = j;
-							//wenn 4 Spieler gleich viel Geld haben
-							int k = j + 1; //naechster Spieler
-							if (k < 4) {
-								cout << "Ihr habt alle gleich viel Geld, wow wie habt ihr das geschafft?" << endl; //wenn alle 4 Spieler gleich viel Geld haben	
-								getConfiguration().sammlungHighscore(manager.getPlayers());
-								Ende();
+					winnerID2 = -1; //reset winnerID2
+					winnerID3 = -1; //reset winnerID3
+
+					for (int l = i + 1; l < 4; l++) { //checken ob naechste Spieler den gleichen Betrag haben
+						if (!aufhoeren) { //solange nicht 3 Spieler gleich viel Geld haben
+							if (!manager.getPlayers()[l].getGameOver() && manager.getPlayers()[l].getMoney() == maxMoney) { //wenn 2 Spieler gleich viel Geld haben
+								winnerID2 = l; //letzter Spieler, der den gleichen Betrag hat
+								winnerID3 = -1; //reset winnerID3
+								cout << "winner2" << winnerID2 << endl;
+
+								for (int j = l + 1; j < 4; j++) { //checken ob naechste Spieler den gleichen Betrag haben
+									if (!manager.getPlayers()[j].getGameOver() && manager.getPlayers()[j].getMoney() == maxMoney) { //wenn 3 Spieler gleich viel Geld haben
+										winnerID3 = j;
+										cout << "winner3" << winnerID3 << endl;
+										//wenn 4 Spieler gleich viel Geld haben
+										int k = j + 1; //naechster Spieler
+										if (!manager.getPlayers()[k].getGameOver() && manager.getPlayers()[k].getMoney() == maxMoney && k == 3) {
+											cout << "Ihr habt alle gleich viel Geld, wow wie habt ihr das geschafft?" << endl; //wenn alle 4 Spieler gleich viel Geld haben	
+											config.sammlungHighscore(manager.getPlayers());
+											Ende();
+										}
+										else { aufhoeren = true; }
+									}
+								}
 							}
 						}
-					}	
+					}
 				}
+				
 			}
             if (winnerID3 != -1) { //wenn 3 Spieler gleich viel Geld haben
 				cout << "Es gibt einen Gleichstand zwischen " << manager.getPlayers()[winnerID].getName() << ", " << manager.getPlayers()[winnerID2].getName() << " und " << manager.getPlayers()[winnerID3].getName() << endl; //wenn 3 Spieler gleich viel Geld haben
@@ -338,7 +353,7 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 			else {
 				cout << manager.getPlayers()[winnerID].getName() << " hat gewonnen mit " << maxMoney << " Euro!" << endl; //Herausfinden, welcher Spieler gewonnen hat und Spiel beenden
 			}
-			getConfiguration().sammlungHighscore(manager.getPlayers());
+			config.sammlungHighscore(manager.getPlayers());
 			Ende();
 		}
 		for (int i = 0; i < 4; i++) {									//checken wie viele Spieler Game Over sind
@@ -350,7 +365,7 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 				for (int i = 0; i < 4; i++) {
 					if (!manager.getPlayers()[i].getGameOver()) {
 						cout << "Spieler " << manager.getPlayers()[i].getName() << " hat gewonnen!" << endl; //Herausfinden, welcher Spieler gewonnen hat und Spiel beenden
-						getConfiguration().sammlungHighscore(manager.getPlayers());
+						config.sammlungHighscore(manager.getPlayers());
 						Ende();
 						return;
 					}
