@@ -130,7 +130,7 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
         Aktionsfeld2, "Aktionsfeld", SpecialType::Action);
 
     tiles[Gefaengnis] = std::make_shared<SpecialTile>(
-        Gefaengnis, "Nur zu Besuch / Gefaengnis", SpecialType::GoToJail);
+        Gefaengnis, "Nur zu Besuch / Gefaengnis", SpecialType::Jail);
 
     tiles[Elektrizitaetwerk] = std::make_shared<PropertyTile>(
         Elektrizitaetwerk, nodeNames[Elektrizitaetwerk], PropertyType::Utility, 150, 0, -1, 0);

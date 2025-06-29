@@ -37,7 +37,6 @@ void Server::SpielStarten() {
 	setMenuManager(manager);
 	getConfiguration().clearLog();	//Log leeren vor dem Spielstart
 	cout << "Pfad zur Konfiguration: " << rulesPath << endl;				// Konfigurationsdatei einlesen
-	//cin >> rulesPath; Configpfad selber eingeben
 
 	Configuration config;
 
@@ -47,9 +46,8 @@ void Server::SpielStarten() {
 		cin >> rulesPath; //selber eingeben, falls ungueltig
 	};
 	cout << "Konfiguration wurde erfolgreich geladen: \n" << endl;
-	//config.printSettings();
-
 	settings = config.getSettings();
+	
 	
 
 	cout << "Wie viele Spieler spielen? (1-4) " << endl;					//Anzahl der Spieler abfragen
@@ -74,19 +72,11 @@ void Server::SpielStarten() {
 
 		}
 
-		Player realPlayer(playerName, settings.startBudget, i);
-			
-		//getMenuManager().getGameFunctionManager().addPlayer(realPlayer);
+		Player realPlayer(playerName, settings.startBudget, i);		//Spieler mit Namen, Anfangsbudget und ID erstellen
 		getMenuManager().getGameFunctionManager().getPlayers().push_back(realPlayer);
-		//Spieler mit Namen, Anfangsbudget und ID erstellen
-	
 		
-		//players.push_back(realPlayer);
-		//return players;
-
 	}
 	numberOfCPUPlayer = 4 - numberOfPlayer;
-	//Player anzahlCPU = CPU(numberOfCPUPlayer); // Funktion in Player fuer CPU Gegner mit uebergabeparameter Anzahl CPU Gegner
 	cout << "Anzahl CPU Gegner: " << numberOfCPUPlayer << endl;
 
 	
@@ -96,12 +86,9 @@ void Server::SpielStarten() {
 		
 
 		Player cpuPlayer(playerName, settings.startBudget, 4 - numberOfCPUPlayer + i);
-
-		//players.push_back(cpuPlayer);
 		
 		getMenuManager().getGameFunctionManager().getPlayers().push_back(cpuPlayer);
 
-		//return players;
 	}
 	
 
@@ -115,19 +102,11 @@ void Server::SpielStarten() {
 	players[3].setPosition(0);
 
 	cout << "Alle Spieler werden auf LOS gesetzt" << endl;
-	//cout << "Position " << players[0].getName() << ": " << players[0].getPosition() << endl; //test
-
-	//cout << "TEST" << endl;
-	
 	getMenuManager().getGameFunctionManager().setCurrentPlayer(0);	//1. Spieler beginnt
 	getMenuManager().getGameFunctionManager().setCurrentRound(1);	//1. Runde
 
-	//getMenuManager().getMenulog() << getMenuManager().getGameFunctionManager().getCurrentRound() << "ds" << endl;
-
 	cout << "Current Player"<< getMenuManager().getGameFunctionManager().getCurrentPlayer() << endl;
-	//cout << "Current Player: " << getMenuManager().getGameFunctionManager().getCurrentPlayer() << " Current Round: " << getMenuManager().getGameFunctionManager().getCurrentRound() << endl; //test
-	//cout << players[0].getName() << " beginnt" << endl;
-
+	pot = 0;
 	GameFunctionManager info = getMenuManager().getGameFunctionManager();			//log erstellen und Spieler speichern
 	info.setCurrentPlayer(0);
 	config.writeLog(info);
@@ -141,8 +120,7 @@ void Server::SpielStarten() {
 	
 
 	this_thread::sleep_for(chrono::milliseconds(2000));
-	Spielzug(getMenuManager().getGameFunctionManager());	//Spiel starten
-	//GefaengnisCheck(getMenuManager().getGameFunctionManager());
+	Spielzug(getMenuManager().getGameFunctionManager());	
 }
 
 /**
@@ -156,17 +134,15 @@ void Server::SpielLaden() {
 	getMenuManager().setGameFunctionManager(gamefunctionmanager) ;
 
 	config.printLoadGame(gamefunctionmanager);	//Spieler und Runden anzeigen
+	settings = config.getSettings();
+	cout << "Round Limit:"<< config.getSettings().roundLimit << endl;
 
 	players = getMenuManager().getGameFunctionManager().getPlayers();
-	//cout << "Position " << players[0].getName() << ": " << players[0].getPosition() << endl; //test
 	this_thread::sleep_for(chrono::milliseconds(5000));
 	getMenuManager().setInGame(true);
 	getMenuManager().getGameFunctionManager().setPlayers(players);
 	Spielzug(getMenuManager().getGameFunctionManager());	//Spiel starten
-	//GefaengnisCheck(getMenuManager().getGameFunctionManager());				//Checken ob Spieler im Gefaengnis
-	//getMenuManager().setCurrentMenu(getMenuManager().getMenus()[1]);
-	
-}
+	}
 
 /**
  * @brief Fuehrt den Spielzug fuer den aktuellen Spieler aus.
@@ -188,7 +164,6 @@ void Server::Spielzug(GameFunctionManager& gamemanager) {
 void Server::Wuerfeln(GameFunctionManager& manager) {
 
 	int id = manager.getCurrentPlayer();
-	//cout << "id:" << id << endl;
 
 	do {																			
 		dice = manager.rollDice();
@@ -218,8 +193,6 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 			
 	} while ((manager.getPaschCounter() == 1 || manager.getPaschCounter() == 2) && !manager.getPlayers()[id].getGameOver());		//nochmal wuerfeln, wenn du Pasch hattest und nicht Game Over bist
 
-	//Spielerzug zuende -> naechster Spieler
-
 	naechsterSpieler(manager);
 }
 
@@ -240,7 +213,6 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 				gamefunc.getPlayers()[id].setPrisonCount(0);  // Gefaengnis-Zaehler zuruecksetzen
 				cout << "Erfolgreich freigekauft, du kannst jetzt deinen Zug taetigen" << endl;
 				this_thread::sleep_for(chrono::milliseconds(2000));
-				//Spielzug(gamefunc);
 				return;
 			}
 			else {
@@ -256,10 +228,6 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 		}
 
 	}
-	//else {
-	//	Spielzug(gamefunc);
-	//	return;
-	//}
 }
 
 /**
@@ -274,7 +242,6 @@ void Server::Paschwerfen(GameFunctionManager& game){
 		cout << "Du hast einen Pasch! Du kommst aus dem Gefaengnis frei." << endl;
 		game.getPlayers()[id].setPrisonCount(0);  // Zaehler zuruecksetzen
 		dice.clear();
-		//Spielzug(game);		//Spielzug fortsetzen
 		return;
 	}
 	else {
@@ -327,6 +294,50 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 		}
 		int currentround = manager.getCurrentRound();
 		if (currentround = settings.roundLimit) {
+			cout << "Rundenlimit erreicht! Das Spiel endet jetzt." << endl;		//Rundenlimit erreicht
+			//wer spielt noch?
+			for (int i = 0; i < 4; i++) {
+				if (!manager.getPlayers()[i].getGameOver()) {
+					cout << manager.getPlayers()[i].getName() << " ist noch im Spiel und hat " << manager.getPlayers()[i].getMoney() << " Euro." << endl;
+				}
+			}
+			//welcher Spieler hat am meisten Geld?
+			maxMoney = 0;
+			winnerID2 = -1;
+			winnerID3 = -1; 
+			for (int i = 0; i < 4; i++) {
+				if (!manager.getPlayers()[i].getGameOver() && manager.getPlayers()[i].getMoney() > maxMoney) {
+					maxMoney = manager.getPlayers()[i].getMoney();
+					winnerID = i;
+				}
+				if (!manager.getPlayers()[i].getGameOver() && manager.getPlayers()[i].getMoney() == maxMoney) { //wenn 2 Spieler gleich viel Geld haben
+					winnerID2 = i; //letzter Spieler, der den gleichen Betrag hat
+					//wenn 3 Spieler gleich viel Geld haben
+					int j = i + 1;
+					for (j; j < 4; j++) {
+						if (!manager.getPlayers()[j].getGameOver() && manager.getPlayers()[j].getMoney() == maxMoney) {
+							winnerID3 = j;
+							//wenn 4 Spieler gleich viel Geld haben
+							int k = j + 1; //naechster Spieler
+							if (k < 4) {
+								cout << "Ihr habt alle gleich viel Geld, wow wie habt ihr das geschafft?" << endl; //wenn alle 4 Spieler gleich viel Geld haben	
+								getConfiguration().sammlungHighscore(manager.getPlayers());
+								Ende();
+							}
+						}
+					}	
+				}
+			}
+            if (winnerID3 != -1) { //wenn 3 Spieler gleich viel Geld haben
+				cout << "Es gibt einen Gleichstand zwischen " << manager.getPlayers()[winnerID].getName() << ", " << manager.getPlayers()[winnerID2].getName() << " und " << manager.getPlayers()[winnerID3].getName() << endl; //wenn 3 Spieler gleich viel Geld haben
+			}
+			else if (winnerID2 != -1) { //wenn 2 Spieler gleich viel Geld haben
+				cout << "Es gibt einen Gleichstand zwischen " << manager.getPlayers()[winnerID].getName() << " und " << manager.getPlayers()[winnerID2].getName() << endl; //wenn 2 Spieler gleich viel Geld haben
+			}
+			else {
+				cout << manager.getPlayers()[winnerID].getName() << " hat gewonnen mit " << maxMoney << " Euro!" << endl; //Herausfinden, welcher Spieler gewonnen hat und Spiel beenden
+			}
+			getConfiguration().sammlungHighscore(manager.getPlayers());
 			Ende();
 		}
 		for (int i = 0; i < 4; i++) {									//checken wie viele Spieler Game Over sind

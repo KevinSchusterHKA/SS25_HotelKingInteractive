@@ -12,4 +12,4 @@ cpuDifficulty = schwer
 test
 
 #Waehlen RUNDENBASIERT, ZEITBASIERT oder BUDGETBASIERT
-gameMode = ZEITBASIERT
+gameMode = RUNDENBASIERT

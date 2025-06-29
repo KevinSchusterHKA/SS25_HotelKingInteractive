@@ -1,10 +1,10 @@
 # SPIELZUSTAND SPEICHERUNG
-round = 1
+round = 19
 
 # Spieler 3
 name = od4
 playerID = 2
-budget = 500
+budget = 505
 position = 0
 prisonCount = 0
 karten = 
@@ -13,7 +13,7 @@ grundstuecke =
 # Spieler 4
 name = CPUSpieler0
 playerID = 3
-budget = 500
+budget = 505
 position = 0
 prisonCount = 0
 karten = 
@@ -22,7 +22,7 @@ grundstuecke =
 # Spieler 1
 name = pepe
 playerID = 0
-budget = 360
+budget = 505
 position = 11
 prisonCount = 0
 karten = 
@@ -37,4 +37,4 @@ prisonCount = 0
 karten = 
 grundstuecke = Ettlingerstraße/8/0
 
-naechsteSpielerID = 1
+naechsteSpielerID = 3
