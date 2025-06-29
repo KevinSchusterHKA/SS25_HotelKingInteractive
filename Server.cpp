@@ -134,6 +134,7 @@ void Server::SpielLaden() {
 	getMenuManager().setGameFunctionManager(gamefunctionmanager) ;
 
 	config.printLoadGame(gamefunctionmanager);	//Spieler und Runden anzeigen
+	config.loadConfig();
 	settings = config.getSettings();
 	cout << "Round Limit:"<< config.getSettings().roundLimit << endl;
 
