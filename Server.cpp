@@ -436,7 +436,13 @@ void Server::clearPot() {
 	pot = 0;
 }
 
-
+/**
+ * @brief Fuehrt die Aktionen auf dem aktuellen Feld aus, basierend auf dem Typ des Feldes.
+ * Prueft, ob das Feld ein PropertyTile oder SpecialTile ist und fuehrt entsprechende Aktionen aus.
+ * @param manager Referenz auf den GameFunctionManager.
+ * @param id ID des aktuellen Spielers.
+ * @param tile ID des aktuellen Feldes.
+ */
 void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile) {			//// ALLE if/else zu PropertyTile, SpecialTile, Action-Switch-Case, Bahnhoefe etc.
 	
 	manager.showTileInfomation(tile);		//Feldeigenschaften anzeigen
@@ -782,13 +788,7 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 				this_thread::sleep_for(chrono::milliseconds(3000));
 				break;
 			}
-
 		}
-
-
-
-
 	}
-
 }
 
