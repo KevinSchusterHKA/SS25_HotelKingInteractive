@@ -203,7 +203,7 @@ void GameFunctionManager::showMap() {
 	   tileNames.push_back(string(WHITE) + "Aktionsfeld" + string(WHITE));
 	   tileNames.push_back(string(BLUE) + "Kaiserstra" + string(SZ) + "e" + string(WHITE));
 	   tileNames.push_back(string(WHITE) + "Steuer" + string(WHITE));
-	   tileNames.push_back(string(BLUE) + "Schlosspromenade" + string(WHITE));
+	   tileNames.push_back(string(BLUE) + "Schlossplatz" + string(WHITE));
 	
 	   cout << "+-----------------------+------------------+--------+--------------+-------------+-------------+----------------+-------------+-------------+-----------------+--------------+" << endl;
 	   cout << "| " << tileNames[10] << " | " << tileNames[11] << " | " << tileNames[12] << " | " << tileNames[13] << " | " << tileNames[14] << " | " << tileNames[15] << " | " << tileNames[16] << " | " << tileNames[17] << " | " << tileNames[18] << " | " << tileNames[19] << " | " << tileNames[20] << "  | " << endl;
