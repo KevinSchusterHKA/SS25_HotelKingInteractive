@@ -85,6 +85,7 @@ void Configuration::writeLog(GameFunctionManager info) {
 			first = false;
 		}
 	}
+	logFile << ", gameOver = " << (p.getGameOver() ? "true" : "false");
 	logFile << endl;
 	logFile.close();
 }
@@ -117,7 +118,7 @@ void Configuration::saveGame() {
 
 	while (getline(logFile, zeile)) {
 		if (zeile.empty()) { continue; }
-		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = ""; string grundstuecke = "";
+		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "", grundstuecke = "", gameOver = "";
 
 		// Aufteilen der Zeile in Schlüssel-Wert-Paare
 		stringstream ss(zeile);
@@ -141,6 +142,7 @@ void Configuration::saveGame() {
 			else if (key == "position") position = stoi(value);
 			else if (key == "prisonCount") prisonCount = stoi(value);
 			else if (key == "grundstuecke") grundstuecke = value;
+			else if (key == "gameOver") gameOver = value;
 		}
 
 		if (round > maxRound) { maxRound = round; }	//update round
@@ -151,6 +153,7 @@ void Configuration::saveGame() {
 		Player p(name, budget, playerID);
 		p.setPosition(position);
 		p.setPrisonCount(prisonCount);
+		if (gameOver == "true") { p.setGameOver(); }
 
 		// Karten parsen
 		stringstream kss(karten);
@@ -179,6 +182,7 @@ void Configuration::saveGame() {
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
 		saveFile << "position = " << parsedPlayers[i].getPosition() << endl;
 		saveFile << "prisonCount = " << parsedPlayers[i].getPrisonCount() << endl;
+		saveFile << "gameOver = " << (parsedPlayers[i].getGameOver() ? "true" : "false") << endl;;
 		saveFile << "karten = ";
 		vector<string> karten = parsedPlayers[i].getKarten();
 		for (size_t i = 0; i < karten.size(); ++i) {
@@ -206,7 +210,7 @@ GameFunctionManager Configuration::loadGame() {
 	}
 
 	string zeile;
-	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "";
+	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "", gameOver = "";
 	while (getline(saveFile, zeile)) {
 		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
@@ -229,6 +233,7 @@ GameFunctionManager Configuration::loadGame() {
 		else if (key == "budget") tempPlayer.addMoney(stoi(value));
 		else if (key == "position") tempPlayer.setPosition(stoi(value));
 		else if (key == "prisonCount") tempPlayer.setPrisonCount(stoi(value));
+		else if (key == "gameOver") gameOver = value; if (value == "true") { tempPlayer.setGameOver(); }
 		else if (key == "karten") {
 			stringstream ss(value);
 			string karte;
