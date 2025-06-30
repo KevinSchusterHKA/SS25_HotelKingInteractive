@@ -252,14 +252,14 @@ GameFunctionManager Configuration::loadGame() {
 				size_t trenner2 = grundstueck.find('/', trenner1 + 1);
 				if (trenner2 == string::npos) continue;
 
-				string name = grundstueck.substr(0, trenner1);
+				string propertyName = grundstueck.substr(0, trenner1);
 				int rent = stoi(grundstueck.substr(trenner1 + 1, trenner2 - trenner1 - 1));
 				int buildingLevel = stoi(grundstueck.substr(trenner2 + 1));
 
 				for (int i = 0; i < 40; ++i) {
 					shared_ptr<Tile> t = manager.getMap().getTile(i);
 					PropertyTile* pt = dynamic_cast<PropertyTile*>(t.get());
-					if (pt && pt->getName() == name) {
+					if (pt && pt->getName() == propertyName) {
 						pt->setOwner(tempPlayer.getID());
 						pt->setRent(rent);
 						pt->setBuildingLevel(buildingLevel); 
@@ -285,7 +285,7 @@ void Configuration::printLoadGame(GameFunctionManager g) {
 		cout << "ID: " << p.getID() << endl;
 		cout << "Budget: " << p.getMoney() << endl;
 		cout << "Position: " << p.getPosition() << endl;
-		cout << "Im Gefaengnis? " << (p.getPrisonCount() > 0 ? "Ja" : "Nein") << endl;
+		cout << "Game Over? " << (p.getGameOver() > 0 ? "Ja" : "Nein") << endl;
 		cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
 		cout << "Karten: ";
 		vector<string> karten = p.getKarten();
@@ -299,7 +299,7 @@ void Configuration::printLoadGame(GameFunctionManager g) {
 			PropertyTile* pt = dynamic_cast<PropertyTile*>(g.getMap().getTile(i).get());
 			if (pt && pt->getOwnerId() == p.getID()) {
 				if (!first) cout << " | ";
-				cout << pt->getName() << "/" << pt->getRent();
+				cout << pt->getName() << "/" << pt->getRent() << "/" << pt->getBuildingLevel();
 				first = false;
 			}
 		}
