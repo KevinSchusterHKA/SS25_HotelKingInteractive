@@ -188,11 +188,10 @@ void Configuration::saveGame() {
 		saveFile << endl;
 		saveFile << "grundstuecke = " << parsedGrundstuecke[i] << endl << endl;
 
-		//current spieler
-		if (i == parsedPlayers.size()-1) {	//letze element
-			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID() << endl;
-		}
 	}
+	//current spieler
+	parsedPlayers[parsedPlayers.size() - 5].getID() == 3 ? naechsteSpielerID = 0 : naechsteSpielerID = parsedPlayers[parsedPlayers.size() - 5].getID() + 1;	//naechster Spieler
+	saveFile << "naechsteSpielerID = " << naechsteSpielerID << endl;
 	
 	saveFile.close();
 }

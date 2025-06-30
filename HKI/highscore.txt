@@ -47,3 +47,7 @@ od4=100
 CPUSpieler0=50
 pepe=505
 phil=730
+a=500
+b=500
+CPU Spieler 0=500
+CPU Spieler 1=500

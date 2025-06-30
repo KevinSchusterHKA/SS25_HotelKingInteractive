@@ -59,6 +59,6 @@ public:
 	void setMenuManager(MenuManager& manager);
 	void Spielzug(GameFunctionManager& manager);
 	void Wuerfeln(GameFunctionManager& manager);
-	void SpielstandSpeichern();
+	void SpielstandSpeichern(GameFunctionManager& manager);
 	int getPot() const;
 };

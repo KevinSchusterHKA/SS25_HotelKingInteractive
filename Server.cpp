@@ -115,7 +115,7 @@ void Server::SpielStarten() {
 	config.writeLog(info);
 	info.setCurrentPlayer(3);
 	config.writeLog(info);
-	cout << "Spieler gespeichert" << endl << endl;
+	cout << "Spieler gesetzt" << endl << endl;
 	
 
 	this_thread::sleep_for(chrono::milliseconds(2000));
@@ -158,7 +158,7 @@ void Server::Spielzug(GameFunctionManager& gamemanager) {
 
 /**
  * @brief Fuehrt den Wuerfelvorgang fuer den aktuellen Spieler aus.
- * Bewegt den Spieler, prueft Spezialfelder, behandelt Miete, Kauf und Game Over.
+ * Bewegt den Spieler, checkt Pasch, führt Feldaktionen aus und wechselt zum naechsten Spieler.
  * @param manager Referenz auf den GameFunctionManager.
  */
 void Server::Wuerfeln(GameFunctionManager& manager) {
@@ -265,10 +265,8 @@ void Server::Paschwerfen(GameFunctionManager& game){
 void Server::naechsterSpieler(GameFunctionManager& manager) {
 	int id = manager.getCurrentPlayer();
 	bool nochmal = false;
-	int originalCurrentPlayer = manager.getCurrentPlayer();		//aktuellen Spieler merken
-	config.writeLog(manager);				//Log schreiben und Spielstand speichern
+	config.writeLog(manager);				//Log schreiben
 	
-	manager.setCurrentPlayer(originalCurrentPlayer);		//auf urspruenglichen Spieler fuer Spiellogik zuruecksetzen
 
 	//Checken ob Game Over
 	do {	
@@ -295,8 +293,7 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 		int currentround = manager.getCurrentRound();
 		config.loadConfig();
 		settings = config.getSettings();
-		cout << "Round Limit:" << settings.roundLimit << endl;
-		if (currentround = settings.roundLimit) {
+		if (currentround == settings.roundLimit) {
 			cout << "Rundenlimit erreicht! Das Spiel endet jetzt." << endl;		//Rundenlimit erreicht
 			//wer spielt noch?
 			for (int i = 0; i < 4; i++) {
@@ -410,7 +407,14 @@ void Server::Ende() {
 /**
 * @brief Aufruf aus 'Spielstand Speichern'. Beendet das Spiel.
 */
-void Server::SpielstandSpeichern() {
+void Server::SpielstandSpeichern(GameFunctionManager& manager) {
+
+	GameFunctionManager infos = manager;		//aktuellen Spieler merkenAdd commentMore actions
+
+	for (int i = 0; i < 4; ++i) {				//Log schreiben und Spielstand speichern
+		infos.setCurrentPlayer(i);
+		getConfiguration().writeLog(infos);
+	}
 	config.saveGame();
 	cout << "Das Spiel wurde gespeichert. Bis zum naechsten Mal :)" << endl;	//Spielstaende sind bereits gespeichert worden nach jedem Zug
 
