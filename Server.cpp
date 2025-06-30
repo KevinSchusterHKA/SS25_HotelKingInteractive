@@ -10,6 +10,7 @@
 #include <chrono>
 #include <random>
 #include <ctime>
+#include <algorithm> // Für std::transform
 
 #include "Server.hpp"
 #include "Player.hpp"
@@ -26,6 +27,8 @@ using namespace std;
 Server::Server(vector<Player>& playersRef)
 	: players(playersRef) {
 }
+std::string normalizeString(const std::string& s);		//tauscht scharfe s und umlaute für Handeln
+
 
 /**
  * @brief Startet ein neues Spiel, initialisiert Spieler, Menues und Einstellungen.
@@ -169,6 +172,7 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 		dice = manager.rollDice();
 		cout << "gewuerfelte Zahlen: " << dice[0] << ", " << dice[1] << endl;
 
+
 		if (manager.getPaschCounter() == 3) {							//Wenn 3. Mal Pasch -> Gefaengnis
 
 			cout << "Das war dein 3. Pasch... Gehe ins Gefaengnis" << endl;
@@ -179,16 +183,18 @@ void Server::Wuerfeln(GameFunctionManager& manager) {
 			manager.getPlayers()[id].move(dice[0] + dice[1]); //move Summe aus gewuerfelten Zahlen
 			dice.clear();
 			int tile = manager.getPlayers()[id].getPosition();
-
-			if (tile >= 40) {										//Checken ob ueber LOS gegangen
-				tile = tile - 40;
-				manager.getPlayers()[id].setPosition(tile);
-				if (tile > 0) {
-					manager.getPlayers()[id].addMoney(200);			//200 wenn nicht genau auf LOS, wenn genau, dann bekommt man später 400
+				if (tile >= 40) {										//Checken ob ueber LOS gegangen
+					tile = tile - 40;
+					manager.getPlayers()[id].setPosition(tile);
+					if (tile > 0) {
+						manager.getPlayers()[id].addMoney(200);			//200 wenn nicht genau auf LOS, wenn genau, dann bekommt man später 400
+					}
 				}
-			}
-
 		fuehreFeldAktionAus(manager, id, tile);
+		}
+		if ((manager.getPaschCounter() == 1 || manager.getPaschCounter() == 2) && !manager.getPlayers()[id].getGameOver()) {		//Wenn a Pasch geworfen und b noch nicht GameOver und c es kommt ein weiterer Wurf
+			cout << "Pasch! Du darfst nochmal würfeln..." << endl;							// nur für delay und cout! Keine Funktionalität!
+			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 		}
 			
 	} while ((manager.getPaschCounter() == 1 || manager.getPaschCounter() == 2) && !manager.getPlayers()[id].getGameOver());		//nochmal wuerfeln, wenn du Pasch hattest und nicht Game Over bist
@@ -204,7 +210,7 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 	int id = gamefunc.getCurrentPlayer();
 
 	if (gamefunc.getPlayers()[id].getPrisonCount() > 0) {
-		cout << gamefunc.getPlayers()[id].getName() <<"befindet sich leider im Gefaengnis." << endl;
+		cout << gamefunc.getPlayers()[id].getName() <<" befindet sich leider im Gefaengnis." << endl;
 		if (gamefunc.getPlayers()[id].getMoney() > 100) {			//wenn genug Geld zum Freikaufen da
 			cout << "Moechtest du dich freikaufen(100 Euro) oder lieber versuchen, einen Pasch zu wuerfeln ? (dein budget : " << gamefunc.getPlayers()[id].getMoney() << ")" << " (0: wuerfeln, 1 : freikaufen)" << endl;
 			cin >> freikaufen;
@@ -373,7 +379,7 @@ void Server::naechsterSpieler(GameFunctionManager& manager) {
 		manager.setCurrentPlayer(id);
 	} while (nochmal);
 
-	cout << "naechster Spieler" << endl;
+	cout << "Naechster Spieler" << endl;
 	this_thread::sleep_for(chrono::milliseconds(2000));
 	GefaengnisCheck(manager);									//checken, ob gerade im Gefaengnis
 }
@@ -443,7 +449,7 @@ void Server::clearPot() {
  * @param id ID des aktuellen Spielers.
  * @param tile ID des aktuellen Feldes.
  */
-void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile) {			//// ALLE if/else zu PropertyTile, SpecialTile, Action-Switch-Case, Bahnhoefe etc.
+void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile, bool bonusAufLosErlaubt) {			//// ALLE if/else zu PropertyTile, SpecialTile, Action-Switch-Case, Bahnhoefe etc.
 	
 	manager.showTileInfomation(tile);		//Feldeigenschaften anzeigen
 
@@ -507,14 +513,15 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 				}
 			}
 			else {
-				cout << "Du kannst hier aktuell kein Haus bauen. Baue zuerst auf den anderen Straßen der Farbgruppe gleichmaeßig!" << endl;
+				cout << "Du kannst hier aktuell kein Haus bauen!" << endl;
 			}
+		this_thread::sleep_for(chrono::milliseconds(3000));
 		}
 		else {																			//Miete zahlen, wenn vergeben
 			rent = propTile->getRent();
 			ownerid = propTile->getOwnerId();
 
-			cout << "Das Fed besitzt " << ownerid << ". Du musst " << rent << " Euro Miete zahlen." << endl;
+			cout << "Das Feld besitzt " << manager.getPlayers()[ownerid].getName() << ". Du musst " << rent << " Euro Miete zahlen." << endl;
 
 			if (manager.getPlayers()[id].getMoney() > rent) {					//genug Geld fuer Miete
 
@@ -526,6 +533,7 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 				//Game Over
 				manager.getPlayers()[id].setGameOver();
 			}
+		this_thread::sleep_for(chrono::milliseconds(3000));
 		}
 
 	}
@@ -720,6 +728,7 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 				manager.getPlayers()[id].setPosition(10);
 				manager.getPlayers()[id].setPrisonCount(3);
 				this_thread::sleep_for(chrono::milliseconds(3000));
+				fuehreFeldAktionAus(manager, id, 10, false);
 				break;
 			case 7:
 				cout << "Du Glueckspilz! Du findest 35 Euro auf der Straße!" << endl;
@@ -791,4 +800,116 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile)
 		}
 	}
 }
+void Server::handleTrade(GameFunctionManager& manager, int currentPlayerId) {
+	auto& players = manager.getPlayers();
+	int otherPlayerId;
+
+	cout << "Mit wem moechtest du handeln? (Gib die Player-ID ein(0 bis 3))" << endl;
+	for (int i = 0; i < players.size(); ++i) {
+		if (i != currentPlayerId && !players[i].getGameOver()) { // Nicht man selbst und nur aktive Spieler
+			cout << i << ": " << players[i].getName() << endl;
+		}
+	}
+	cin >> otherPlayerId;
+	if (otherPlayerId == currentPlayerId || otherPlayerId < 0 || otherPlayerId >= players.size() || players[otherPlayerId].getGameOver()) {
+		cout << "Ungueltige Auswahl. Handel abgebrochen." << endl;
+		return;
+	}
+
+	// Was möchtest du haben?
+	string wantedProperty;
+	cout << "Welche Straße moechtest du erhalten (nur eine, nicht so gierig!)? (Name eingeben, exakt wie im Spiel)" << endl;
+	cin.ignore(); // Überspringt ein Zeilenende von vorherigem cin
+	getline(cin, wantedProperty); // Straßenname als ganze Zeile einlesen
+
+	// Was bist du bereit zu geben?
+	vector<string> offeredProperties;
+	int offerMoney = 0;
+
+	cout << "Welche Strassen moechtest du anbieten? (Nacheinander eingeben, mit ' ' trennen. 'ende' eingeben um zu beenden.)" << endl;
+	while (true) {
+		string offer;
+		getline(cin, offer);
+		if (offer == "ende") break;
+		offeredProperties.push_back(offer);
+	}
+
+	cout << "Wieviel Geld bist du bereit zusätzlich zu geben? (Betrag in Euro, 0 für kein Geld)" << endl;
+	cin >> offerMoney;
+
+	// Zeige Angebot dem Zielspieler
+	cout << players[otherPlayerId].getName() << ", folgendes Angebot wurde dir gemacht:" << endl;
+	cout << players[currentPlayerId].getName() << " möchte deine Straße '" << wantedProperty << "' und bietet dafür: ";
+	if (!offeredProperties.empty()) {
+		cout << "die Straßen ";
+		for (const auto& str : offeredProperties) cout << "'" << str << "' ";
+	}
+	if (offerMoney > 0) cout << "und " << offerMoney << " Euro";
+	cout << endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+	cout << "Willst du den Handel annehmen? (0 = Ablehnen, 1 = Annehmen)" << endl;
+	int akzeptieren;
+	cin >> akzeptieren;
+
+	if (!akzeptieren) {
+		cout << "Handel wurde abgelehnt." << endl;
+		return;
+	}
+
+	// 1. Gesuchte Straße vom targetPlayer an currentPlayer (Besitz übertragen)
+	bool found = false;
+	for (auto& tile : manager.getMap().tiles) {
+		if (auto propTile = dynamic_cast<PropertyTile*>(tile.get())) {
+			if (propTile->getName() == wantedProperty && propTile->getOwnerId() == otherPlayerId) {
+				propTile->setOwner(currentPlayerId);
+				found = true;
+				break;
+			}
+		}
+	}
+
+	if (!found) {
+		cout << "Der Zielspieler besitzt diese Straße nicht (mehr). Handel abgebrochen. Schau mal lieber nochmal nach!" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+		return;
+	}
+
+	// 2. Angebote der Straßen vom currentPlayer an otherPlayer geben
+	for (const auto& offerStr : offeredProperties) {
+		for (auto& tile : manager.getMap().tiles) {
+			if (auto propTile = dynamic_cast<PropertyTile*>(tile.get())) {
+				if (propTile->getName() == offerStr && propTile->getOwnerId() == currentPlayerId) {
+					propTile->setOwner(otherPlayerId);
+				}
+			}
+		}
+	}
+
+	// 3. Geld transferieren
+	if (offerMoney > 0) {
+		if (players[currentPlayerId].getMoney() >= offerMoney) {
+			players[currentPlayerId].addMoney(-offerMoney);
+			players[otherPlayerId].addMoney(offerMoney);
+		}
+		else {
+			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+			cout << "Du hast nicht genug Geld für das Angebot. Handel abgebrochen." << endl;
+			// Rückabwicklung: Die getauschte Straße zurücktauschen!
+			for (auto& tile : manager.getMap().tiles) {
+				if (auto propTile = dynamic_cast<PropertyTile*>(tile.get())) {
+					if (propTile->getName() == wantedProperty && propTile->getOwnerId() == currentPlayerId) {
+						propTile->setOwner(otherPlayerId);
+						break;
+					}
+				}
+			}
+			return;
+		}
+	}
+
+	cout << "Handel erfolgreich durchgeführt! Viel Erfolg!" << endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+}
+
+
 

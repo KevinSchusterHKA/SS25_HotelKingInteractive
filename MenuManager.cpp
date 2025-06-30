@@ -134,6 +134,7 @@ void MenuManager::doOperation(char input) {
         }
         case 1: {
             //Handeln und Tauschen
+            server.handleTrade(getGameFunctionManager(), getGameFunctionManager().getCurrentPlayer());
             break;
         }
         case 2: {

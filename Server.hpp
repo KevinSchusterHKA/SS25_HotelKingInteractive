@@ -36,7 +36,7 @@ private:
 	int freiparkenpot;
 	MenuManager* menumanager;
 	Configuration config;
-	void fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile);
+	void fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile, bool bonusAufLosErlaubt = true);
 	void GefaengnisCheck(GameFunctionManager& gamefunc);
 	void Paschwerfen(GameFunctionManager& manager);
 	void naechsterSpieler(GameFunctionManager& manager);
@@ -61,4 +61,5 @@ public:
 	void Wuerfeln(GameFunctionManager& manager);
 	void SpielstandSpeichern(GameFunctionManager& manager);
 	int getPot() const;
+	void handleTrade(GameFunctionManager& manager, int currentPlayerId);
 };

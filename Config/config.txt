@@ -1,5 +1,5 @@
 #config
-startBudget = 500
-roundLimit = 20
+startBudget = 1000
+roundLimit = 100
 
 test
