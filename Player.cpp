@@ -7,7 +7,7 @@
 
 // Konstruktor-Implementierung
 Player::Player(const std::string& name, int startMoney, int playerID, bool realPlayer)
-    : name(name), money(startMoney), currentField(0), prisonCount(0), gameover(false), playerID(playerID) {}
+    : name(name), money(startMoney), currentField(0), prison(false), prisonCount(0), playerID(playerID), gameover(false), realPlayer(realPlayer) {}
 
 
 std::string Player::getName() const {
