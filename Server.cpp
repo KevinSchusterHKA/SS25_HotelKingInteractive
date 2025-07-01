@@ -87,11 +87,12 @@ void Server::SpielStarten() {
 		playerName = "CPU Spieler " + to_string(i);
 		
 
-		Player cpuPlayer(playerName, settings.startBudget, 4 - numberOfCPUPlayer + i);
+		Player cpuPlayer(playerName, settings.startBudget, 4 - numberOfCPUPlayer + i,false);
 		
 		getMenuManager().getGameFunctionManager().getPlayers().push_back(cpuPlayer);
 
 	}
+	
 	
 
 
@@ -212,8 +213,15 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 	if (gamefunc.getPlayers()[id].getPrisonCount() > 0) {
 		cout << gamefunc.getPlayers()[id].getName() <<" befindet sich leider im Gefaengnis." << endl;
 		if (gamefunc.getPlayers()[id].getMoney() > 100) {			//wenn genug Geld zum Freikaufen da
-			cout << "Moechtest du dich freikaufen(100 Euro) oder lieber versuchen, einen Pasch zu wuerfeln ? (dein budget : " << gamefunc.getPlayers()[id].getMoney() << ")" << " (0: wuerfeln, 1 : freikaufen)" << endl;
-			cin >> freikaufen;
+			if (gamefunc.getPlayers()[id].isRealPlayer()) { //echte Spieler
+				cout << "Moechtest du dich freikaufen(100 Euro) oder lieber versuchen, einen Pasch zu wuerfeln ? (dein budget : " << gamefunc.getPlayers()[id].getMoney() << ")" << " (0: wuerfeln, 1 : freikaufen)" << endl;
+				cin >> freikaufen;
+			}
+			else {//CPU, kauft sich immer frei, wenn möglich
+				freikaufen = 1;
+				cout << gamefunc.getPlayers()[id].getName() << " kauft sich aus dem Gefängnis frei." << endl;
+				this_thread::sleep_for(chrono::milliseconds(2000));
+			}
 			if (freikaufen) {
 				gamefunc.getPlayers()[id].addMoney(-100);
 				gamefunc.getPlayers()[id].setPrisonCount(0);  // Gefaengnis-Zaehler zuruecksetzen
@@ -478,9 +486,17 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile,
 		price = propTile->getPrice();
 
 		if (propTile->getOwnerId() == -1) {											//wenn Feld noch nicht gekauft
-			if (manager.getPlayers()[id].getMoney() > price) {									//wenn genug Geld zum Kaufen da
+			if (manager.getPlayers()[id].getMoney() > price) {	//wenn genug geld da ist
+				if (manager.getPlayers()[id].isRealPlayer()){	//wenn echter spieler
 				cout << "Moechtest du das Feld kaufen?(dein Budget:" << manager.getPlayers()[id].getMoney() << ") (0: nein, 1:ja)" << endl;
 				cin >> buyfield;
+				}
+				else{
+					buyfield = 1; //CPU kauft jede Straße wenn möglich
+					cout << manager.getPlayers()[id].getName() << "kauft das Feld. "<< endl;
+					this_thread::sleep_for(chrono::milliseconds(2000));
+
+				}
 				if (buyfield) {
 					manager.getPlayers()[id].addMoney(-price);
 					propTile->setOwner(id);
@@ -497,8 +513,21 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile,
 			cout << "Das Feld gehoert dir schon." << endl;
 			if (manager.getMap().canUpgradeStreet(propTile, id)) {	//kannst du hier bauen?
 				if (manager.getPlayers()[id].getMoney() > propTile->getHouseCost()) {	//genug Geld zum Bauen
+					if (manager.getPlayers()[id].isRealPlayer()){	//wenn echter spieler
 					cout << "Moechtest du auf dieser Straße ein Haus bauen? (Kosten: " << propTile->getHouseCost() << " Euro)(dein Budget:" << manager.getPlayers()[id].getMoney() << ") (0: nein, 1: ja)" << endl;
 					cin >> bauen;
+					}
+					else {//CPU baut immer, wenn er mindestens 400 Budget nach dem hausbau über hat. (Trivialer wert. soll aber nicht durch den Haus bau pleite gehen / anfällig dafür werden)
+						if (manager.getPlayers()[id].getMoney() > propTile->getHouseCost() + 400){
+							bauen = 1;
+							cout << manager.getPlayers()[id].getName() << "Investiert in ein Haus "<< endl;
+							this_thread::sleep_for(chrono::milliseconds(2000));
+						}
+						else{
+							bauen = 0;
+						}
+
+					}
 					if (bauen) {
 						propTile->setBuildingLevel(propTile->getBuildingLevel() + 1);
 						manager.getPlayers()[id].addMoney(-propTile->getHouseCost());
@@ -599,9 +628,13 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile,
 
 
 			if (manager.getPlayers()[id].getMoney() > 100) {					//genug Geld zum Fliegen
-				cout << "Moechtest du fliegen? (nein=0 ja=1)" << endl;
-				cin >> transport;
-
+				if (manager.getPlayers()[id].isRealPlayer()){
+					cout << "Moechtest du fliegen? (nein=0 ja=1)" << endl;
+					cin >> transport;
+				}
+				else {
+					transport = 0;//der CPU kann nicht fliegen
+				}
 				if (transport) {											//moechte fliegen
 					cout << "Wohin willst du? (Feld ID)" << endl;
 					cin >> wunschfeldid;
@@ -628,8 +661,13 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile,
 		else if (specialtile == "Bahnhof") {							//Bahnhof
 			cout << "Du darfst dir einen beliebigen Bahnhof aussuchen, zu dem du fahren kannst. Das kostet aber 50 Euro." << endl;
 			if (manager.getPlayers()[id].getMoney() > 50) {					//genug Geld zum Fliegen
-				cout << "Moechtest du fahren? (nein=0 ja=1)" << endl;
-				cin >> transport;
+				if (manager.getPlayers()[id].isRealPlayer()){
+					cout << "Moechtest du fahren? (nein=0 ja=1)" << endl;
+					cin >> transport;
+				}
+				else {
+					transport = 0;
+				}
 				if (transport) {									//moechte fahren
 					cout << "Wohin willst du? (Hauptbahnhof = 5 WestBahnhof = 15 OstBahnhof = 25)" << endl;
 					cin >> wunschfeldid;
@@ -811,7 +849,7 @@ void Server::handleTrade(GameFunctionManager& manager, int currentPlayerId) {
 		}
 	}
 	cin >> otherPlayerId;
-	if (otherPlayerId == currentPlayerId || otherPlayerId < 0 || otherPlayerId >= players.size() || players[otherPlayerId].getGameOver()) {
+	if (otherPlayerId == currentPlayerId || otherPlayerId < 0 || otherPlayerId >= players.size() || players[otherPlayerId].getGameOver() || !players[otherPlayerId].isRealPlayer()) {
 		cout << "Ungueltige Auswahl. Handel abgebrochen." << endl;
 		return;
 	}
