@@ -86,6 +86,7 @@ void Configuration::writeLog(GameFunctionManager info) {
 		}
 	}
 	logFile << ", gameOver = " << (p.getGameOver() ? "true" : "false");
+	logFile << ", isRealPlayer = " << (p.isRealPlayer() ? "true" : "false");
 	logFile << endl;
 	logFile.close();
 }
@@ -101,13 +102,13 @@ void Configuration::clearLog() {
 }
 
 void Configuration::saveGame() {
-/***************************   lexicalische analyse für log-Dateil  **********************************************************/
+	/***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
 	vector<string> parsedGrundstuecke;
-	int maxRound = 0; 
+	int maxRound = 0;
 	int wieVieleSpieler = 4;
 	int naechsteSpielerID = 0;
-	
+
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
 		cout << "Fehler beim Oeffnen der Log-Datei." << endl;
@@ -118,7 +119,7 @@ void Configuration::saveGame() {
 
 	while (getline(logFile, zeile)) {
 		if (zeile.empty()) { continue; }
-		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "", grundstuecke = "", gameOver = "";
+		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "", grundstuecke = "", gameOver = "", isRealPlayer = "";
 
 		// Aufteilen der Zeile in Schlüssel-Wert-Paare
 		stringstream ss(zeile);
@@ -143,6 +144,7 @@ void Configuration::saveGame() {
 			else if (key == "prisonCount") prisonCount = stoi(value);
 			else if (key == "grundstuecke") grundstuecke = value;
 			else if (key == "gameOver") gameOver = value;
+			else if (key == "isRealPlayer") isRealPlayer = value;
 		}
 
 		if (round > maxRound) { maxRound = round; }	//update round
@@ -150,7 +152,8 @@ void Configuration::saveGame() {
 		parsedGrundstuecke.push_back(grundstuecke);
 
 		// Rekonstruiere den Spieler
-		Player p(name, budget, playerID);
+		Player p = (isRealPlayer == "true") ? Player(name, budget, playerID, true) : Player(name, budget, playerID, false);
+
 		p.setPosition(position);
 		p.setPrisonCount(prisonCount);
 		if (gameOver == "true") { p.setGameOver(); }
@@ -166,7 +169,7 @@ void Configuration::saveGame() {
 	}
 	logFile.close();
 
-/****************************************** Neue Dateil save  ************************************************************************/
+	/****************************************** Neue Dateil save  ************************************************************************/
 	ofstream saveFile(savePath);
 	if (!saveFile.is_open()) {
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
@@ -175,7 +178,7 @@ void Configuration::saveGame() {
 
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
-	for (int i = parsedPlayers.size()-wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
+	for (int i = parsedPlayers.size() - wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
 		saveFile << "# Spieler " << parsedPlayers[i].getID() + 1 << endl;
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
@@ -183,6 +186,7 @@ void Configuration::saveGame() {
 		saveFile << "position = " << parsedPlayers[i].getPosition() << endl;
 		saveFile << "prisonCount = " << parsedPlayers[i].getPrisonCount() << endl;
 		saveFile << "gameOver = " << (parsedPlayers[i].getGameOver() ? "true" : "false") << endl;;
+		saveFile << "isRealPlayer = " << (parsedPlayers[i].isRealPlayer() ? "true" : "false") << endl;;
 		saveFile << "karten = ";
 		vector<string> karten = parsedPlayers[i].getKarten();
 		for (size_t i = 0; i < karten.size(); ++i) {
@@ -196,7 +200,7 @@ void Configuration::saveGame() {
 	//current spieler
 	parsedPlayers[parsedPlayers.size() - 5].getID() == 3 ? naechsteSpielerID = 0 : naechsteSpielerID = parsedPlayers[parsedPlayers.size() - 5].getID() + 1;	//naechster Spieler
 	saveFile << "naechsteSpielerID = " << naechsteSpielerID << endl;
-	
+
 	saveFile.close();
 }
 
@@ -210,7 +214,7 @@ GameFunctionManager Configuration::loadGame() {
 	}
 
 	string zeile;
-	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "", gameOver = "";
+	Player tempPlayer("", 0, 0, true); int round = 0, naechsteSpieler = 0; string name = "", gameOver = "", isRealPlayer = "";
 	while (getline(saveFile, zeile)) {
 		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
@@ -230,6 +234,7 @@ GameFunctionManager Configuration::loadGame() {
 		if (key == "round") round = stoi(value);
 		else if (key == "name") name = value;
 		else if (key == "playerID") tempPlayer = Player(name, 0, stoi(value));
+		else if (key == "isRealPlayer") isRealPlayer = value; if (isRealPlayer == "false") { tempPlayer = Player(name, 0, stoi(value), false); }
 		else if (key == "budget") tempPlayer.addMoney(stoi(value));
 		else if (key == "position") tempPlayer.setPosition(stoi(value));
 		else if (key == "prisonCount") tempPlayer.setPrisonCount(stoi(value));
@@ -262,7 +267,7 @@ GameFunctionManager Configuration::loadGame() {
 					if (pt && pt->getName() == propertyName) {
 						pt->setOwner(tempPlayer.getID());
 						pt->setRent(rent);
-						pt->setBuildingLevel(buildingLevel); 
+						pt->setBuildingLevel(buildingLevel);
 					}
 				}
 			}
@@ -285,7 +290,8 @@ void Configuration::printLoadGame(GameFunctionManager g) {
 		cout << "ID: " << p.getID() << endl;
 		cout << "Budget: " << p.getMoney() << endl;
 		cout << "Position: " << p.getPosition() << endl;
-		cout << "Game Over? " << (p.getGameOver() > 0 ? "Ja" : "Nein") << endl;
+		cout << "Game Over? " << (p.getGameOver() ? "Ja" : "Nein") << endl;
+		cout << "isRealPlayer? " << (p.isRealPlayer() ? "Ja" : "Nein") << endl;
 		cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
 		cout << "Karten: ";
 		vector<string> karten = p.getKarten();
