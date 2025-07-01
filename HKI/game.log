@@ -1,5 +1,64 @@
-Round = 1, playerID  = 0, name = pepe, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
-Round = 1, playerID  = 1, name = papa, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
-Round = 1, playerID  = 2, name = CPU Spieler 0, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
-Round = 1, playerID  = 3, name = CPU Spieler 1, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
-Round = 1, playerID  = 0, name = pepe, Budget = 900, karten = , position = 8, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 1, playerID  = 0, name = Philipp, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 1, name = Sarah, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 2, name = Philipp2, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 3, name = Sarah2, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 0, name = Philipp, Budget = 880, karten = , position = 9, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0
+Round = 1, playerID  = 1, name = Sarah, Budget = 800, karten = , position = 4, prisonCount  = 0, grundstuecke = 
+Round = 1, playerID  = 2, name = Philipp2, Budget = 900, karten = , position = 8, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 1, playerID  = 3, name = Sarah2, Budget = 804, karten = , position = 11, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0
+Round = 2, playerID  = 0, name = Philipp, Budget = 700, karten = , position = 16, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0|Fastplatz/14/0
+Round = 2, playerID  = 1, name = Sarah, Budget = 640, karten = , position = 14, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 2, playerID  = 2, name = Philipp2, Budget = 892, karten = , position = 16, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 2, playerID  = 3, name = Sarah2, Budget = 754, karten = , position = 25, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0
+Round = 3, playerID  = 0, name = Philipp, Budget = 544, karten = , position = 21, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0|Fastplatz/14/0|Zirkel/18/0
+Round = 3, playerID  = 1, name = Sarah, Budget = 572, karten = , position = 21, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 3, playerID  = 2, name = Philipp2, Budget = 774, karten = , position = 21, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 3, playerID  = 3, name = Sarah2, Budget = 394, karten = , position = 39, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Moltkestrasse/22/0
+Round = 4, playerID  = 0, name = Philipp, Budget = 400, karten = , position = 29, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0|Fastplatz/14/0|Zirkel/18/0|Karl-friedrichstrasse/22/0
+Round = 4, playerID  = 1, name = Sarah, Budget = 900, karten = , position = 0, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 4, playerID  = 2, name = Philipp2, Budget = 774, karten = , position = 28, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 4, playerID  = 3, name = Sarah2, Budget = 416, karten = , position = 4, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Moltkestrasse/22/0
+Round = 5, playerID  = 0, name = Philipp, Budget = 1000, karten = , position = 0, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0|Fastplatz/14/0|Zirkel/18/0|Karl-friedrichstrasse/22/0
+Round = 5, playerID  = 1, name = Sarah, Budget = 900, karten = , position = 18, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 5, playerID  = 2, name = Philipp2, Budget = 724, karten = , position = 36, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 5, playerID  = 3, name = Sarah2, Budget = 404, karten = , position = 14, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Moltkestrasse/22/0
+Round = 6, playerID  = 0, name = Philipp, Budget = 994, karten = , position = 8, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0|Fastplatz/14/0|Zirkel/18/0|Karl-friedrichstrasse/22/0
+Round = 6, playerID  = 0, name = Philipp, Budget = 994, karten = , position = 8, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0|Fastplatz/14/0|Zirkel/18/0|Karl-friedrichstrasse/22/0
+Round = 6, playerID  = 1, name = Sarah, Budget = 912, karten = , position = 18, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 6, playerID  = 2, name = Philipp2, Budget = 730, karten = , position = 36, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 6, playerID  = 3, name = Sarah2, Budget = 404, karten = , position = 14, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Moltkestrasse/22/0
+Round = 6, playerID  = 1, name = Sarah, Budget = 890, karten = , position = 29, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 6, playerID  = 2, name = Philipp2, Budget = 930, karten = , position = 8, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 6, playerID  = 3, name = Sarah2, Budget = 224, karten = , position = 18, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Kaiser Allee/14/0|Moltkestrasse/22/0
+Round = 7, playerID  = 0, name = Philipp, Budget = 776, karten = , position = 13, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Ettlingerstrasse/8/0|Hirschstrasse/10/0|Fastplatz/14/0|Zirkel/18/0|Karl-friedrichstrasse/22/0
+Round = 7, playerID  = 1, name = Sarah, Budget = 1290, karten = , position = 0, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 7, playerID  = 2, name = Philipp2, Budget = 870, karten = , position = 13, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 7, playerID  = 3, name = Sarah2, Budget = 4, karten = , position = 23, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Kaiser Allee/14/0|Karlstrasse/18/0|Moltkestrasse/22/0
+Round = 8, playerID  = 0, name = Philipp, Budget = 886, karten = , position = 22, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Ettlingerstrasse/8/0|Hirschstrasse/10/0|Fastplatz/14/0|Zirkel/18/0|Karl-friedrichstrasse/22/0
+Round = 8, playerID  = 1, name = Sarah, Budget = 1272, karten = , position = 23, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0
+Round = 8, playerID  = 2, name = Philipp2, Budget = 870, karten = , position = 20, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 8, playerID  = 3, name = Sarah2, Budget = 22, karten = , position = 18, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Kaiser Allee/14/0|Karlstrasse/18/0|Moltkestrasse/22/0
+Round = 9, playerID  = 0, name = Philipp, Budget = 801, karten = , position = 33, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Ettlingerstrasse/8/0|Hirschstrasse/10/0|Fastplatz/14/0|Zirkel/18/0|Wasserwerk/0/0|Karl-friedrichstrasse/22/0
+Round = 9, playerID  = 1, name = Sarah, Budget = 972, karten = , position = 31, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0|Herrenstrasse/22/0
+Round = 9, playerID  = 2, name = Philipp2, Budget = 852, karten = , position = 23, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 9, playerID  = 3, name = Sarah2, Budget = 40, karten = , position = 26, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Kaiser Allee/14/0|Karlstrasse/18/0|Moltkestrasse/22/0
+Round = 10, playerID  = 0, name = Philipp, Budget = 801, karten = , position = 33, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Ettlingerstrasse/8/0|Hirschstrasse/10/0|Fastplatz/14/0|Zirkel/18/0|Wasserwerk/0/0|Karl-friedrichstrasse/22/0
+Round = 10, playerID  = 1, name = Sarah, Budget = 972, karten = , position = 31, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0|Herrenstrasse/22/0
+Round = 10, playerID  = 2, name = Philipp2, Budget = 852, karten = , position = 23, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 10, playerID  = 3, name = Sarah2, Budget = 40, karten = , position = 26, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Kaiser Allee/14/0|Karlstrasse/18/0|Moltkestrasse/22/0
+Round = 10, playerID  = 0, name = Philipp, Budget = 651, karten = , position = 15, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Rueppurrerstrasse/6/0|Ettlingerstrasse/8/0|Hirschstrasse/10/0|Fastplatz/14/0|Zirkel/18/0|Wasserwerk/0/0|Karl-friedrichstrasse/22/0
+Round = 10, playerID  = 1, name = Sarah, Budget = 772, karten = , position = 38, prisonCount  = 0, grundstuecke = Kriegsstrasse/12/0|Herrenstrasse/22/0
+Round = 10, playerID  = 2, name = Philipp2, Budget = 852, karten = , position = 28, prisonCount  = 0, grundstuecke = Wasserwerk/0/0
+Round = 10, playerID  = 3, name = Sarah2, Budget = 40, karten = , position = 34, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Karlstrasse/18/0|Moltkestrasse/22/0
+Round = 10, playerID  = 0, name = Philipp, Budget = 1201, karten = , position = 0, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Ettlingerstrasse/8/0|Hirschstrasse/10/0|Fastplatz/14/0|Zirkel/18/0|Wasserwerk/0/0|Karl-friedrichstrasse/22/0
+Round = 10, playerID  = 0, name = Philipp, Budget = 1201, karten = , position = 0, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0|Hirschstrasse/10/0|Kriegsstrasse/12/0|Fastplatz/14/0|Zirkel/18/0|Wasserwerk/0/0|Karl-friedrichstrasse/22/0
+Round = 10, playerID  = 1, name = Sarah, Budget = 972, karten = , position = 31, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Herrenstrasse/22/0
+Round = 10, playerID  = 2, name = Philipp2, Budget = 852, karten = , position = 23, prisonCount  = 0, grundstuecke = Rueppurrerstrasse/6/0
+Round = 10, playerID  = 3, name = Sarah2, Budget = 40, karten = , position = 26, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Karlstrasse/18/0|Moltkestrasse/22/0
+Round = 10, playerID  = 1, name = Sarah, Budget = 972, karten = , position = 35, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0
+Round = 10, playerID  = 2, name = Philipp2, Budget = 852, karten = , position = 10, prisonCount  = 3, grundstuecke = Rueppurrerstrasse/6/0
+Round = 10, playerID  = 3, name = Sarah2, Budget = 40, karten = , position = 35, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Karlstrasse/18/0|Moltkestrasse/22/0
+Round = 11, playerID  = 0, name = Philipp, Budget = 1201, karten = , position = 0, prisonCount  = 0, grundstuecke = Ebertstrasse/6/0|Hirschstrasse/10/0|Kriegsstrasse/12/0|Fastplatz/14/0|Zirkel/18/0|Wasserwerk/0/0|Karl-friedrichstrasse/22/0|Herrenstrasse/22/0
+Round = 11, playerID  = 1, name = Sarah, Budget = 972, karten = , position = 35, prisonCount  = 0, grundstuecke = Ettlingerstrasse/8/0
+Round = 11, playerID  = 2, name = Philipp2, Budget = 852, karten = , position = 10, prisonCount  = 3, grundstuecke = Rueppurrerstrasse/6/0
+Round = 11, playerID  = 3, name = Sarah2, Budget = 40, karten = , position = 35, prisonCount  = 0, grundstuecke = Amalienstrasse/10/0|Karlstrasse/18/0|Moltkestrasse/22/0

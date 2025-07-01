@@ -1,66 +1,56 @@
-/*
-File : GameFunctionManager.hpp 
-Description : Header file for GameFunctionManager class
-
-Author : Sami El Aidi 
-Date : 2025-05-26
-
-Version : 1.0
-
-Notes: 
- -  This file contains the declaration of the GameFunctionManager class, which manages game functions such as player management, dice rolling, and game state.
- -  The class includes methods for adding players, showing the game map, rolling dice, and managing game rounds.
-*/
-#ifndef GAMEFUNCTIONMANAGER_HPP
-#define GAMEFUNCTIONMANAGER_HPP
-
+#ifndef MENUMANAGER_HPPMore actions
+#define MENUMANAGER_HPP
 
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
-#include "Player.hpp"
-#include "Map.hpp"
+#include "Menu.hpp"
+#include "GameFunctionManager.hpp"
+
 
 using namespace std;
 
-class GameFunctionManager {
-    private:
-        int current_player;
-        int current_round;
-        int pasch_counter;
-        vector<Player> players;
-        GameMap map;
+class MenuManager {
 
-        void clear_screen();
-        void enableVirtualTerminal();
+private:
+    int current_Layer;
+    vector<Menu> menus;
+    Menu* current_menu;
+    GameFunctionManager* gameFunctionManager;
+    ofstream MenuLog;
+    bool inGame;
 
-    public:
-        GameFunctionManager();
-        int randomNumber();
+    //Menu System and Logic Functions
+    void clear_screen();
+    void enableVirtualTerminal();
+    void initMenus();
+    bool escapeCheck();
+    void addMenu(Menu& menu);
 
-        void addPlayer(Player player);
+    //Menu Functions
+    void doOperation(char input);
+    void showHighScores();
 
-        void showPlayerInformation(Player player);
-        void showMap();
-        void showTileInfomation(int tile);
+public:
+    MenuManager();
 
-        vector<int> rollDice();
-        void buy();
-        bool checkPasch(vector<int> dice);
+    void handleMenus();
 
 
-        //Getter
-        int getCurrentPlayer();
-        vector<Player>& getPlayers();
-        int getPaschCounter();
-        int getCurrentRound();
-        GameMap& getMap();
+    //Setter
+    void setGameFunctionManager(GameFunctionManager& gameFunctionManager);
+    void setCurrentLayer(int layer);
+    void setCurrentMenu(Menu& menu);
+    void setInGame(bool inGame);
 
-        //Setter
-        void setPlayers(vector<Player> players);
-        void setCurrentPlayer(int player);
-        void setPaschCounter(int counter);
-        void setCurrentRound(int round);
+    //Getter
+    int getCurrentLayer();
+    Menu& getCurrentMenu();
+    ofstream& getMenulog();
+    bool isInGame();
+    GameFunctionManager& getGameFunctionManager();
+    vector<Menu>& getMenus();
+
 };
-#endif

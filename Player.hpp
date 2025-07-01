@@ -19,6 +19,7 @@ private:
     int playerID;
 	bool gameover;
     std::vector<std::string> karten;
+    bool realPlayer;
 
 public:
     // Konstruktor
@@ -32,6 +33,7 @@ public:
     int getID() const;
     std::vector<std::string> getKarten() const;
     bool getGameOver() const;
+    bool isRealPlayer() const;
 
     // Setter / Aktionen
     void addMoney(int amount);

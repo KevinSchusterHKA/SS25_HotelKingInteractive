@@ -68,7 +68,9 @@ void Player::addKarte(const std::string& karte) {
     
 }
 
-//Noch Nicht gemacht: debug(), pay(), addkarten(), removekarten()
+bool Player::isRealPlayer() const {
+    return realPlayer;
+}
 
 
 
