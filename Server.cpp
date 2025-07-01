@@ -74,7 +74,7 @@ void Server::SpielStarten() {
 
 		}
 
-		Player realPlayer(playerName, settings.startBudget, i);		//Spieler mit Namen, Anfangsbudget und ID erstellen
+		Player realPlayer(playerName, settings.startBudget, i, true);		//Spieler mit Namen, Anfangsbudget und ID erstellen
 		getMenuManager().getGameFunctionManager().getPlayers().push_back(realPlayer);
 		
 	}
