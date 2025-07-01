@@ -37,7 +37,6 @@ class MenuManager {
         //Menu System and Logic Functions
         void clear_screen();
         void enableVirtualTerminal();
-        void enableVirtualTerminal();
         void initMenus();
         bool escapeCheck();
         void addMenu(Menu& menu);

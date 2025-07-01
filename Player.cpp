@@ -6,7 +6,7 @@
 #include "Player.hpp"  // Eigene Headerdatei einbinden
 
 // Konstruktor-Implementierung
-Player::Player(const std::string& name, int startMoney, int playerID)
+Player::Player(const std::string& name, int startMoney, int playerID, bool realPlayer)
     : name(name), money(startMoney), currentField(0), prisonCount(0), gameover(false), playerID(playerID) {}
 
 

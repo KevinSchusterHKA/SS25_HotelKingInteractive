@@ -23,7 +23,7 @@ private:
 
 public:
     // Konstruktor
-    Player(const std::string& name, int startMoney, int playerID);
+    Player(const std::string& name, int startMoney, int playerID, bool realPlayer = true);
 
     // Getter
     std::string getName() const;

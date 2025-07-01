@@ -213,7 +213,7 @@ void Server::GefaengnisCheck(GameFunctionManager& gamefunc) {
 		cout << gamefunc.getPlayers()[id].getName() <<" befindet sich leider im Gefaengnis." << endl;
 		if (gamefunc.getPlayers()[id].getMoney() > 100) {			//wenn genug Geld zum Freikaufen da
 			if (gamefunc.getPlayers()[id].isRealPlayer()) { //echte Spieler
-				cout << "Moechtest du dich freikaufen(100 Euro) oder lieber versuchen, einen Pasch zu wuerfeln ? (dein budget : " << gamefunc.getPlayers()[id].getMoney() << ")" << " (0: wuerfeln, 1 : freikaufen)" << endl; Add commentMore actions
+				cout << "Moechtest du dich freikaufen(100 Euro) oder lieber versuchen, einen Pasch zu wuerfeln ? (dein budget : " << gamefunc.getPlayers()[id].getMoney() << ")" << " (0: wuerfeln, 1 : freikaufen)" << endl; 
 					cin >> freikaufen;
 			}
 			else {//CPU, kauft sich immer frei, wenn möglich
@@ -489,11 +489,11 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile,
 				if (manager.getPlayers()[id].isRealPlayer()) {	//wenn echter spieler									
 				cout << "Moechtest du das Feld kaufen?(dein Budget:" << manager.getPlayers()[id].getMoney() << ") (0: nein, 1:ja)" << endl;
 				cin >> buyfield;
-				}Add commentMore actions
+				}
 				else {
 					buyfield = 1; //CPU kauft jede Straße wenn möglich
 					cout << manager.getPlayers()[id].getName() << "kauft das Feld. " << endl;
-					this_thread::sleep_for(chrono::milliseconds(2000)); Add commentMore actions
+					this_thread::sleep_for(chrono::milliseconds(2000));
 
 				}
 				if (buyfield) {
@@ -661,7 +661,6 @@ void Server::fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile,
 			cout << "Du darfst dir einen beliebigen Bahnhof aussuchen, zu dem du fahren kannst. Das kostet aber 50 Euro." << endl;
 			if (manager.getPlayers()[id].getMoney() > 50) {					//genug Geld zum Fliegen
 				if (manager.getPlayers()[id].isRealPlayer()) {
-					Add commentMore actions
 						cout << "Moechtest du fahren? (nein=0 ja=1)" << endl;
 					cin >> transport;
 				}

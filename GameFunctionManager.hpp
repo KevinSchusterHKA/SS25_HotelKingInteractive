@@ -1,56 +1,53 @@
-#ifndef MENUMANAGER_HPPMore actions
-#define MENUMANAGER_HPP
+#ifndef GAMEFUNCTIONMANAGER_HPP
+#define GAMEFUNCTIONMANAGER_HPP
+
 
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
 
-#include "Menu.hpp"
-#include "GameFunctionManager.hpp"
-
+#include "Player.hpp"
+#include "Map.hpp"
 
 using namespace std;
 
-class MenuManager {
-
+class GameFunctionManager {
 private:
-    int current_Layer;
-    vector<Menu> menus;
-    Menu* current_menu;
-    GameFunctionManager* gameFunctionManager;
-    ofstream MenuLog;
-    bool inGame;
+    int current_player;
+    int current_round;
+    int pasch_counter;
+    vector<Player> players;
+    GameMap map;
 
-    //Menu System and Logic Functions
     void clear_screen();
     void enableVirtualTerminal();
-    void initMenus();
-    bool escapeCheck();
-    void addMenu(Menu& menu);
-
-    //Menu Functions
-    void doOperation(char input);
-    void showHighScores();
 
 public:
-    MenuManager();
+    GameFunctionManager();
+    int randomNumber();
 
-    void handleMenus();
+    void addPlayer(Player player);
 
+    void showPlayerInformation(Player player);
+    void showMap();
+    void showTileInfomation(int tile);
 
-    //Setter
-    void setGameFunctionManager(GameFunctionManager& gameFunctionManager);
-    void setCurrentLayer(int layer);
-    void setCurrentMenu(Menu& menu);
-    void setInGame(bool inGame);
+    vector<int> rollDice();
+    void buy();
+    bool checkPasch(vector<int> dice);
+
 
     //Getter
-    int getCurrentLayer();
-    Menu& getCurrentMenu();
-    ofstream& getMenulog();
-    bool isInGame();
-    GameFunctionManager& getGameFunctionManager();
-    vector<Menu>& getMenus();
+    int getCurrentPlayer();
+    vector<Player>& getPlayers();
+    int getPaschCounter();
+    int getCurrentRound();
+    GameMap& getMap();
 
+    //Setter
+    void setPlayers(vector<Player> players);
+    void setCurrentPlayer(int player);
+    void setPaschCounter(int counter);
+    void setCurrentRound(int round);
 };
+#endif
