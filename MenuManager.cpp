@@ -19,6 +19,7 @@ Notes:
  -  To use this class, create an instance of MenuManager and call the handleMenus() method to start the menu system.
 */
 
+#include <Windows.h>
 #include <conio.h>
 #include <iostream>
 #include <fstream>
@@ -61,6 +62,14 @@ MenuManager::MenuManager() : current_Layer(0), current_menu(nullptr), MenuLog() 
 Clears the console screen.
 */
 void MenuManager::clear_screen() { cout << "\x1B[2J\x1B[H"; }
+
+void MenuManager::enableVirtualTerminal() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
 
 /*
 Initializes the menu system with a start menu and submenus.
@@ -113,6 +122,8 @@ Adds a menu to the MenuManager's list of menus.
 void MenuManager::addMenu(Menu& menu) { menus.push_back(menu); }
 
 void MenuManager::doOperation(char input) {
+    SetConsoleOutputCP(CP_UTF8);
+    enableVirtualTerminal();
     vector<Player> gamePlayers;
     Server server(gamePlayers);
     if (input == 13 && isInGame()) {
@@ -120,12 +131,11 @@ void MenuManager::doOperation(char input) {
         case 0: {
             //Würfeln
             server.Wuerfeln(getGameFunctionManager());
-            this_thread::sleep_for(chrono::milliseconds(10000));
-
             break;
         }
         case 1: {
             //Handeln und Tauschen
+            server.handleTrade(getGameFunctionManager(), getGameFunctionManager().getCurrentPlayer());
             break;
         }
         case 2: {
@@ -149,7 +159,7 @@ void MenuManager::doOperation(char input) {
         case 5: {
             //Spielstand speichern
 
-			server.SpielstandSpeichern();
+			server.SpielstandSpeichern(getGameFunctionManager());
 
             break;
         }
@@ -194,6 +204,8 @@ void MenuManager::doOperation(char input) {
  * For use, only initialize the MenuManager and call the handleMainMenu() method.
  */
 void MenuManager::handleMenus() {
+    SetConsoleOutputCP(CP_UTF8);
+    enableVirtualTerminal();
     while (true) {
         getMenulog() << "Ingame: " << (isInGame() ? "Yes" : "No") << " - Current Menu: " << getCurrentMenu().getHeader() << endl;
         //getGameFunctionManager().setCurrentPlayer(3);

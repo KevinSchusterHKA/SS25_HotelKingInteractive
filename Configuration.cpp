@@ -37,40 +37,16 @@ bool Configuration::loadConfig() {
 		value.erase(remove(value.begin(), value.end(), ' '), value.end());
 
 		// Zuordnen
-		if (key == "playerCount") { settings.playerCount = stoi(value); }
-		else if (key == "cpuCount") { settings.cpuCount = stoi(value); }
-		else if (key == "startBudget") { settings.startBudget = stoi(value); }
+		if (key == "startBudget") { settings.startBudget = stoi(value); }
 		else if (key == "roundLimit") { settings.roundLimit = stoi(value); }
-		else if (key == "timeLimit") { settings.timeLimit = stoi(value); }
-		else if (key == "budgetLimit") { settings.budgetLimit = stoi(value); }
-		else if (key == "cpuDifficulty") { settings.cpuDifficulty = value; }
-		else if (key == "gameMode") {
-			if (value == "RUNDENBASIERT") settings.gameMode = GameMode::RUNDENBASIERT;
-			else if (value == "ZEITBASIERT") settings.gameMode = GameMode::ZEITBASIERT;
-			else if (value == "BUDGETBASIERT") settings.gameMode = GameMode::BUDGETBASIERT;
-		}
 	}
 	file.close();
 	return true;
 }
 
 void Configuration::printSettings() {
-	string mode;
-	switch (settings.gameMode) {
-	case GameMode::RUNDENBASIERT: mode = "RUNDENBASIERT"; break;
-	case GameMode::ZEITBASIERT: mode = "ZEITBASIERT"; break;
-	case GameMode::BUDGETBASIERT: mode = "BUDGETBASIERT"; break;
-	default: mode = "UNBEKANNT"; break;
-	}
-
-	cout << "playerCount: " << settings.playerCount << endl;
-	cout << "cpuCount: " << settings.cpuCount << endl;
 	cout << "startBudget: " << settings.startBudget << endl;
 	cout << "roundLimit: " << settings.roundLimit << endl;
-	cout << "timeLimit: " << settings.timeLimit << endl;
-	cout << "budgetLimit: " << settings.budgetLimit << endl;
-	cout << "cpuDifficulty: " << settings.cpuDifficulty << endl;
-	cout << "gameMode: " << mode << endl << endl;
 }
 
 void Configuration::writeLog(GameFunctionManager info) {
@@ -96,9 +72,22 @@ void Configuration::writeLog(GameFunctionManager info) {
 		if (i != karten.size() - 1) logFile << "|";
 	}
 	logFile << ", position = " << p.getPosition()
-		<< ", prison  = " << (p.inPrison() ? "true" : "false")
-		<< ", prisonCount  = " << p.getPrisonCount() << endl;
+		<< ", prisonCount  = " << p.getPrisonCount();
 
+	// Grundstücke
+	logFile << ", grundstuecke = ";
+	bool first = true;
+	for (int i = 0; i < 40; i++) {
+		PropertyTile* propertyTile = dynamic_cast<PropertyTile*>(info.getMap().getTile(i).get());
+		if (propertyTile && propertyTile->getOwnerId() == p.getID()) {
+			if (!first) logFile << "|";
+			logFile << propertyTile->getName() << "/" << propertyTile->getRent() << "/" << propertyTile->getBuildingLevel();
+			first = false;
+		}
+	}
+	logFile << ", gameOver = " << (p.getGameOver() ? "true" : "false");
+	logFile << ", isRealPlayer = " << (p.isRealPlayer() ? "true" : "false");
+	logFile << endl;
 	logFile.close();
 }
 
@@ -113,12 +102,13 @@ void Configuration::clearLog() {
 }
 
 void Configuration::saveGame() {
-/***************************   lexicalische analyse für log-Dateil  **********************************************************/
+	/***************************   lexicalische analyse für log-Dateil  **********************************************************/
 	vector<Player> parsedPlayers;
-	int maxRound = 0; 
+	vector<string> parsedGrundstuecke;
+	int maxRound = 0;
 	int wieVieleSpieler = 4;
-	int ind = 1;
-	
+	int naechsteSpielerID = 0;
+
 
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
@@ -130,7 +120,7 @@ void Configuration::saveGame() {
 
 	while (getline(logFile, zeile)) {
 		if (zeile.empty()) { continue; }
-		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "";
+		int round = 0, playerID = 0, budget = 0, position = 0, prisonCount = 0; string karten = "", name = "", prison = "", grundstuecke = "", gameOver = "", isRealPlayer = "";
 
 		// Aufteilen der Zeile in Schlüssel-Wert-Paare
 		stringstream ss(zeile);
@@ -152,17 +142,22 @@ void Configuration::saveGame() {
 			else if (key == "Budget") budget = stoi(value);
 			else if (key == "karten") karten = value;
 			else if (key == "position") position = stoi(value);
-			else if (key == "prison") prison = value;
 			else if (key == "prisonCount") prisonCount = stoi(value);
+			else if (key == "grundstuecke") grundstuecke = value;
+			else if (key == "gameOver") gameOver = value;
+			else if (key == "isRealPlayer") isRealPlayer = value;
 		}
 
 		if (round > maxRound) { maxRound = round; }	//update round
 
+		parsedGrundstuecke.push_back(grundstuecke);
+
 		// Rekonstruiere den Spieler
-		Player p(name, budget, playerID);
+		Player p = (isRealPlayer == "true") ? Player(name, budget, playerID, true) : Player(name, budget, playerID, false);
+
 		p.setPosition(position);
 		p.setPrisonCount(prisonCount);
-		if (prison == "true") { p.setPrison(); }
+		if (gameOver == "true") { p.setGameOver(); }
 
 		// Karten parsen
 		stringstream kss(karten);
@@ -176,7 +171,9 @@ void Configuration::saveGame() {
 	logFile.close();
 
 	/****************************************** Neue Dateil save  ************************************************************************/
-	ofstream saveFile("save.txt");
+
+	ofstream saveFile(savePath);
+
 	if (!saveFile.is_open()) {
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
@@ -185,27 +182,30 @@ void Configuration::saveGame() {
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
 
-	for (int i = parsedPlayers.size()-wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
-		saveFile << "# Spieler " << ind++ << endl;
+	for (int i = parsedPlayers.size() - wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
+		saveFile << "# Spieler " << parsedPlayers[i].getID() + 1 << endl;
+
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
 		saveFile << "position = " << parsedPlayers[i].getPosition() << endl;
-		saveFile << "prison = " << (parsedPlayers[i].inPrison() ? "true" : "false") << endl;
 		saveFile << "prisonCount = " << parsedPlayers[i].getPrisonCount() << endl;
+		saveFile << "gameOver = " << (parsedPlayers[i].getGameOver() ? "true" : "false") << endl;;
+		saveFile << "isRealPlayer = " << (parsedPlayers[i].isRealPlayer() ? "true" : "false") << endl;;
 		saveFile << "karten = ";
 		vector<string> karten = parsedPlayers[i].getKarten();
 		for (size_t i = 0; i < karten.size(); ++i) {
 			saveFile << karten[i];
 			if (i != karten.size() - 1) saveFile << "|";
 		}
-		saveFile << endl << endl;
+		saveFile << endl;
+		saveFile << "grundstuecke = " << parsedGrundstuecke[i] << endl << endl;
 
-		//current spieler
-		if (i == parsedPlayers.size() - wieVieleSpieler) {
-			saveFile << "naechsteSpielerID = " << parsedPlayers[i].getID() << endl;
-		}
 	}
+	//current spieler
+	parsedPlayers[parsedPlayers.size() - 5].getID() == 3 ? naechsteSpielerID = 0 : naechsteSpielerID = parsedPlayers[parsedPlayers.size() - 5].getID() + 1;	//naechster Spieler
+	saveFile << "naechsteSpielerID = " << naechsteSpielerID << endl;
+
 	saveFile.close();
 }
 
@@ -219,7 +219,7 @@ GameFunctionManager Configuration::loadGame() {
 	}
 
 	string zeile;
-	Player tempPlayer("", 0, 0); int round = 0, naechsteSpieler = 0; string name = "", prison = "";
+	Player tempPlayer("", 0, 0, true); int round = 0, naechsteSpieler = 0; string name = "", gameOver = "", isRealPlayer = "";
 	while (getline(saveFile, zeile)) {
 		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
@@ -239,10 +239,11 @@ GameFunctionManager Configuration::loadGame() {
 		if (key == "round") round = stoi(value);
 		else if (key == "name") name = value;
 		else if (key == "playerID") tempPlayer = Player(name, 0, stoi(value));
+		else if (key == "isRealPlayer") isRealPlayer = value; if (isRealPlayer == "false") { tempPlayer = Player(name, 0, stoi(value), false); }
 		else if (key == "budget") tempPlayer.addMoney(stoi(value));
 		else if (key == "position") tempPlayer.setPosition(stoi(value));
-		else if (key == "prison") name = value; if (value == "true") { tempPlayer.setPrison(); }
 		else if (key == "prisonCount") tempPlayer.setPrisonCount(stoi(value));
+		else if (key == "gameOver") gameOver = value; if (value == "true") { tempPlayer.setGameOver(); }
 		else if (key == "karten") {
 			stringstream ss(value);
 			string karte;
@@ -250,6 +251,31 @@ GameFunctionManager Configuration::loadGame() {
 				tempPlayer.addKarte(karte);
 			}
 			manager.addPlayer(tempPlayer);
+		}
+		else if (key == "grundstuecke") {
+			stringstream ss(value);
+			string grundstueck;
+			while (getline(ss, grundstueck, '|')) {
+				// Neu: Name/Mite/Hausanzahl speichern und einlesen!
+				size_t trenner1 = grundstueck.find('/');
+				if (trenner1 == string::npos) continue;
+				size_t trenner2 = grundstueck.find('/', trenner1 + 1);
+				if (trenner2 == string::npos) continue;
+
+				string propertyName = grundstueck.substr(0, trenner1);
+				int rent = stoi(grundstueck.substr(trenner1 + 1, trenner2 - trenner1 - 1));
+				int buildingLevel = stoi(grundstueck.substr(trenner2 + 1));
+
+				for (int i = 0; i < 40; ++i) {
+					shared_ptr<Tile> t = manager.getMap().getTile(i);
+					PropertyTile* pt = dynamic_cast<PropertyTile*>(t.get());
+					if (pt && pt->getName() == propertyName) {
+						pt->setOwner(tempPlayer.getID());
+						pt->setRent(rent);
+						pt->setBuildingLevel(buildingLevel);
+					}
+				}
+			}
 		}
 		else if (key == "naechsteSpielerID") naechsteSpieler = stoi(value);
 	}
@@ -269,12 +295,24 @@ void Configuration::printLoadGame(GameFunctionManager g) {
 		cout << "ID: " << p.getID() << endl;
 		cout << "Budget: " << p.getMoney() << endl;
 		cout << "Position: " << p.getPosition() << endl;
-		cout << "Im Gefaengnis? " << (p.getPrisonCount() > 0 ? "Ja" : "Nein") << endl;
+		cout << "Game Over? " << (p.getGameOver() ? "Ja" : "Nein") << endl;
+		cout << "isRealPlayer? " << (p.isRealPlayer() ? "Ja" : "Nein") << endl;
 		cout << "Gefaengnis-Runden: " << p.getPrisonCount() << endl;
 		cout << "Karten: ";
 		vector<string> karten = p.getKarten();
 		for (const string& k : karten) {
 			cout << k << " ";
+		}
+		cout << endl;
+		cout << "Grundstuecke: ";
+		bool first = true;
+		for (int i = 0; i < 40; ++i) {
+			PropertyTile* pt = dynamic_cast<PropertyTile*>(g.getMap().getTile(i).get());
+			if (pt && pt->getOwnerId() == p.getID()) {
+				if (!first) cout << " | ";
+				cout << pt->getName() << "/" << pt->getRent() << "/" << pt->getBuildingLevel();
+				first = false;
+			}
 		}
 		cout << endl;
 	}

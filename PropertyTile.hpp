@@ -23,10 +23,13 @@ private:
 public:
     //PropertyTile(int id, const std::string& name, PropertyType type, int price): Tile(id, name), propertyType(type), price(price){}
     PropertyTile(int id, const std::string& name, PropertyType type, int price, int rent,int groundID, int houseCost)
-        : Tile(id, name), propertyType(type), price(price), rent(rent), ownerId(-1),rentLevels({10, 50, 150, 450, 625, 750}),houseCost(100),
-buildingLevel(0),groudID(-1) {}
+        : Tile(id, name), propertyType(type), price(price), rent(rent), ownerId(-1), rentLevels({ 10, 50, 150, 450, 625, 750 }), houseCost(houseCost),
+        buildingLevel(0), groudID(groudID) {}
 // Getter
     PropertyType getPropertyType() const { return propertyType; }
+    int getHouseCost() const { return houseCost; }
+    void setBuildingLevel(int newLevel) { buildingLevel = newLevel; }
+
     int getPrice() const { return price; }
     int getRent() const { return rent; }
     int getOwnerId() const { return ownerId; }
@@ -35,6 +38,7 @@ buildingLevel(0),groudID(-1) {}
     std::vector<int> getRentLevels() const {return rentLevels;}
     // Setter
     void setOwner(int playerId) { ownerId = playerId; }
+    void setRent(int r) { rent = r; }
     /// <summary>
     /// Function: Set up the street rent table
     /// </summary>

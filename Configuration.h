@@ -12,7 +12,7 @@ class Configuration {
 private:
 	GameSettings settings;
 	string configPath = "../Config/config.txt";
-	string logPath = "game.txt";
+	string logPath = "game.log";
 	string savePath = "save.txt";
 	string highscorePath = "highscore.txt";
 

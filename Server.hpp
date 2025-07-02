@@ -22,6 +22,7 @@ private:
 	int numberOfCPUPlayer;
 	string playerName;
 	string rulesPath = "../Config/config.txt";
+	GameSettings settings;
 	bool buyfield;
 	bool freikaufen;
 	int price;
@@ -31,12 +32,22 @@ private:
 	int wunschfeldid;
 	int positionofothers;
 	bool transport;
+	int bauen;
+	int freiparkenpot;
 	MenuManager* menumanager;
 	Configuration config;
-	GameSettings settings;
+	void fuehreFeldAktionAus(GameFunctionManager& manager, int id, int tile, bool bonusAufLosErlaubt = true);
+	void GefaengnisCheck(GameFunctionManager& gamefunc);
 	void Paschwerfen(GameFunctionManager& manager);
 	void naechsterSpieler(GameFunctionManager& manager);
 	void Ende();
+	int pot;
+	void addToPot(int betrag);
+	void clearPot();
+	int maxMoney;
+	int winnerID;
+	int winnerID2;
+	int winnerID3;
 
 
 public:
@@ -46,12 +57,9 @@ public:
 	MenuManager& getMenuManager();
 	Configuration getConfiguration();
 	void setMenuManager(MenuManager& manager);
-	void showIngameDialog();
 	void Spielzug(GameFunctionManager& manager);
 	void Wuerfeln(GameFunctionManager& manager);
-	void GefaengnisCheck(GameFunctionManager& gamefunc);
-	void SpielstandSpeichern();
-
-
-
+	void SpielstandSpeichern(GameFunctionManager& manager);
+	int getPot() const;
+	void handleTrade(GameFunctionManager& manager, int currentPlayerId);
 };

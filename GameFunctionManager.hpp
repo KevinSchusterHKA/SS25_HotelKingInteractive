@@ -1,16 +1,3 @@
-/*
-File : GameFunctionManager.hpp 
-Description : Header file for GameFunctionManager class
-
-Author : Sami El Aidi 
-Date : 2025-05-26
-
-Version : 1.0
-
-Notes: 
- -  This file contains the declaration of the GameFunctionManager class, which manages game functions such as player management, dice rolling, and game state.
- -  The class includes methods for adding players, showing the game map, rolling dice, and managing game rounds.
-*/
 #ifndef GAMEFUNCTIONMANAGER_HPP
 #define GAMEFUNCTIONMANAGER_HPP
 
@@ -25,42 +12,42 @@ Notes:
 using namespace std;
 
 class GameFunctionManager {
-    private:
-        int current_player;
-        int current_round;
-        int pasch_counter;
-        vector<Player> players;
-        GameMap map;
+private:
+    int current_player;
+    int current_round;
+    int pasch_counter;
+    vector<Player> players;
+    GameMap map;
 
-        void clear_screen();
-        void enableVirtualTerminal();
-        int randomNumber();
+    void clear_screen();
+    void enableVirtualTerminal();
 
-    public:
-        GameFunctionManager();
+public:
+    GameFunctionManager();
+    int randomNumber();
 
-        void addPlayer(Player player);
+    void addPlayer(Player player);
 
-        void showPlayerInformation(Player player);
-        void showMap();
-        void showTileInfomation(int tile);
+    void showPlayerInformation(Player player);
+    void showMap();
+    void showTileInfomation(int tile);
 
-        vector<int> rollDice();
-        void buy();
-        bool checkPasch(vector<int> dice);
+    vector<int> rollDice();
+    void buy();
+    bool checkPasch(vector<int> dice);
 
 
-        //Getter
-        int getCurrentPlayer();
-        vector<Player>& getPlayers();
-        int getPaschCounter();
-        int getCurrentRound();
-        GameMap& getMap();
+    //Getter
+    int getCurrentPlayer();
+    vector<Player>& getPlayers();
+    int getPaschCounter();
+    int getCurrentRound();
+    GameMap& getMap();
 
-        //Setter
-        void setPlayers(vector<Player> players);
-        void setCurrentPlayer(int player);
-        void setPaschCounter(int counter);
-        void setCurrentRound(int round);
+    //Setter
+    void setPlayers(vector<Player> players);
+    void setCurrentPlayer(int player);
+    void setPaschCounter(int counter);
+    void setCurrentRound(int round);
 };
 #endif

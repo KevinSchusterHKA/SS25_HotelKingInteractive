@@ -264,7 +264,7 @@ vector<int> GameFunctionManager::rollDice() {
     } else {
         setPaschCounter(0);
     }
-    this_thread::sleep_for(chrono::milliseconds(5000));
+    this_thread::sleep_for(chrono::milliseconds(2000));
     
     return dice;
 }

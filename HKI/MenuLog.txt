@@ -2,7 +2,3 @@ Menu: Hotel King Interactive initialized with 4 items.
 Menu: Ingame initialized with 7 items.
 Ingame: Yes - Current Menu: Ingame
 TESTIngame: Yes - Current Menu: Ingame
-TESTIngame: Yes - Current Menu: Ingame
-TESTIngame: Yes - Current Menu: Ingame
-TESTIngame: Yes - Current Menu: Ingame
-TEST

@@ -6,20 +6,20 @@
 
 const std::string Graph::nodeNames[TOTAL_NODES] = {
     "LOS",
-    "Kronenstraße",
+    "Kronenstrasse",
     "Aktionsfeld",
-    "Adlerstraße",
+    "Adlerstrasse",
     "Einkommensteuer",
     "Hauptbahnhof",
-    "Ebertstraße",
+    "Ebertstrasse",
     "Aktionsfeld",
-    "Rueppurrerstraße",
-    "Ettlingerstraße",
+    "Rueppurrerstrasse",
+    "Ettlingerstrasse",
     "Nur zu Besuch / Gefaengnis",
-    "Amalienstraße",
+    "Amalienstrasse",
     "Elektrizitaetwerk",
-    "Hirschstraße",
-    "Kriegsstraße",
+    "Hirschstrasse",
+    "Kriegsstrasse",
     "West-Bahnhof",
     "Fastplatz",
     "Aktionsfeld",
@@ -28,21 +28,21 @@ const std::string Graph::nodeNames[TOTAL_NODES] = {
     "Frei Parken",
     "Zirkel",
     "Aktionsfeld",
-    "Karlstraße",
-    "Brauerstraße",
+    "Karlstrasse",
+    "Brauerstrasse",
     "OstBahnhof",
     "Hildapromenade",
-    "Moltkestraße",
+    "Moltkestrasse",
     "Wasserwerk",
-    "Karl-friedrichstraße",
+    "Karl-friedrichstrasse",
     "Gehe ins Gefaengnis",
-    "Herrenstraße",
+    "Herrenstrasse",
     "Waldstraße",
     "Aktionsfeld",
-    "Erbprinzenstraße",
+    "Erbprinzenstrasse",
     "Hubschrauberlandeplatz",
     "Aktionsfeld",
-    "Kaiserstraße",
+    "Kaiserstrasse",
     "Zusatzsteuer",
     "Schlossplatz"
 };
@@ -130,7 +130,7 @@ Graph::Graph() : adjacencyMatrix(TOTAL_NODES, std::vector<bool>(TOTAL_NODES, fal
         Aktionsfeld2, "Aktionsfeld", SpecialType::Action);
 
     tiles[Gefaengnis] = std::make_shared<SpecialTile>(
-        Gefaengnis, "Nur zu Besuch / Gefaengnis", SpecialType::GoToJail);
+        Gefaengnis, "Nur zu Besuch / Gefaengnis", SpecialType::Jail);
 
     tiles[Elektrizitaetwerk] = std::make_shared<PropertyTile>(
         Elektrizitaetwerk, nodeNames[Elektrizitaetwerk], PropertyType::Utility, 150, 0, -1, 0);
