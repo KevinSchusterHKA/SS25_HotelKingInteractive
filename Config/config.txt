@@ -1,0 +1,5 @@
+#config
+startBudget = 1000
+roundLimit = 100
+
+test

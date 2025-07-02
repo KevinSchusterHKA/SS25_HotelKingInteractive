@@ -1,0 +1,6 @@
+Round = 1, playerID  = 0, name = a, Budget = 500, karten = , position = 0, prisonCount  = 0
+Round = 1, playerID  = 1, name = b, Budget = 500, karten = , position = 0, prisonCount  = 0
+Round = 1, playerID  = 2, name = c, Budget = 500, karten = , position = 0, prisonCount  = 0
+Round = 1, playerID  = 3, name = d, Budget = 500, karten = , position = 0, prisonCount  = 0
+Round = 1, playerID  = 0, name = a, Budget = 500, karten = , position = 5, prisonCount  = 0
+Round = 1, playerID  = 1, name = b, Budget = 450, karten = , position = 5, prisonCount  = 0

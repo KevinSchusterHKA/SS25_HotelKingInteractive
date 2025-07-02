@@ -1,0 +1,40 @@
+# SPIELZUSTAND SPEICHERUNG
+round = 11
+
+# Spieler 1
+name = Philipp
+playerID = 0
+budget = 1201
+position = 0
+prisonCount = 0
+karten = 
+grundstuecke = Ebertstrasse/6/0|Hirschstrasse/10/0|Kriegsstrasse/12/0|Fastplatz/14/0|Zirkel/18/0|Wasserwerk/0/0|Karl-friedrichstrasse/22/0|Herrenstrasse/22/0
+
+# Spieler 2
+name = Sarah
+playerID = 1
+budget = 972
+position = 35
+prisonCount = 0
+karten = 
+grundstuecke = Ettlingerstrasse/8/0
+
+# Spieler 3
+name = Philipp2
+playerID = 2
+budget = 852
+position = 10
+prisonCount = 3
+karten = 
+grundstuecke = Rueppurrerstrasse/6/0
+
+# Spieler 4
+name = Sarah2
+playerID = 3
+budget = 40
+position = 35
+prisonCount = 0
+karten = 
+grundstuecke = Amalienstrasse/10/0|Karlstrasse/18/0|Moltkestrasse/22/0
+
+naechsteSpielerID = 0
