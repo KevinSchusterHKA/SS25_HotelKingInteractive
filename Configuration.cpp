@@ -187,11 +187,11 @@ void Configuration::saveGame() {
 
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
+		saveFile << "isRealPlayer = " << (parsedPlayers[i].isRealPlayer() ? "true" : "false") << endl;;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
 		saveFile << "position = " << parsedPlayers[i].getPosition() << endl;
 		saveFile << "prisonCount = " << parsedPlayers[i].getPrisonCount() << endl;
 		saveFile << "gameOver = " << (parsedPlayers[i].getGameOver() ? "true" : "false") << endl;;
-		saveFile << "isRealPlayer = " << (parsedPlayers[i].isRealPlayer() ? "true" : "false") << endl;;
 		saveFile << "karten = ";
 		vector<string> karten = parsedPlayers[i].getKarten();
 		for (size_t i = 0; i < karten.size(); ++i) {
@@ -219,7 +219,7 @@ GameFunctionManager Configuration::loadGame() {
 	}
 
 	string zeile;
-	Player tempPlayer("", 0, 0, true); int round = 0, naechsteSpieler = 0; string name = "", gameOver = "", isRealPlayer = "";
+	Player tempPlayer("", 0, 0, true); int round = 0, naechsteSpieler = 0, playerID = 0; string name = "", gameOver = "", isRealPlayer = ""; bool iRP;
 	while (getline(saveFile, zeile)) {
 		// Leere Zeilen oder Kommentare überspringen
 		if (zeile.empty() || zeile[0] == '#') { continue; }
@@ -238,12 +238,15 @@ GameFunctionManager Configuration::loadGame() {
 		// Zuordnen
 		if (key == "round") round = stoi(value);
 		else if (key == "name") name = value;
-		else if (key == "playerID") tempPlayer = Player(name, 0, stoi(value));
-		else if (key == "isRealPlayer") isRealPlayer = value; if (isRealPlayer == "false") { tempPlayer = Player(name, 0, stoi(value), false); }
+		else if (key == "playerID") playerID = stoi(value);
+		else if (key == "isRealPlayer") { 
+			isRealPlayer = value;	
+			tempPlayer = (value == "true") ? Player(name, 0, playerID, true) : Player(name, 0, playerID, false); 
+		}
 		else if (key == "budget") tempPlayer.addMoney(stoi(value));
 		else if (key == "position") tempPlayer.setPosition(stoi(value));
 		else if (key == "prisonCount") tempPlayer.setPrisonCount(stoi(value));
-		else if (key == "gameOver") gameOver = value; if (value == "true") { tempPlayer.setGameOver(); }
+		else if (key == "gameOver") { gameOver = value; if (value == "true") { tempPlayer.setGameOver(); } }
 		else if (key == "karten") {
 			stringstream ss(value);
 			string karte;
