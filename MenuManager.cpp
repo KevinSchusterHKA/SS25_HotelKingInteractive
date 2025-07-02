@@ -35,12 +35,14 @@ Notes:
 #include "MenuManager.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
+
 #include "Server.hpp"
 
 #define AE "\xC3\xA4"  // ä
 #define OE "\xC3\xB6"  // ö
 #define UE "\xC3\xBC"  // ü
 #define SZ "\xC3\x9F"  // ß
+
 
 using namespace std;
 
@@ -79,6 +81,7 @@ void MenuManager::initMenus() {
 
     //Ingame Overlay Menu
     Menu inGameMenu(0, "Ingame", { "W" + string(UE) + "rfeln", "Handeln und Tauschen", "Inventar anzeigen", "Feld anzeigen", "Spielbrett anzeigen", "Spielstand speichern", "Exit" }, true);
+
 
     menus.push_back(startMenu);
     menus.push_back(inGameMenu);
@@ -127,8 +130,6 @@ void MenuManager::doOperation(char input) {
         switch (getCurrentMenu().getCurrentPosition()) {
         case 0: {
             //Würfeln
-            //vector<int> roll = getGameFunctionManager().rollDice();
-            //getGameFunctionManager().checkPasch(roll) ? gameFunctionManager->setPaschCounter(getGameFunctionManager().getPaschCounter() + 1) : getGameFunctionManager().setPaschCounter(0);
             server.Wuerfeln(getGameFunctionManager());
             break;
         }
@@ -157,7 +158,9 @@ void MenuManager::doOperation(char input) {
         }
         case 5: {
             //Spielstand speichern
+
 			server.SpielstandSpeichern(getGameFunctionManager());
+
             break;
         }
         default: {
@@ -171,11 +174,13 @@ void MenuManager::doOperation(char input) {
         case 0: {
             //Spiel starten
             server.SpielStarten();
+
             break;
         }
         case 1: {
             //Spiel laden
             server.SpielLaden();
+
             break;
         }
         case 2: {
@@ -184,6 +189,7 @@ void MenuManager::doOperation(char input) {
             server.getConfiguration().showHighscore(server.getConfiguration().sortedHighscore());
 
             this_thread::sleep_for(chrono::milliseconds(10000));
+
             break;
         }
         default:

@@ -109,6 +109,7 @@ void Configuration::saveGame() {
 	int wieVieleSpieler = 4;
 	int naechsteSpielerID = 0;
 
+
 	ifstream logFile(logPath);
 	if (!logFile.is_open()) {
 		cout << "Fehler beim Oeffnen der Log-Datei." << endl;
@@ -170,7 +171,9 @@ void Configuration::saveGame() {
 	logFile.close();
 
 	/****************************************** Neue Dateil save  ************************************************************************/
+
 	ofstream saveFile(savePath);
+
 	if (!saveFile.is_open()) {
 		cout << "Speicherdatei konnte nicht geöffnet werden." << endl;
 		return;
@@ -178,8 +181,10 @@ void Configuration::saveGame() {
 
 	saveFile << "# SPIELZUSTAND SPEICHERUNG" << endl;
 	saveFile << "round = " << maxRound << endl << endl;
+
 	for (int i = parsedPlayers.size() - wieVieleSpieler; i < parsedPlayers.size(); i++) {	//lese die letze zeile von log-Datei
 		saveFile << "# Spieler " << parsedPlayers[i].getID() + 1 << endl;
+
 		saveFile << "name = " << parsedPlayers[i].getName() << endl;
 		saveFile << "playerID = " << parsedPlayers[i].getID() << endl;
 		saveFile << "budget = " << parsedPlayers[i].getMoney() << endl;
